@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Neon Serpent — 霓虹蛇</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<canvas id="gl"></canvas>
+<div id="scanlines"></div>
+<div id="vignette"></div>
+<div id="flash"></div>
+
+<div id="hud" class="hidden">
+  <div id="stats">
+    <div class="row"><span class="k">ENERGY 能量</span><span id="score" class="v">0</span></div>
+    <div class="row"><span class="k">LENGTH 長さ</span><span id="len" class="v">0</span></div>
+    <div class="row"><span class="k">SPEED 速度</span>
+      <span id="speedbar"><i id="speedfill"></i></span>
+    </div>
+    <div id="mute" class="mute">M · SND</div>
+  </div>
+  <canvas id="map" width="150" height="150"></canvas>
+  <div id="notice"></div>
+  <div id="countdown" class="hidden"></div>
+  <button id="boost" class="hidden" type="button">BOOST<br>加速</button>
+</div>
+
+<div id="overlay-intro" class="overlay">
+  <div class="panel">
+    <div class="jp">霓 虹 蛇</div>
+    <h1>NEON&nbsp;SERPENT</h1>
+    <p class="tag">A first-person snake run through a future Japanese city.<br>
+    Eat the light. Don't bite the tail.</p>
+    <div class="controls">
+      <div><b>MOUSE / DRAG</b><span>steer 转向</span></div>
+      <div><b>A · D / ← →</b><span>steer 转向</span></div>
+      <div><b>SHIFT / W / SPACE</b><span>boost 加速</span></div>
+      <div><b>P</b><span>pause 暂停</span></div>
+      <div><b>M</b><span>mute 静音</span></div>
+    </div>
+    <button id="start" class="cta" type="button">JACK IN ▸</button>
+    <p class="hint">Desktop plays best with pointer lock. Touch: drag to steer.</p>
+  </div>
+</div>
+
+<div id="overlay-pause" class="overlay hidden">
+  <div class="panel">
+    <div class="jp">一時停止</div>
+    <h1>PAUSED</h1>
+    <button id="resume" class="cta" type="button">RESUME ▸</button>
+    <p class="hint">P or click to resume · R restarts</p>
+  </div>
+</div>
+
+<div id="overlay-dead" class="overlay hidden">
+  <div class="panel">
+    <div class="jp">通信切断</div>
+    <h1>SIGNAL&nbsp;LOST</h1>
+    <p id="dead-cause" class="tag"></p>
+    <div class="final">
+      <div><span class="k">ENERGY</span><span id="dead-score" class="v">0</span></div>
+      <div><span class="k">BEST 最高</span><span id="dead-best" class="v">0</span></div>
+    </div>
+    <button id="retry" class="cta" type="button">RE-DIVE ▸</button>
+    <p class="hint">R to restart</p>
+  </div>
+</div>
+
+<script type="module" src="main.js"></script>
+</body>
+</html>
