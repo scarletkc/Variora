@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rainy Ramen — 雨のラーメン</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="scene-wrap">
+<svg id="scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid meet" role="img"
+     aria-label="A cat serving a bowl of ramen to a small robot holding a transparent umbrella, outside a Japanese ramen shop on a rainy neon-lit night">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#050510"/>
+      <stop offset="0.6" stop-color="#120f2b"/>
+      <stop offset="1" stop-color="#1c1338"/>
+    </linearGradient>
+    <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0d1120"/>
+      <stop offset="1" stop-color="#05070d"/>
+    </linearGradient>
+    <radialGradient id="doorGrad" cx="0.5" cy="0.35" r="0.9">
+      <stop offset="0" stop-color="#ffe1a8"/>
+      <stop offset="0.55" stop-color="#ff9e45"/>
+      <stop offset="1" stop-color="#a33d12"/>
+    </radialGradient>
+    <linearGradient id="windowGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd491"/>
+      <stop offset="1" stop-color="#e8963f"/>
+    </linearGradient>
+    <linearGradient id="lanternGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff8a5c"/>
+      <stop offset="0.55" stop-color="#e83a26"/>
+      <stop offset="1" stop-color="#a3160e"/>
+    </linearGradient>
+    <radialGradient id="lanternGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ff9a5a" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ff9a5a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="umbrellaGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#d2ebff" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#a0cdff" stop-opacity="0.07"/>
+    </linearGradient>
+    <linearGradient id="robotGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cdd6ec"/>
+      <stop offset="1" stop-color="#93a0c2"/>
+    </linearGradient>
+    <linearGradient id="catFur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f2a24c"/>
+      <stop offset="1" stop-color="#de8a34"/>
+    </linearGradient>
+    <linearGradient id="coatGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#faf6ea"/>
+      <stop offset="1" stop-color="#e6ddc8"/>
+    </linearGradient>
+    <radialGradient id="puddleGrad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#5a8cdc" stop-opacity="0.35"/>
+      <stop offset="0.6" stop-color="#1e326e" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#1e326e" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="doorRef" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff9a45" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#ff9a45" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="neonRef" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff4fae" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ff4fae" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="vendRef" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7fd0ff" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#7fd0ff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="fadeMask" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="1" stop-color="#000"/>
+    </linearGradient>
+    <mask id="fadeDown">
+      <rect x="0" y="540" width="1200" height="260" fill="url(#fadeMask)"/>
+    </mask>
+    <radialGradient id="vignette" cx="0.5" cy="0.46" r="0.75">
+      <stop offset="0.55" stop-color="#000008" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000008" stop-opacity="0.55"/>
+    </radialGradient>
+    <filter id="blur3" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="blur8" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="blur14" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="14"/></filter>
+    <filter id="softGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="strongGlow" x="-120%" y="-120%" width="340%" height="340%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- ======== SKY + DISTANT CITY (deep background, parallax) ======== -->
+  <g id="px-far">
+    <rect x="0" y="0" width="1200" height="800" fill="url(#skyGrad)"/>
+    <g id="city-windows"></g>
+    <g fill="#0b0e20">
+      <rect x="0" y="300" width="190" height="262"/>
+      <rect x="950" y="262" width="250" height="300"/>
+      <rect x="1080" y="200" width="120" height="362" fill="#0d1024"/>
+    </g>
+    <!-- across-street neon signs -->
+    <g class="neon-flicker">
+      <rect x="935" y="272" width="42" height="150" rx="20" fill="#1a0f1e" stroke="#ff4fae" stroke-width="3" filter="url(#strongGlow)"/>
+      <text x="956" y="330" text-anchor="middle" font-size="34" fill="#ffb7e2" filter="url(#softGlow)" font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">酒</text>
+      <text x="956" y="392" text-anchor="middle" font-size="34" fill="#ffb7e2" filter="url(#softGlow)" font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">場</text>
+    </g>
+    <circle cx="1120" cy="330" r="30" fill="none" stroke="#38e6ff" stroke-width="4" filter="url(#strongGlow)"/>
+    <circle cx="1120" cy="330" r="7" fill="#38e6ff" filter="url(#softGlow)"/>
+    <!-- telephone pole and wires -->
+    <g fill="#0a0d1c" stroke="#07091a">
+      <rect x="104" y="150" width="14" height="412" stroke="none"/>
+      <rect x="60" y="176" width="100" height="8" stroke="none"/>
+      <rect x="66" y="214" width="88" height="7" stroke="none"/>
+      <rect x="96" y="230" width="30" height="40" rx="8" stroke="none"/>
+      <rect x="72" y="184" width="8" height="12" stroke="none"/>
+      <rect x="140" y="184" width="8" height="12" stroke="none"/>
+      <path d="M -10 190 Q 300 252 610 208 T 1210 225" fill="none" stroke-width="3"/>
+      <path d="M -10 216 Q 320 285 640 236 T 1210 258" fill="none" stroke-width="3"/>
+      <path d="M 110 182 Q 600 240 1210 190" fill="none" stroke-width="2"/>
+    </g>
+  </g>
+
+  <!-- ======== RAMEN SHOP (mid ground, parallax) ======== -->
+  <g id="px-mid">
+    <g id="shop">
+      <rect x="240" y="240" width="520" height="322" fill="#3b2a1f"/>
+      <path d="M240 280H760 M240 320H760 M240 360H760 M240 400H760 M240 440H760 M240 480H760 M240 520H760"
+            stroke="#2a1d15" stroke-width="2" opacity="0.6"/>
+      <rect x="240" y="240" width="520" height="22" fill="#241811"/>
+      <rect x="240" y="240" width="18" height="322" fill="#2a1c12"/>
+      <rect x="742" y="240" width="18" height="322" fill="#2a1c12"/>
+
+      <!-- hanging shop sign -->
+      <rect x="320" y="152" width="360" height="46" rx="6" fill="#191019" stroke="#8a6a3a" stroke-width="2"/>
+      <text x="492" y="188" text-anchor="middle" font-size="40" letter-spacing="6" fill="#ffd98a"
+            font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">らーめん</text>
+      <rect x="636" y="162" width="22" height="22" fill="#c33"/>
+      <text x="647" y="179" text-anchor="middle" font-size="14" fill="#ffe6d0"
+            font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">麺</text>
+
+      <!-- tiled awning -->
+      <polygon points="214,262 786,262 746,206 254,206" fill="#191426"/>
+      <g stroke="#2b2342" stroke-width="3" opacity="0.8">
+        <path d="M260 208 L222 260 M288 208 L250 260 M316 208 L278 260 M344 208 L306 260 M372 208 L334 260
+                 M400 208 L362 260 M428 208 L390 260 M456 208 L418 260 M484 208 L446 260 M512 208 L474 260
+                 M540 208 L502 260 M568 208 L530 260 M596 208 L558 260 M624 208 L586 260 M652 208 L614 260
+                 M680 208 L642 260 M708 208 L670 260 M736 208 L698 260 M764 208 L726 260"/>
+      </g>
+      <rect x="214" y="258" width="572" height="8" fill="#0d0a16"/>
+
+      <!-- vertical neon sign on the left post -->
+      <g class="neon-flicker">
+        <rect x="196" y="246" width="46" height="214" rx="10" fill="#140d18" stroke="#ff4fae" stroke-width="3" filter="url(#strongGlow)"/>
+        <rect x="238" y="264" width="10" height="4" fill="#0d0a16"/>
+        <rect x="238" y="438" width="10" height="4" fill="#0d0a16"/>
+        <g fill="#ffc2e8" filter="url(#softGlow)" font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">
+          <text x="219" y="300" text-anchor="middle" font-size="30">ラ</text>
+          <text x="219" y="344" text-anchor="middle" font-size="30">ー</text>
+          <text x="219" y="388" text-anchor="middle" font-size="30">メ</text>
+          <text x="219" y="432" text-anchor="middle" font-size="30">ン</text>
+        </g>
+      </g>
+
+      <!-- open doorway with warm interior -->
+      <rect x="288" y="330" width="128" height="230" fill="#160d07"/>
+      <rect x="340" y="334" width="72" height="222" fill="url(#doorGrad)" opacity="0.95"/>
+      <rect x="288" y="330" width="52" height="230" fill="#221407"/>
+      <path d="M288 330V560 M340 330V560" stroke="#120b05" stroke-width="3"/>
+      <path d="M344 400H410" stroke="#7a4218" stroke-width="4"/>
+      <ellipse cx="362" cy="396" rx="10" ry="5" fill="#d98a4a"/>
+      <ellipse cx="388" cy="396" rx="10" ry="5" fill="#d98a4a"/>
+      <rect x="340" y="470" width="72" height="86" fill="#5a3018"/>
+      <path d="M348 334V356" stroke="#3a2008" stroke-width="3"/>
+      <path d="M336 362 L360 362 L354 348 L342 348 Z" fill="#3a2008"/>
+      <circle cx="348" cy="368" r="14" fill="#ffca7a" opacity="0.8" filter="url(#blur8)"/>
+      <!-- steam drifting from the doorway top -->
+      <g class="steam" stroke="#ffdfb0" stroke-width="6" stroke-linecap="round" fill="none">
+        <g transform="translate(370,322)"><path class="wisp" style="animation-delay:-0.8s" d="M0 0 q -9 -14 -2 -26 q 7 -12 -1 -24"/></g>
+        <g transform="translate(396,318)"><path class="wisp" style="animation-delay:-2.1s" d="M0 0 q 9 -14 2 -26 q -7 -12 1 -24"/></g>
+      </g>
+
+      <!-- noren curtain over the door -->
+      <path d="M284 330H420" stroke="#111" stroke-width="4"/>
+      <g fill="#24305e">
+        <rect class="noren" style="animation-delay:-0.4s" x="292" y="332" width="40" height="64"/>
+        <rect class="noren" style="animation-delay:-1.1s" x="336" y="332" width="40" height="64"/>
+        <rect class="noren" style="animation-delay:-1.8s" x="380" y="332" width="40" height="64"/>
+      </g>
+      <circle cx="356" cy="362" r="11" fill="#f4efe4"/>
+      <text x="356" y="369" text-anchor="middle" font-size="16" fill="#24305e"
+            font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">め</text>
+
+      <!-- shoji window with a pot silhouette inside -->
+      <rect x="450" y="352" width="122" height="146" fill="#1c1209"/>
+      <rect x="456" y="358" width="110" height="134" fill="url(#windowGrad)"/>
+      <g fill="#6b3a12" opacity="0.35">
+        <path d="M486 478 h50 v-20 h-50 Z"/>
+        <path d="M482 458 h8 M534 458 h8" stroke="#6b3a12" stroke-width="4"/>
+        <path class="wisp" style="animation-delay:-1.5s" d="M510 452 q -6 -10 0 -20 q 6 -10 0 -20" stroke="#6b3a12" stroke-width="5" fill="none" stroke-linecap="round"/>
+      </g>
+      <path d="M483 358V492 M511 358V492 M539 358V492 M456 391H566 M456 425H566 M456 459H566"
+            stroke="#1c1209" stroke-width="5"/>
+
+      <!-- paper menu posters on the wall -->
+      <g transform="rotate(-2 619 407)">
+        <rect x="592" y="372" width="54" height="70" fill="#e8dcc0"/>
+        <text x="619" y="390" text-anchor="middle" font-size="12" fill="#4a3a28"
+              font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">メニュー</text>
+        <path d="M600 398h38 M600 408h38 M600 418h30 M600 428h38" stroke="#8a7a5a" stroke-width="2"/>
+      </g>
+      <g transform="rotate(3 681 415)">
+        <rect x="654" y="380" width="54" height="70" fill="#e8dcc0"/>
+        <text x="681" y="398" text-anchor="middle" font-size="12" fill="#8a2a20"
+              font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">餃子</text>
+        <path d="M662 406h38 M662 416h38 M662 426h30 M662 436h38" stroke="#8a7a5a" stroke-width="2"/>
+      </g>
+
+      <!-- crates by the wall -->
+      <g>
+        <rect x="792" y="505" width="56" height="30" fill="#28355a"/>
+        <rect x="798" y="475" width="50" height="30" fill="#31426e"/>
+        <path d="M798 485h50 M798 495h50 M806 475v30 M822 475v30 M840 475v30" stroke="#1d2a4a" stroke-width="2"/>
+        <path d="M792 515h56 M792 525h56 M800 505v30 M816 505v30 M834 505v30" stroke="#1d2a4a" stroke-width="2"/>
+      </g>
+
+      <!-- glowing paper lantern near the eave -->
+      <circle cx="742" cy="324" r="70" fill="url(#lanternGlow)"/>
+      <g transform="translate(742,262)">
+      <g class="lantern">
+        <path d="M0 0V26" stroke="#111" stroke-width="3"/>
+        <rect x="-14" y="26" width="28" height="10" rx="3" fill="#1a1010"/>
+        <ellipse cx="0" cy="62" rx="30" ry="40" fill="url(#lanternGrad)"/>
+        <g fill="none" stroke="#7f1408" stroke-width="1.5" opacity="0.7">
+          <ellipse cx="0" cy="62" rx="10" ry="40"/>
+          <ellipse cx="0" cy="62" rx="20" ry="40"/>
+          <ellipse cx="0" cy="62" rx="30" ry="40"/>
+          <path d="M-28 44 Q0 52 28 44 M-30 62 Q0 70 30 62 M-28 80 Q0 88 28 80"/>
+        </g>
+        <rect x="-12" y="96" width="24" height="9" rx="3" fill="#1a1010"/>
+        <text x="0" y="74" text-anchor="middle" font-size="26" fill="#ffe6c4"
+              font-family="'Hiragino Kaku Gothic Pro','Yu Gothic',Meiryo,sans-serif">麺</text>
+      </g>
+      </g>
+    </g>
+
+    <!-- vending machine on the right -->
+    <g transform="translate(1032,372)">
+      <ellipse cx="48" cy="196" rx="70" ry="10" fill="#a0dcff" opacity="0.25" filter="url(#blur8)"/>
+      <rect x="0" y="0" width="96" height="190" rx="8" fill="#1b2440" stroke="#0f1526" stroke-width="2"/>
+      <rect class="vend-glow" x="8" y="12" width="80" height="104" rx="4" fill="#d8ecff"/>
+      <g>
+        <rect x="16" y="24" width="14" height="16" rx="2" fill="#ff5a5a"/><rect x="36" y="24" width="14" height="16" rx="2" fill="#ffd23f"/>
+        <rect x="56" y="24" width="14" height="16" rx="2" fill="#5ad2ff"/><rect x="76" y="24" width="8" height="16" rx="2" fill="#7dff8a"/>
+        <rect x="16" y="52" width="14" height="16" rx="2" fill="#5ad2ff"/><rect x="36" y="52" width="14" height="16" rx="2" fill="#7dff8a"/>
+        <rect x="56" y="52" width="14" height="16" rx="2" fill="#ff5a5a"/><rect x="76" y="52" width="8" height="16" rx="2" fill="#ffd23f"/>
+        <rect x="16" y="80" width="14" height="16" rx="2" fill="#ffd23f"/><rect x="36" y="80" width="14" height="16" rx="2" fill="#ff5a5a"/>
+        <rect x="56" y="80" width="14" height="16" rx="2" fill="#7dff8a"/><rect x="76" y="80" width="8" height="16" rx="2" fill="#5ad2ff"/>
+      </g>
+      <rect x="8" y="124" width="80" height="18" fill="#e83a55"/>
+      <text x="48" y="137" text-anchor="middle" font-size="10" letter-spacing="2" fill="#fff" font-family="sans-serif">DRINK</text>
+      <rect x="8" y="150" width="80" height="28" fill="#0e1428"/>
+      <path d="M20 164h30" stroke="#3a4666" stroke-width="3"/>
+    </g>
+  </g>
+
+  <!-- ======== WET STREET ======== -->
+  <g id="ground">
+    <rect x="0" y="540" width="1200" height="260" fill="url(#groundGrad)"/>
+    <rect x="0" y="540" width="1200" height="6" fill="#181d30"/>
+    <rect x="0" y="560" width="1200" height="34" fill="#788cc8" opacity="0.05" filter="url(#blur14)"/>
+    <g mask="url(#fadeDown)">
+      <rect class="wobble" x="296" y="560" width="116" height="230" fill="url(#doorRef)" filter="url(#blur8)"/>
+      <rect class="wobble" style="animation-delay:-1.3s" x="196" y="560" width="40" height="240" fill="url(#neonRef)" filter="url(#blur8)"/>
+      <ellipse cx="742" cy="610" rx="26" ry="80" fill="#ff5030" opacity="0.28" filter="url(#blur8)"/>
+      <rect class="wobble" style="animation-delay:-0.7s" x="1040" y="560" width="80" height="220" fill="url(#vendRef)" filter="url(#blur8)"/>
+      <rect x="940" y="560" width="30" height="180" fill="url(#neonRef)" opacity="0.7" filter="url(#blur14)"/>
+      <ellipse cx="1120" cy="600" rx="18" ry="60" fill="#38e6ff" opacity="0.18" filter="url(#blur8)"/>
+      <ellipse cx="640" cy="615" rx="60" ry="18" fill="#e8913a" opacity="0.12" filter="url(#blur8)"/>
+      <ellipse cx="885" cy="620" rx="50" ry="16" fill="#5ef2ff" opacity="0.1" filter="url(#blur8)"/>
+    </g>
+    <ellipse cx="830" cy="628" rx="190" ry="30" fill="url(#puddleGrad)" stroke="#8cbeff" stroke-opacity="0.22"/>
+    <ellipse cx="340" cy="692" rx="130" ry="22" fill="url(#puddleGrad)" stroke="#8cbeff" stroke-opacity="0.18"/>
+    <g fill="none" stroke="#9fc8ff">
+      <ellipse class="ripple" cx="800" cy="626" rx="18" ry="5"/>
+      <ellipse class="ripple" style="animation-delay:-1.4s" cx="884" cy="634" rx="18" ry="5"/>
+      <ellipse class="ripple" style="animation-delay:-2.2s" cx="760" cy="640" rx="14" ry="4"/>
+      <ellipse class="ripple" style="animation-delay:-0.9s" cx="340" cy="692" rx="16" ry="5"/>
+      <ellipse class="ripple" style="animation-delay:-1.9s" cx="392" cy="686" rx="12" ry="4"/>
+    </g>
+    <ellipse cx="640" cy="580" rx="70" ry="10" fill="#000" opacity="0.5" filter="url(#blur8)"/>
+    <ellipse cx="885" cy="582" rx="55" ry="9" fill="#000" opacity="0.5" filter="url(#blur8)"/>
+  </g>
+
+  <!-- ======== BACK RAIN (visible through the umbrella) ======== -->
+  <g id="rain-back"></g>
+
+  <!-- ======== CAT SERVING RAMEN ======== -->
+  <g id="cat" transform="translate(640,306)">
+    <!-- tail -->
+    <g class="tail">
+      <path d="M -38 236 C -92 232 -118 186 -98 142" fill="none" stroke="url(#catFur)" stroke-width="20" stroke-linecap="round"/>
+      <path d="M -112 188 L -96 180 M -104 154 L -90 148" stroke="#cf7a2e" stroke-width="11" stroke-linecap="round"/>
+      <circle cx="-98" cy="142" r="10" fill="#f7d9b0"/>
+    </g>
+    <!-- feet -->
+    <rect x="-36" y="248" width="32" height="20" rx="9" fill="#de8a34"/>
+    <rect x="6" y="248" width="32" height="20" rx="9" fill="#de8a34"/>
+    <!-- happi coat body -->
+    <path d="M -44 118 Q 0 104 44 118 L 40 246 Q 0 258 -40 246 Z" fill="url(#coatGrad)"/>
+    <path d="M -22 116 L 0 152 L 22 116" fill="none" stroke="#cfc4a8" stroke-width="4"/>
+    <rect x="-42" y="196" width="84" height="20" rx="4" fill="#2b3a67"/>
+    <rect x="-8" y="192" width="16" height="28" rx="5" fill="#22305a"/>
+    <!-- sleeves reaching toward the bowl -->
+    <path d="M 18 132 Q 60 142 100 160" fill="none" stroke="url(#coatGrad)" stroke-width="26" stroke-linecap="round"/>
+    <path d="M -6 156 Q 46 180 100 184" fill="none" stroke="url(#coatGrad)" stroke-width="24" stroke-linecap="round"/>
+
+    <!-- head -->
+    <g class="cat-head" transform="rotate(2 0 60)">
+      <!-- hachimaki ribbon tails (behind head) -->
+      <g stroke="#f8f4ea" stroke-width="9" stroke-linecap="round" fill="none">
+        <path class="hachi-tail" d="M -50 40 Q -66 34 -78 26"/>
+        <path class="hachi-tail" style="animation-delay:-1.2s" d="M -50 44 Q -64 46 -74 54"/>
+      </g>
+      <path d="M -46 34 L -60 -10 L -20 14 Z" fill="url(#catFur)"/>
+      <path d="M -46 26 L -52 2 L -30 14 Z" fill="#f2a0a0"/>
+      <path d="M 46 34 L 60 -10 L 20 14 Z" fill="url(#catFur)"/>
+      <path d="M 46 26 L 52 2 L 30 14 Z" fill="#f2a0a0"/>
+      <circle cx="0" cy="60" r="56" fill="url(#catFur)"/>
+      <path d="M -16 8 Q -18 18 -14 26 M 0 6 V 24 M 16 8 Q 18 18 14 26"
+            fill="none" stroke="#cf7a2e" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+      <!-- hachimaki band -->
+      <path d="M -52 34 Q 0 20 52 34 L 52 46 Q 0 32 -52 46 Z" fill="#f8f4ea"/>
+      <circle cx="0" cy="38" r="7.5" fill="#d8362f"/>
+      <!-- face -->
+      <ellipse cx="0" cy="86" rx="26" ry="17" fill="#f8ddb2"/>
+      <path d="M -30 62 Q -20 52 -10 62 M 10 62 Q 20 52 30 62"
+            fill="none" stroke="#402a18" stroke-width="5" stroke-linecap="round"/>
+      <path d="M -5 74 L 5 74 L 0 81 Z" fill="#e2707a"/>
+      <path d="M -9 83 Q -4 89 0 83 M 0 83 Q 4 89 9 83"
+            fill="none" stroke="#402a18" stroke-width="3" stroke-linecap="round"/>
+      <g stroke="#fff" stroke-width="2" opacity="0.75" stroke-linecap="round">
+        <path d="M 26 78 L 58 72 M 27 84 L 60 84 M 26 90 L 56 96"/>
+        <path d="M -26 78 L -58 72 M -27 84 L -60 84 M -26 90 L -56 96"/>
+      </g>
+      <ellipse cx="-36" cy="76" rx="7" ry="4" fill="#f2a0a0" opacity="0.55"/>
+      <ellipse cx="36" cy="76" rx="7" ry="4" fill="#f2a0a0" opacity="0.55"/>
+    </g>
+
+    <!-- ramen bowl held out toward the robot -->
+    <g transform="translate(150,148)">
+      <path d="M -58 0 C -58 30 -30 46 0 46 C 30 46 58 30 58 0 Z" fill="#26232f"/>
+      <ellipse cx="0" cy="44" rx="16" ry="5" fill="#1b1922"/>
+      <ellipse cx="0" cy="0" rx="58" ry="15" fill="#2e2a38" stroke="#d8405c" stroke-width="3.5"/>
+      <ellipse cx="0" cy="1" rx="50" ry="11" fill="#f2cd87"/>
+      <ellipse cx="-14" cy="-1" rx="18" ry="4" fill="#f9e2b0" opacity="0.7"/>
+      <path d="M -34 -2 q 9 -7 18 -1 q 9 6 18 0 q 8 -5 14 -1 M -20 4 q 10 -6 20 0 q 8 4 16 0"
+            fill="none" stroke="#f7e3ad" stroke-width="4" stroke-linecap="round"/>
+      <ellipse cx="24" cy="-3" rx="11" ry="6.5" fill="#fdf3df"/>
+      <circle cx="24" cy="-3" r="4.5" fill="#f5b53f"/>
+      <circle cx="-26" cy="-2" r="7.5" fill="#fff" stroke="#f090b8" stroke-width="2"/>
+      <path d="M -29 -2 a 3 3 0 1 1 4 3" fill="none" stroke="#f090b8" stroke-width="2"/>
+      <ellipse cx="-2" cy="-5" rx="12" ry="6" fill="#b06a3a" stroke="#8a4a26" stroke-width="1.5"/>
+      <ellipse cx="-2" cy="-5" rx="7" ry="3" fill="#c98a58"/>
+      <circle cx="-40" cy="2" r="2.2" fill="#7ec96f"/><circle cx="14" cy="3" r="2.2" fill="#7ec96f"/>
+      <circle cx="-8" cy="2" r="2.2" fill="#7ec96f"/><circle cx="38" cy="0" r="2.2" fill="#7ec96f"/>
+      <path d="M 30 -2 L 62 -50 M 38 0 L 70 -46" stroke="#d9a05e" stroke-width="4.5" stroke-linecap="round"/>
+    </g>
+    <!-- paws over the bowl edge -->
+    <ellipse cx="100" cy="156" rx="13" ry="11" fill="#e8913a"/>
+    <ellipse cx="138" cy="184" rx="12" ry="10" fill="#e8913a"/>
+    <!-- steam rising off the bowl -->
+    <g class="steam" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none">
+      <g transform="translate(134,134)"><path class="wisp" d="M0 0 q -9 -14 -2 -26 q 7 -12 -1 -24"/></g>
+      <g transform="translate(158,132)"><path class="wisp" style="animation-delay:-1s" d="M0 0 q 9 -14 2 -26 q -7 -12 1 -24"/></g>
+      <g transform="translate(180,138)"><path class="wisp" style="animation-delay:-2s" d="M0 0 q -8 -12 -1 -24 q 6 -11 -1 -22"/></g>
+    </g>
+  </g>
+
+  <!-- ======== SMALL ROBOT WITH TRANSPARENT UMBRELLA ======== -->
+  <g id="robot" transform="translate(885,368)">
+    <g class="bob">
+      <!-- umbrella -->
+      <g>
+        <path d="M -13 -156 L -45 100" stroke="#9fb2d8" stroke-width="5" stroke-linecap="round"/>
+        <path d="M -143 -55 Q -13 -163 117 -55
+                 Q 95 -43 74 -55 Q 52 -43 30 -55 Q 9 -43 -13 -55
+                 Q -34 -43 -56 -55 Q -78 -43 -100 -55 Q -121 -44 -143 -55 Z"
+              fill="url(#umbrellaGrad)" stroke="#d7eeff" stroke-opacity="0.55" stroke-width="2.5"/>
+        <g stroke="#d7eeff" stroke-opacity="0.35" stroke-width="1.5">
+          <path d="M -13 -160 L -143 -55 M -13 -160 L -100 -55 M -13 -160 L -56 -55 M -13 -160 L -13 -55
+                   M -13 -160 L 30 -55 M -13 -160 L 74 -55 M -13 -160 L 117 -55"/>
+        </g>
+        <path d="M -98 -118 Q -13 -168 72 -118" fill="none" stroke="#fff" stroke-opacity="0.3" stroke-width="4" stroke-linecap="round"/>
+        <path d="M -60 -140 Q -13 -158 34 -140" fill="none" stroke="#fff" stroke-opacity="0.2" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M -13 -163 V -176" stroke="#9fb2d8" stroke-width="3"/>
+        <circle cx="-13" cy="-178" r="3" fill="#cfe4ff"/>
+        <!-- rain bursting on the dome + one sliding drop -->
+        <g stroke="#dff0ff" stroke-width="1.6" stroke-linecap="round" class="usplash">
+          <path d="M -60 -141 v -8 M -64 -137 l -4 -4 M -56 -137 l 4 -4"/>
+        </g>
+        <g stroke="#dff0ff" stroke-width="1.6" stroke-linecap="round" class="usplash" style="animation-delay:-1.1s">
+          <path d="M 40 -134 v -8 M 36 -130 l -4 -4 M 44 -130 l 4 -4"/>
+        </g>
+        <circle class="slide-drop" cx="-40" cy="-128" r="2.5" fill="#dff0ff"/>
+        <circle class="rim-drip" cx="-141" cy="-53" r="2.5" fill="#cfe4ff"/>
+        <!-- shaft handle -->
+        <path d="M -45 100 q 0 12 12 12 q 10 0 10 -9" fill="none" stroke="#9fb2d8" stroke-width="5" stroke-linecap="round"/>
+      </g>
+
+      <!-- treads + legs -->
+      <rect x="-26" y="178" width="14" height="18" fill="#8a94b5"/>
+      <rect x="14" y="178" width="14" height="18" fill="#8a94b5"/>
+      <rect x="-38" y="192" width="34" height="20" rx="10" fill="#5d688c"/>
+      <rect x="6" y="192" width="34" height="20" rx="10" fill="#5d688c"/>
+      <circle cx="-28" cy="207" r="3" fill="#454f70"/><circle cx="-18" cy="207" r="3" fill="#454f70"/>
+      <circle cx="16" cy="207" r="3" fill="#454f70"/><circle cx="26" cy="207" r="3" fill="#454f70"/>
+
+      <!-- body -->
+      <rect x="-44" y="92" width="88" height="100" rx="18" fill="url(#robotGrad)" stroke="#77839f" stroke-width="2"/>
+      <path d="M -44 150 H 44" stroke="#77839f" stroke-width="1.5" opacity="0.3"/>
+      <rect x="-30" y="118" width="60" height="34" rx="8" fill="#1a2233" stroke="#0e1424" stroke-width="2"/>
+      <path class="heartbeat" d="M 0 141 c -3 -6 -12 -6 -12 1 c 0 6 6 9 12 14 c 6 -5 12 -8 12 -14 c 0 -7 -9 -7 -12 -1" fill="#ff6b81"/>
+      <circle cx="-36" cy="100" r="2.5" fill="#8a94b5"/><circle cx="36" cy="100" r="2.5" fill="#8a94b5"/>
+      <circle cx="-36" cy="184" r="2.5" fill="#8a94b5"/><circle cx="36" cy="184" r="2.5" fill="#8a94b5"/>
+
+      <!-- arm holding the umbrella -->
+      <path d="M -36 108 Q -46 96 -43 82" fill="none" stroke="#9aa6c4" stroke-width="12" stroke-linecap="round"/>
+      <circle cx="-43" cy="80" r="7.5" fill="#9aa6c4" stroke="#77839f" stroke-width="1.5"/>
+      <!-- arm reaching for the bowl -->
+      <path d="M 36 116 Q -6 126 -52 110" fill="none" stroke="#9aa6c4" stroke-width="12" stroke-linecap="round"/>
+      <path d="M -56 101 Q -70 96 -78 104 M -56 117 Q -70 120 -78 110"
+            fill="none" stroke="#9aa6c4" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="-40" cy="112" r="6" fill="#8a94b5"/><circle cx="40" cy="112" r="6" fill="#8a94b5"/>
+
+      <!-- head -->
+      <rect x="-8" y="84" width="16" height="10" fill="#8a94b5"/>
+      <g class="robot-head">
+        <rect x="-40" y="12" width="80" height="74" rx="20" fill="#c3cde6" stroke="#77839f" stroke-width="2"/>
+        <path d="M -30 14 L -38 -8" stroke="#8a94b5" stroke-width="3.5" stroke-linecap="round"/>
+        <circle class="antenna" cx="-38" cy="-8" r="5" fill="#5ef2ff"/>
+        <rect x="-30" y="26" width="60" height="40" rx="11" fill="#151d30"/>
+        <ellipse class="eye" cx="-14" cy="45" rx="6.5" ry="9" fill="#5ef2ff"/>
+        <ellipse class="eye" style="animation-delay:-0.1s" cx="14" cy="45" rx="6.5" ry="9" fill="#5ef2ff"/>
+        <circle cx="-16" cy="42" r="1.6" fill="#fff" opacity="0.9"/>
+        <circle cx="12" cy="42" r="1.6" fill="#fff" opacity="0.9"/>
+        <path d="M -7 57 Q 0 61 7 57" fill="none" stroke="#5ef2ff" stroke-width="2.5" stroke-linecap="round" opacity="0.85"/>
+        <circle cx="-44" cy="50" r="5" fill="#8a94b5"/><circle cx="-44" cy="50" r="2" fill="#6a7494"/>
+        <circle cx="44" cy="50" r="5" fill="#8a94b5"/><circle cx="44" cy="50" r="2" fill="#6a7494"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ======== FRONT RAIN + SPLASHES + EAVE DRIPS ======== -->
+  <g id="rain-front"></g>
+  <g id="splashes"></g>
+  <g id="drips" fill="#cfe4ff">
+    <circle class="drip" cx="250" cy="266" r="2"/>
+    <circle class="drip" style="animation-delay:-0.3s" cx="330" cy="266" r="2"/>
+    <circle class="drip" style="animation-delay:-0.6s" cx="470" cy="266" r="2"/>
+    <circle class="drip" style="animation-delay:-0.15s" cx="600" cy="266" r="2"/>
+    <circle class="drip" style="animation-delay:-0.5s" cx="690" cy="266" r="2"/>
+    <circle class="drip" style="animation-delay:-0.75s" cx="760" cy="266" r="2"/>
+  </g>
+
+  <!-- ======== ATMOSPHERE ======== -->
+  <g id="atmo">
+    <ellipse cx="200" cy="750" rx="300" ry="60" fill="#788cbe" opacity="0.06" filter="url(#blur14)"/>
+    <ellipse cx="1050" cy="720" rx="260" ry="50" fill="#788cbe" opacity="0.05" filter="url(#blur14)"/>
+    <rect x="0" y="0" width="1200" height="800" fill="url(#vignette)"/>
+  </g>
+</svg>
+</div>
+
+<div class="caption">雨のラーメン · rainy ramen — a cat, a robot, and one bowl of noodles</div>
+<button id="soundToggle" type="button" aria-pressed="false">rain sound: off</button>
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101f26">
+  <meta name="description" content="A small ramen shop, a very good cat, and a little shelter from the rain. An illustrated night worth staying in.">
+  <title>Rainy Ramen — A little warmth after dark</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23101f26'/%3E%3Cpath d='M12 30h40a20 20 0 0 1-40 0' fill='%23efa57d'/%3E%3Cpath d='M23 23q-7-6 0-12m12 12q-7-6 0-12m12 12q-7-6 0-12' fill='none' stroke='%23f6dfbd' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+  <script src="scene.js" defer></script>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <a class="brand" href="./" aria-label="Rainy Ramen home">
+        <svg viewBox="0 0 44 44" aria-hidden="true"><path d="M7 23h30c-1 10-7 15-15 15S8 33 7 23Zm5-5 1-11 8 6h4l7-6 1 11M17 30h10M21 5v4"/></svg>
+        <span>RAINY RAMEN<small lang="ja">雨の日の、らーめん屋。</small></span>
+      </a>
+      <span class="masthead-note"><span class="status-dot"></span> A SMALL CORNER OF THE NIGHT</span>
+      <button id="sound" class="sound-button" type="button" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4zM17 8q5 4 0 8"/><path class="sound-slash" d="m3 3 18 18"/></svg>
+        <span id="sound-label">Sound off</span>
+      </button>
+    </header>
+
+    <main>
+      <section class="introduction" aria-labelledby="page-title">
+        <div><p class="eyebrow">OPEN LATE. COME AS YOU ARE.</p><h1 id="page-title">A little warmth <em>after dark.</em></h1></div>
+        <p class="intro-note">For the long way home.<br> And the ones who take it slowly.</p>
+      </section>
+
+      <figure class="scene-frame">
+        <svg id="scene" viewBox="0 0 1440 880" role="img" aria-labelledby="scene-title scene-description" xmlns="http://www.w3.org/2000/svg">
+          <title id="scene-title">One hot bowl on a rainy night</title>
+          <desc id="scene-description">An orange and cream cat in a blue apron serves steaming ramen across the counter of a tiny Japanese shop. A small mint-colored robot reaches for the bowl while holding a transparent umbrella. Coral lanterns and turquoise neon spill reflections over wet pavement as rain falls through a dark city alley.</desc>
+          <defs>
+            <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#102834"/><stop offset=".65" stop-color="#204751"/><stop offset="1" stop-color="#172f37"/></linearGradient>
+            <linearGradient id="ground" x2="0" y2="1"><stop stop-color="#253b40"/><stop offset="1" stop-color="#0d252f"/></linearGradient>
+            <linearGradient id="window" x2="0" y2="1"><stop stop-color="#d89759"/><stop offset=".5" stop-color="#f3c585"/><stop offset="1" stop-color="#bc6f49"/></linearGradient>
+            <linearGradient id="wood" x2="1" y2=".3"><stop stop-color="#65453c"/><stop offset=".55" stop-color="#895348"/><stop offset="1" stop-color="#523c37"/></linearGradient>
+            <linearGradient id="roof" x2="0" y2="1"><stop stop-color="#374f51"/><stop offset="1" stop-color="#1b353b"/></linearGradient>
+            <linearGradient id="lantern" x2="1" y2="0"><stop stop-color="#c66651"/><stop offset=".45" stop-color="#ffd399"/><stop offset=".75" stop-color="#f4ae77"/><stop offset="1" stop-color="#c66c54"/></linearGradient>
+            <linearGradient id="glass" x1=".1" y1="0" x2=".8" y2="1"><stop stop-color="#bed9ca" stop-opacity=".28"/><stop offset=".4" stop-color="#79b5b9" stop-opacity=".12"/><stop offset="1" stop-color="#d1e5d0" stop-opacity=".24"/></linearGradient>
+            <linearGradient id="metal" x2="1" y2="1"><stop stop-color="#cbd6b8"/><stop offset=".5" stop-color="#a6beb0"/><stop offset="1" stop-color="#5b8c88"/></linearGradient>
+            <radialGradient id="warm-halo"><stop stop-color="#efa16e" stop-opacity=".28"/><stop offset="1" stop-color="#efa16e" stop-opacity="0"/></radialGradient>
+            <radialGradient id="cool-halo"><stop stop-color="#65d9ce" stop-opacity=".18"/><stop offset="1" stop-color="#65d9ce" stop-opacity="0"/></radialGradient>
+            <linearGradient id="warm-reflection" x2="0" y2="1"><stop stop-color="#eaa578" stop-opacity=".26"/><stop offset="1" stop-color="#eaa578" stop-opacity="0"/></linearGradient>
+            <linearGradient id="cool-reflection" x2="0" y2="1"><stop stop-color="#5ab8b7" stop-opacity=".28"/><stop offset="1" stop-color="#5ab8b7" stop-opacity="0"/></linearGradient>
+            <radialGradient id="vignette"><stop offset=".6" stop-color="#06131d" stop-opacity="0"/><stop offset="1" stop-color="#06131d" stop-opacity=".42"/></radialGradient>
+            <filter id="neon" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="4" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            <filter id="soft-glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="13"/></filter>
+            <filter id="paper" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" stitchTiles="stitch"/><feColorMatrix type="saturate" values="0"/></filter>
+            <pattern id="tiles" width="88" height="24" patternUnits="userSpaceOnUse" patternTransform="skewX(-22)"><path d="M0 23H88M0 0v24M44 0v24" fill="none" stroke="#6d8b86" stroke-opacity=".2"/></pattern>
+            <pattern id="wall-lines" width="29" height="14" patternUnits="userSpaceOnUse"><path d="M0 14V0h29" fill="none" stroke="#7c9690" stroke-opacity=".08"/></pattern>
+            <clipPath id="scene-clip"><rect width="1440" height="880"/></clipPath>
+            <clipPath id="umbrella-clip"><path d="M815 358Q846 225 1030 204Q1182 201 1286 342Q1250 322 1214 354Q1174 328 1134 365Q1091 337 1046 374Q1002 346 958 377Q920 345 878 372Q849 344 815 358Z"/></clipPath>
+            <symbol id="bowl" viewBox="0 0 96 58"><ellipse cx="48" cy="16" rx="46" ry="14" fill="#f3dcc1" stroke="#523c35" stroke-width="3"/><path d="M3 17Q7 53 48 55Q89 53 93 17Q47 41 3 17" fill="#d47963" stroke="#523c35" stroke-width="3"/><path d="M10 28Q47 50 86 28M20 41l5-5m8 10 3-6m12 8v-6m14 3-3-6m15 0-4-5" fill="none" stroke="#f9d7ae" stroke-width="3"/><ellipse cx="48" cy="15" rx="38" ry="9" fill="#ac603d"/></symbol>
+            <g id="little-ripple" fill="none" stroke="#83b7b5" stroke-width="1.3"><ellipse rx="16" ry="3"/><path d="M-23 0h-5m53 0h7" opacity=".5"/></g>
+          </defs>
+
+          <g clip-path="url(#scene-clip)">
+            <rect width="1440" height="880" fill="url(#sky)"/>
+            <circle cx="1120" cy="300" r="360" fill="url(#cool-halo)"/>
+            <!-- Distant apartments and alley infrastructure. -->
+            <g fill="#142e3a" stroke="#34545b" stroke-width="2">
+              <path d="M0 54h146v596H0zM170 0h127v639H170zM322 74h204v544H322z"/>
+              <path d="M818 0h160v652H818zM1007 53h170v600h-170zM1204 0h236v665h-236z"/>
+            </g>
+            <g fill="url(#wall-lines)"><path d="M0 54h146v596H0zM818 0h160v652H818zM1204 0h236v665h-236z"/></g>
+            <g id="city-windows"></g>
+            <g fill="none" stroke="#0c2530" stroke-width="6">
+              <path d="M0 108Q377 227 798 75T1440 76M0 155Q635 80 1024 139T1440 115"/>
+              <path d="M1313-20v680M1328-20v675M1154 90v552"/>
+              <path d="M1307 154h96m-96 9h96M1313 249h-27m42 310h54" stroke-width="4"/>
+            </g>
+            <g stroke="#627b77" stroke-width="2" opacity=".35"><path d="M1311 0v644M0 106Q377 224 798 73T1440 74" fill="none"/></g>
+            <g transform="translate(1120 132) rotate(2)">
+              <path d="M0 0h68v193H0z" fill="#1a3c44" stroke="#4f767a" stroke-width="3"/>
+              <path d="M7 8h54v177H7z" fill="none" stroke="#72c8c3" stroke-width="2" opacity=".55"/>
+              <text x="34" y="47" class="city-sign" text-anchor="middle" fill="#9bdfce" filter="url(#neon)"><tspan x="34">夜</tspan><tspan x="34" dy="44">ふ</tspan><tspan x="34" dy="44">か</tspan><tspan x="34" dy="44">し</tspan></text>
+            </g>
+            <g transform="translate(41 251)"><rect width="57" height="175" rx="4" fill="#173840" stroke="#43706f" stroke-width="3"/><text x="29" y="43" fill="#cd8e83" text-anchor="middle" class="city-sign" opacity=".6"><tspan x="29">喫</tspan><tspan x="29" dy="44">茶</tspan><tspan x="29" dy="44">店</tspan></text></g>
+            <path d="M917 383h154v274H917z" fill="#1a343c"/><path d="M943 400h104v198H943z" fill="#254751" stroke="#466469" stroke-width="3"/><g stroke="#122f3a" stroke-width="7"><path d="M941 447h105m-105 45h105m-105 45h105m-51-139v198"/></g>
+            <path d="M1228 415h128v246h-128z" fill="#1b3a43" stroke="#3b5b60" stroke-width="3"/><path d="M1241 431h102v93h-102z" fill="#4b6667"/><path d="M1250 442h83v70h-83z" fill="#25444a"/>
+            <g fill="#718e81" opacity=".7"><rect x="1259" y="454" width="13" height="29" rx="3"/><rect x="1284" y="454" width="13" height="29" rx="3"/><rect x="1309" y="454" width="13" height="29" rx="3"/></g><path d="M1260 566h49v8h-49z" fill="#102f39"/>
+            <g id="rain-back" class="rain-layer" aria-hidden="true"></g>
+
+            <!-- Wet paving catches the shop's warm light. -->
+            <path d="M0 648Q720 607 1440 651V880H0Z" fill="url(#ground)"/>
+            <path d="M271 650h561l201 230H78Z" fill="url(#warm-reflection)"/>
+            <path d="M1093 637h116l131 243h-301Z" fill="url(#cool-reflection)"/>
+            <g fill="none" stroke="#749b97" stroke-opacity=".16"><path d="M0 697h1440M0 758h1440M0 843h1440M276 657 57 880m454-223-94 223m307-228 29 228m250-227 160 227m78-225 286 225"/></g>
+            <g id="reflections"></g>
+            <ellipse cx="617" cy="712" rx="310" ry="24" fill="#101f27" opacity=".5"/>
+            <ellipse cx="1019" cy="757" rx="111" ry="15" fill="#081e29" opacity=".6"/>
+            <path d="M1264 791h176m-160 8h160m-145 8h145m-129 8h129" stroke="#061d27" stroke-width="4"/>
+
+            <!-- The little ramen shop. -->
+            <ellipse cx="536" cy="455" rx="406" ry="342" fill="url(#warm-halo)"/>
+            <path d="m155 324 80-50 571 15 35 382-86 58-598-41Z" fill="#202f32" stroke="#122831" stroke-width="5"/>
+            <path d="m155 324 83 8v371l-81-16Z" fill="#3d3934"/>
+            <g stroke="#6e5b47" opacity=".4"><path d="M167 337v338m20-345v350m21-344v348"/></g>
+            <path d="M248 313h557v381H248Z" fill="url(#wood)" stroke="#302e2c" stroke-width="5"/>
+            <rect x="285" y="335" width="491" height="242" fill="url(#window)"/>
+            <path d="M295 340h471v218H295Z" fill="#e6b279" opacity=".24"/>
+            <g stroke="#a3734e" stroke-width="2" opacity=".38"><path d="M288 408h489M288 467h489M288 527h489M352 343v222m75-222v222m75-222v222m75-222v222m75-222v222m75-222v222"/></g>
+            <rect x="287" y="500" width="488" height="11" fill="#835440"/>
+            <rect x="287" y="511" width="488" height="8" fill="#efc089"/>
+            <g fill="#5b5a46" stroke="#67533b" stroke-width="2">
+              <rect x="456" y="457" width="22" height="42" rx="3"/><rect x="486" y="449" width="18" height="50" rx="3"/>
+              <path d="M514 460h19v38h-19z" fill="#9e6550"/><path d="M519 450h9v12h-9z"/>
+            </g>
+            <g fill="#efe1ad"><path d="M460 468h14v17h-14zM489 462h12v21h-12z"/></g>
+            <g stroke="#784f3b" stroke-width="3" fill="#eac998"><rect x="305" y="414" width="32" height="69" transform="rotate(-3 321 449)"/><rect x="348" y="415" width="32" height="72" transform="rotate(2 364 451)"/><rect x="391" y="414" width="32" height="67" transform="rotate(-2 407 447)"/></g>
+            <g class="menu-text" fill="#5e4939" text-anchor="middle"><text x="321" y="436"><tspan x="321">味</tspan><tspan x="321" dy="17">噌</tspan><tspan x="321" dy="17" font-size="9">八〇〇</tspan></text><text x="364" y="436"><tspan x="364">醤</tspan><tspan x="364" dy="17">油</tspan><tspan x="364" dy="18" font-size="9">七〇〇</tspan></text><text x="407" y="436"><tspan x="407">塩</tspan><tspan x="407" dy="34" font-size="9">七〇〇</tspan></text></g>
+
+            <!-- Roof, enamel sign, and split fabric curtains. -->
+            <path d="m136 302 79-112 555-9 90 129-61 26-587-2Z" fill="url(#roof)" stroke="#142b31" stroke-width="6"/>
+            <path d="m215 200 550-8 76 110-693-1Z" fill="url(#tiles)"/>
+            <g fill="none" stroke="#50696a" stroke-width="3" opacity=".8"><path d="m237 197-54 103m101-104-42 104m92-105-34 105m83-106-23 106m72-107-13 107m62-107-2 107m52-108 9 108m42-108 19 108m32-109 30 109m21-109 41 109m10-110 52 110"/></g>
+            <path d="m133 303 728 5v19l-66 20-579-5-83-20Z" fill="#263b3e" stroke="#102b32" stroke-width="4"/>
+            <path d="m143 305 705 6" stroke="#7b9180" stroke-width="3"/>
+            <path d="M265 164h459v127H265z" fill="#0e292f" stroke="#5c6051" stroke-width="7"/>
+            <rect x="275" y="174" width="439" height="107" rx="3" fill="#193638" stroke="#a26b53" stroke-width="2"/>
+            <path d="M288 187h414v80H288Z" fill="none" stroke="#e8a47d" stroke-opacity=".6" filter="url(#neon)"/>
+            <g class="shop-neon" fill="#ffd0ae" filter="url(#neon)"><text x="495" y="236" class="shop-title" text-anchor="middle" lang="ja">ねこらーめん</text></g>
+            <text x="497" y="262" class="shop-subtitle" fill="#dcae87" text-anchor="middle">NEKO RAMEN · 夜まで、いつでも。</text>
+            <g fill="#843f43" stroke="#553339" stroke-width="2">
+              <path d="M284 337h116v63q-60 12-116-1Z"/><path d="M405 338h117v63q-60 11-117-1Z"/>
+              <path d="M527 338h117v61q-60 17-117 2Z"/><path d="M649 338h126v58q-58 19-126 6Z"/>
+            </g>
+            <g fill="none" stroke="#bd7167" stroke-width="2" opacity=".6"><path d="M292 345h99m23 0h99m22 0h100m23 0h107"/><path d="m306 344 2 48m67-49-3 53m55-52 5 52m68-51-4 51m53-51 5 53m64-53-2 55m55-54 5 55m69-55-5 52" opacity=".4"/></g>
+            <g fill="#ecd1a8" text-anchor="middle" class="curtain-text"><text x="342" y="383">ら</text><text x="464" y="383">ー</text><text x="586" y="383">め</text><text x="711" y="383">ん</text></g>
+            <path d="M273 333v260M789 332v255" stroke="#483c32" stroke-width="16"/>
+            <path d="M279 340v244M795 339v244" stroke="#b08256" stroke-width="3"/>
+
+            <!-- A lantern and the kitchen mise en place. -->
+            <path d="M215 326v49" stroke="#122831" stroke-width="4"/>
+            <ellipse cx="215" cy="447" rx="80" ry="115" fill="#eea474" opacity=".13" filter="url(#soft-glow)"/>
+            <g class="lantern-sway">
+              <rect x="196" y="373" width="38" height="10" rx="3" fill="#3b3630"/>
+              <path d="M193 382Q164 390 175 462Q180 485 213 489Q246 486 253 460Q263 392 236 382Z" fill="url(#lantern)" stroke="#7b5040" stroke-width="2"/>
+              <g fill="none" stroke="#ae7050" opacity=".5"><path d="M182 394q31 12 66-1M176 410q37 13 78-1M175 428q40 11 80-1M176 446q39 10 78-2M179 463q37 8 71-2M188 478q26 5 53-1"/></g>
+              <text x="215" y="426" fill="#704b3b" text-anchor="middle" font-size="29" class="japanese"><tspan x="215">営</tspan><tspan x="215" dy="33">業</tspan></text>
+              <rect x="198" y="488" width="31" height="8" rx="3" fill="#3c3b32"/>
+            </g>
+            <g stroke="#72523b" stroke-width="2"><path d="M328 542h58v30h-58z" fill="#686c56"/><ellipse cx="357" cy="542" rx="29" ry="7" fill="#d8c19a"/><path d="M339 526h33l10 13h-52z" fill="#7d8165"/><path d="M350 521h11v7h-11z" fill="#504a3a"/><path d="M322 551h-9v13h15m59-13h9v13h-10" fill="none"/></g>
+            <g fill="#ece1bf" stroke="#8c7352" stroke-width="2"><path d="M408 556q26 16 52 0l-6 16h-39Z"/><path d="M407 549q27 16 54 0l-6 13h-42Z"/><path d="M406 541q28 16 56 0l-6 14h-44Z"/><ellipse cx="434" cy="541" rx="28" ry="6"/></g>
+            <g stroke="#765842" stroke-width="2"><path d="M480 536h29l-3 38h-23z" fill="#af7450"/><path d="m485 544-5-31m13 30 1-37m5 36 7-32m-17 31-2-38" fill="none" stroke="#5e4b36" stroke-width="3"/></g>
+
+            <!-- The chef: a flour-colored cat with ginger patches. -->
+            <g id="cat" stroke="#564336" stroke-width="3" stroke-linejoin="round">
+              <path d="M594 553Q556 520 548 556Q540 579 575 585" fill="none" stroke="#b78050" stroke-width="18"/>
+              <path d="M590 498Q569 528 575 586H704Q711 530 680 499" fill="#dfbf8c"/>
+              <path d="m590 506 14 11h62l15-14 10 78H584Z" fill="#466f70"/>
+              <path d="m601 507 6 31h57l7-31" fill="none" stroke="#a3b3a0" stroke-width="5"/>
+              <path d="M617 557h36v21h-36z" fill="#3b5f60" stroke="#a7b29a" stroke-width="2"/>
+              <path d="M579 455 573 400Q576 390 589 401l37 27q22-5 40 0l33-29q12-10 12 5l-5 51q11 16 2 38-13 33-63 32-53-1-66-31-9-21 0-39Z" fill="#efd5a5"/>
+              <path d="m582 411 6 33 22-12Z" fill="#c47f63" stroke="none"/><path d="m699 411-23 23 22 9Z" fill="#bf805f" stroke="none"/>
+              <path d="M628 428q17-5 35 0l-6 22-13 12-12-13Z" fill="#bc8050" stroke="none"/>
+              <path d="m638 430 4 15m13-15-6 17M582 466l16 6-16 6m123-14-16 8 15 5" fill="none" stroke="#a76d46" stroke-width="5"/>
+              <g fill="none" stroke-linecap="round"><path d="M605 477q8-11 16 0M666 477q9-11 17 0" stroke="#4d4738" stroke-width="4"/><path d="m638 485 7 4 7-4" fill="#ac7158" stroke="#ac7158"/><path d="M645 491q-5 11-14 5m14-5q5 11 14 5" stroke-width="2"/><path d="m604 492-27-5m28 12-30 4m108-13 27-7m-28 13 29 3" stroke="#9c805d" stroke-width="2"/></g>
+              <ellipse cx="604" cy="488" rx="10" ry="5" fill="#d89674" opacity=".6" stroke="none"/><ellipse cx="684" cy="488" rx="10" ry="5" fill="#d89674" opacity=".6" stroke="none"/>
+              <path d="M591 525Q569 545 589 563l35-1q12-8 3-17l-25-2" fill="#edd3a2"/><path d="M683 524q25 3 36 15l62 6q14 3 10 16-3 11-18 9l-65-5q-27-4-34-15" fill="#edd3a2"/>
+              <path d="m778 551-2 13m-7-14-2 13M614 548v10m-8-10v10" fill="none" stroke="#b09268" stroke-width="2"/>
+              <path d="M599 421q40-12 91 0l-3 13q-42-11-83 1Z" fill="#ede7c9" stroke="#968865" stroke-width="2"/>
+              <path d="m690 423 28-3-12 12 17 10-31-6" fill="#ede7c9" stroke-width="2"/>
+            </g>
+
+            <!-- Counter and street furniture. -->
+            <path d="m233 576 569-2 31 15-11 23-590 2-23-17Z" fill="#a77354" stroke="#3a332f" stroke-width="4"/>
+            <path d="m216 592 616-3M251 582l532 1" fill="none" stroke="#e7b984" stroke-width="3"/>
+            <path d="M256 615h539v87H256Z" fill="url(#wood)" stroke="#3c3430" stroke-width="4"/>
+            <g stroke="#382e2b" stroke-width="4"><path d="M306 616v85m81-85v85m81-85v85m81-85v85m81-85v85m81-85v85"/></g>
+            <path d="M272 619v76m133-76v76m161-76v76m160-76v76" stroke="#b07756" stroke-width="2" opacity=".6"/>
+            <rect x="248" y="699" width="551" height="15" fill="#343735" stroke="#253033" stroke-width="3"/>
+            <g transform="translate(434 664)" stroke="#243439" stroke-width="7" fill="none"><path d="m-24 0-12 73m60-73 12 73m-64-27h57"/><ellipse cy="-3" rx="42" ry="14" fill="#8d5146" stroke="#422f2d" stroke-width="4"/><path d="M-39-4Q0 7 38-4" stroke="#cb896a" stroke-width="2"/></g>
+            <g transform="translate(708 676)" stroke="#243439" stroke-width="7" fill="none"><path d="m-22 0-12 67m56-67 12 67m-61-24h56"/><ellipse cy="-3" rx="39" ry="13" fill="#8d5146" stroke="#422f2d" stroke-width="4"/><path d="M-37-4Q0 7 36-4" stroke="#cb896a" stroke-width="2"/></g>
+            <g transform="translate(127 622) rotate(-5)"><path d="M4 0h88l13 111H-9Z" fill="#8c7255" stroke="#142c32" stroke-width="4"/><path d="M13 12h69l9 82H4Z" fill="#29413d"/><text x="48" y="37" fill="#efd4a1" text-anchor="middle" class="board-title">本日の</text><text x="48" y="59" fill="#efd4a1" text-anchor="middle" class="board-title">おすすめ</text><path d="M25 72h45m-36 9h27" stroke="#a5b69a" stroke-width="2"/><path d="m4 109-7 17m99-17 8 17" stroke="#695741" stroke-width="6"/></g>
+            <g transform="translate(61 618)"><path d="M0 18h55L48 72H7Z" fill="#6d6150" stroke="#253a38" stroke-width="3"/><ellipse cx="28" cy="18" rx="29" ry="8" fill="#3f4940"/><g fill="#527a65" stroke="#263f38" stroke-width="2"><path d="M27 21Q-22-10-4-50 29-24 27 21Z"/><path d="M28 23Q67-36 43-64 22-32 28 23Z"/><path d="M28 25Q7-21 18-81 47-56 28 25Z"/><path d="M29 23Q52-11 76-17 75 11 29 23Z"/><path d="M26 21Q5-3-22-9-22 21 26 21Z"/></g></g>
+
+            <!-- Transparent umbrella: buildings remain visible through its panels. -->
+            <g class="umbrella">
+              <path d="m1030 204 42 333" fill="none" stroke="#b6c8b8" stroke-width="5"/>
+              <path d="m1032 206 42 329" fill="none" stroke="#425e60" stroke-width="2"/>
+              <path d="M815 358Q846 225 1030 204Q1182 201 1286 342Q1250 322 1214 354Q1174 328 1134 365Q1091 337 1046 374Q1002 346 958 377Q920 345 878 372Q849 344 815 358Z" fill="url(#glass)" stroke="#acd0c3" stroke-width="3" stroke-linejoin="round"/>
+              <g fill="none" stroke="#b7d8cc" stroke-opacity=".6" stroke-width="2"><path d="M1030 204Q926 215 878 372M1030 204Q969 254 958 377M1030 204Q1044 273 1046 374M1030 204Q1107 250 1134 365M1030 204Q1182 245 1214 354"/></g>
+              <path d="M835 333Q895 239 1013 221M1055 221Q1169 235 1231 302" fill="none" stroke="#e1e8cf" stroke-width="4" opacity=".48" stroke-linecap="round"/>
+              <path d="M966 251q-38 37-51 67m37-37-16 36" fill="none" stroke="#e5ead6" stroke-width="7" stroke-linecap="round" opacity=".21"/>
+              <path d="m1028 191 2 13" stroke="#a3bbaa" stroke-width="5" stroke-linecap="round"/>
+              <g id="umbrella-drops" clip-path="url(#umbrella-clip)"></g>
+              <g class="umbrella-drips" fill="#b2d4cc"><path d="M878 375q-6 12 0 12t0-12M1214 358q-5 11 0 11t0-11M958 380q-4 8 0 8t0-8"/></g>
+            </g>
+
+            <!-- A patient little robot, all rounded enamel and soft light. -->
+            <g id="robot" stroke="#29484c" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m974 661-3 63m66-63 7 63" stroke="#638c87" stroke-width="21"/>
+              <path d="M957 694h29m46-1h28" stroke="#29494a" stroke-width="5"/>
+              <path d="M949 722q18-10 39 0l4 24q-25 13-61 0 0-17 18-24Z" fill="url(#metal)"/>
+              <path d="M1031 722q17-10 34 2l16 16q1 13-49 8l-7-6Z" fill="url(#metal)"/>
+              <path d="M936 743q27 9 54 0m44 1 42-3" stroke="#1b4146" stroke-width="5"/>
+              <path d="M948 562q9-17 54-18 41 0 57 17l-4 97q-3 17-52 19-51-1-56-17Z" fill="url(#metal)"/>
+              <path d="M962 566q40 10 80-1l-3 82q-33 10-68 0Z" fill="#91b3a2" stroke="#5b8681" stroke-width="2"/>
+              <rect x="976" y="589" width="49" height="30" rx="5" fill="#3a6265" stroke-width="2"/>
+              <path d="M984 604h8l4-7 7 13 5-6h9" class="robot-heart" stroke="#c6dfae" stroke-width="2" fill="none"/>
+              <g stroke="#5b8079" stroke-width="2"><path d="M984 633h38m-38 6h38"/></g>
+              <circle cx="957" cy="565" r="4" fill="#dce0bd" stroke-width="1"/><circle cx="1043" cy="565" r="4" fill="#dce0bd" stroke-width="1"/>
+              <path d="M945 575q-22 6-34-8l-43-22" fill="none" stroke="#33575a" stroke-width="23"/>
+              <path d="M945 575q-22 6-34-8l-43-22" fill="none" stroke="url(#metal)" stroke-width="16"/>
+              <circle cx="914" cy="569" r="10" fill="#6f9990"/><circle cx="914" cy="569" r="3" fill="#d0d4ad" stroke="none"/>
+              <path d="M1057 576q30-2 26-29l-8-22" fill="none" stroke="#33575a" stroke-width="23"/>
+              <path d="M1057 576q30-2 26-29l-8-22" fill="none" stroke="url(#metal)" stroke-width="16"/>
+              <circle cx="1082" cy="556" r="9" fill="#71988a"/>
+              <path d="M1066 515q-13 4-9 17l7 10q15 5 21-7l-4-16q-4-9-15-4Z" fill="#b7c6a8"/>
+              <path d="m1066 528 12-3m-9 12 11-4" stroke-width="2"/>
+              <path d="M985 536h32v18h-32Z" fill="#4e7370"/><path d="M988 542h26" stroke="#9aac95" stroke-width="2"/>
+              <g transform="rotate(-6 997 489)">
+                <path d="M989 436v-17" stroke="#89b7a6" stroke-width="5"/><circle cx="989" cy="414" r="7" fill="#d8976f" stroke-width="2"/>
+                <rect x="927" y="461" width="15" height="41" rx="6" fill="#678f85"/><rect x="1050" y="461" width="15" height="41" rx="6" fill="#678f85"/>
+                <rect x="937" y="440" width="117" height="99" rx="23" fill="url(#metal)"/>
+                <path d="M950 452q46-10 90 0" fill="none" stroke="#e2dfb8" stroke-width="3"/>
+                <rect x="948" y="461" width="95" height="57" rx="14" fill="#173940" stroke="#72988b" stroke-width="3"/>
+                <g class="robot-eyes" fill="#a6e3cf" stroke="none" filter="url(#neon)"><rect x="967" y="479" width="9" height="15" rx="4.5"/><rect x="1013" y="479" width="9" height="15" rx="4.5"/></g>
+                <path d="M988 500q8 8 15-1" fill="none" stroke="#a6e3cf" stroke-width="2.5"/>
+                <path d="M958 500h6m64-3h6" stroke="#d48d76" stroke-width="3" opacity=".7"/>
+                <circle cx="951" cy="526" r="2" fill="#527970" stroke="none"/><circle cx="1039" cy="526" r="2" fill="#527970" stroke="none"/>
+              </g>
+            </g>
+
+            <!-- The bowl bridges the two characters. -->
+            <g transform="translate(757 503)">
+              <use href="#bowl" width="121" height="73"/>
+              <ellipse cx="60" cy="19" rx="45" ry="10" fill="#bd824c"/>
+              <g fill="none" stroke="#f3d397" stroke-width="2"><path d="M26 20q7-11 20 0t21-1 21 0M28 15q14-5 20 7t22-4 19 1M34 24q10-11 19-2t20-5"/></g>
+              <path d="m77 3 15 3-4 16-16-3Z" fill="#3e5c43" stroke="#354b35" stroke-width="2"/>
+              <ellipse cx="44" cy="11" rx="13" ry="10" transform="rotate(-14 44 11)" fill="#f4e2b9" stroke="#d2bd8e" stroke-width="1.5"/><ellipse cx="44" cy="11" rx="6" ry="5" fill="#e5a04e"/>
+              <path d="m60 16 7-6m-6 13 8-6m-13 1 2-6" stroke="#6d8951" stroke-width="3"/>
+              <path d="m79 7 46-25m-39 30 42-23" stroke="#4b4532" stroke-width="3" stroke-linecap="round"/>
+            </g>
+            <path d="M857 551q13-12 22-2 6 9-6 15l-14 3" fill="#b7c6a8" stroke="#29484c" stroke-width="3"/>
+            <path d="m868 553-7 6" stroke="#5b8077" stroke-width="2"/>
+            <g class="steam" fill="none" stroke="#f8dcaf" stroke-linecap="round">
+              <path class="steam-wisp wisp-one" d="M795 496q-17-18 0-35t-2-31" stroke-width="4"/>
+              <path class="steam-wisp wisp-two" d="M820 494q16-22 0-39t4-36" stroke-width="5"/>
+              <path class="steam-wisp wisp-three" d="M842 498q-11-13 2-27t-1-26" stroke-width="3"/>
+            </g>
+            <g class="pot-steam" fill="none" stroke="#f7d4a0" stroke-width="3" stroke-linecap="round" opacity=".4"><path d="M347 516q-10-14 0-26m17 26q11-11 2-22"/></g>
+
+            <!-- Puddles and small pieces of life at street level. -->
+            <g id="puddles"><use href="#little-ripple" x="323" y="757" class="ripple ripple-a"/><use href="#little-ripple" x="836" y="782" class="ripple ripple-b"/><use href="#little-ripple" x="1197" y="715" class="ripple ripple-c"/><use href="#little-ripple" x="555" y="823" class="ripple ripple-b"/><use href="#little-ripple" x="1313" y="848" class="ripple ripple-a"/><use href="#little-ripple" x="166" y="798" class="ripple ripple-c"/></g>
+            <g fill="none" stroke="#85aaa4" opacity=".27"><path d="M906 774q97 13 208-2m-220 9q113 18 226-2M229 752h56m-41 6h67M589 750h75m-65 7h102M1130 827h76m-60 7h93"/></g>
+            <g transform="translate(1149 683) rotate(10)"><path d="M0 0q17-13 33 0Q17 12 0 0" fill="#b79a6c"/><path d="M-3 1h31" fill="none" stroke="#534d3b"/></g>
+            <g id="rain-front" class="rain-layer" aria-hidden="true"></g>
+            <rect width="1440" height="880" fill="url(#vignette)" pointer-events="none"/>
+            <rect class="grain" width="1440" height="880" filter="url(#paper)" opacity=".075" pointer-events="none"/>
+            <g class="scene-caption" fill="#d9dbbe"><text x="54" y="68" font-size="12" letter-spacing="4">ひと息、どうぞ。</text><path d="M55 84h32" stroke="#c1c7ac" opacity=".6"/><text x="1384" y="818" text-anchor="end" font-size="12" letter-spacing="3">NO HURRY. NO COLD SOUP.</text><text x="1384" y="841" text-anchor="end" font-size="10" letter-spacing="2" opacity=".55">雨宿り · A MOMENT OF SHELTER</text></g>
+          </g>
+        </svg>
+        <figcaption><span class="scene-location"><span class="status-dot"></span> NEKO RAMEN <span class="caption-divider">/</span> 23:08</span><span class="scene-weather">18° <span aria-hidden="true">↙</span> A good night to stay awhile.</span></figcaption>
+      </figure>
+
+      <div class="under-scene">
+        <p class="story"><span class="story-number">01 /</span> Even a little metal heart needs a warm bowl.</p>
+        <div class="scene-controls" role="group" aria-label="Scene settings">
+          <label class="rain-control" for="rain">Rain <input id="rain" type="range" min="0" max="2" step="1" value="1" aria-valuetext="Steady"><span id="rain-label">Steady</span></label>
+          <span class="control-divider" aria-hidden="true"></span>
+          <button id="pause" class="pause-button" type="button" aria-pressed="false" aria-label="Pause animation"><svg viewBox="0 0 20 20" aria-hidden="true"><path id="pause-icon" d="M7 5v10M13 5v10"/></svg><span id="pause-label">Pause</span></button>
+        </div>
+      </div>
+      <p id="audio-status" class="audio-status" role="status"></p>
+      <noscript><p class="noscript-note">The shop is open. Enable JavaScript to adjust the rain, pause motion, or listen to the night.</p></noscript>
+    </main>
+
+    <footer><span>GOOD FOOD. QUIET COMPANY.</span><span class="footer-mark" aria-hidden="true">☂</span><span>ONE BOWL AT A TIME <span class="footer-star">✳</span></span></footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,340 @@
+/* Project concept artwork — content illustrations, exempt from UI tokens. */
+.orbit-art {
+  position: relative;
+  width: 270px;
+  height: 270px;
+  transform: rotate(-29deg);
+}
+.orbit-art i {
+  position: absolute;
+  inset: 0;
+  border: 1px solid color-mix(in srgb, var(--muted) 60%, transparent);
+  border-radius: 50%;
+  background: linear-gradient(
+    110deg,
+    transparent 38%,
+    color-mix(in srgb, var(--muted) 10%, transparent) 70%
+  );
+}
+.orbit-art i:nth-child(2) {
+  transform: rotateY(52deg);
+}
+.orbit-art i:nth-child(3) {
+  transform: rotateY(73deg);
+}
+.orbit-art i:nth-child(4) {
+  transform: rotateX(69deg);
+}
+.artwork {
+  aspect-ratio: 1.68;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.artwork-tag {
+  position: absolute;
+  top: 17px;
+  left: 17px;
+  background: #14261a55;
+  border: 1px solid #fff2;
+  color: #fffe;
+  padding: 4px 7px;
+  font: 8px monospace;
+  letter-spacing: 1px;
+  backdrop-filter: blur(8px);
+  border-radius: 4px;
+}
+.artwork-arrow {
+  position: absolute;
+  right: 17px;
+  bottom: 17px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #fff4;
+  border-radius: 50%;
+  color: #fff;
+  background: #fff1;
+  transition: background 0.2s;
+}
+.project-art-link:hover .artwork-arrow {
+  background: #fff3;
+}
+.art-label {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  writing-mode: vertical-rl;
+  font-size: 10px;
+  letter-spacing: 5px;
+  opacity: 0.7;
+}
+.art-caption {
+  position: absolute;
+  left: 25px;
+  bottom: 25px;
+  display: flex;
+  align-items: flex-end;
+  gap: 22px;
+  line-height: 1.1;
+  letter-spacing: 4px;
+  font-size: 14px;
+  color: #fff9;
+}
+.art-caption strong {
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #fffd;
+}
+.art-number {
+  font: 8px monospace;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  padding-bottom: 5px;
+}
+.ramen {
+  background: #422f2c;
+  color: #f3c8a2;
+}
+.ramen:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 65% 40%, #b06a4655, transparent 65%);
+}
+.rain-lines {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background: repeating-linear-gradient(
+    110deg,
+    transparent 0,
+    transparent 35px,
+    #f2cbb4 36px,
+    transparent 37px
+  );
+}
+.ramen-window {
+  position: absolute;
+  left: 31%;
+  top: 8%;
+  width: 47%;
+  height: 77%;
+  background: #ad704d;
+  border: 7px solid #2d2622;
+  border-bottom-width: 13px;
+  box-shadow:
+    0 0 0 1px #b17b5466,
+    0 0 55px #ac71471a;
+}
+.ramen-window:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(#593f32, #c6946399);
+}
+.curtain {
+  height: 32%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 4px;
+}
+.curtain span {
+  flex: 1;
+  background: #cab78b;
+  border-radius: 0 0 3px 3px;
+  border-top: 4px solid #887956;
+}
+.curtain span:after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  height: 14px;
+  width: 14px;
+  border: 1px solid #71664988;
+  border-radius: 50%;
+  margin-left: 9px;
+}
+.bowl {
+  position: absolute;
+  width: 50%;
+  height: 27%;
+  border-radius: 6px 6px 90px 90px;
+  background: linear-gradient(
+    #ecd2a0 0 8%,
+    #b54f3d 9% 18%,
+    #d3b987 19% 26%,
+    #b75c44 27%
+  );
+  left: 26%;
+  bottom: 10%;
+  box-shadow: 0 12px 12px #38231855;
+}
+.bowl:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -6px;
+  width: 100%;
+  height: 14px;
+  background: #5b3724;
+  border: 3px solid #eed6a6;
+  border-radius: 50%;
+}
+.noodles {
+  position: absolute;
+  left: 20%;
+  top: -4px;
+  width: 60%;
+  height: 7px;
+  background: repeating-linear-gradient(0deg, #e8b05b 0 1px, #79482e 2px 3px);
+  border-radius: 50%;
+}
+.chopsticks {
+  position: absolute;
+  bottom: 32%;
+  left: 51%;
+  width: 45%;
+  height: 3px;
+  background: #2d2720;
+  transform: rotate(-23deg);
+  box-shadow: 0 6px 0 #2d2720;
+  transform-origin: left;
+}
+.steam {
+  position: absolute;
+  inset: 37% 30% 30%;
+  display: flex;
+  gap: 12px;
+}
+.steam i {
+  width: 15px;
+  height: 80%;
+  border-left: 2px solid #f0d7b77a;
+  transform: skewX(-14deg);
+  border-radius: 50%;
+}
+.steam i:nth-child(2) {
+  height: 60%;
+  margin-top: 6px;
+}
+.ramen-sign {
+  position: absolute;
+  top: 17%;
+  left: 18%;
+  font-size: 19px;
+  line-height: 1.5;
+  background: #db795a;
+  color: #ffead0;
+  text-shadow: 0 0 5px #ffb596;
+  padding: 12px 9px;
+  border: 1px solid #efb08b;
+  box-shadow: 0 0 22px #d47a4433;
+  border-radius: 18px;
+}
+.serpent {
+  background: #172b2c;
+  color: #b2d4c6;
+}
+.city-grid {
+  position: absolute;
+  inset: 40% -50% -70%;
+  background-image:
+    linear-gradient(#75997c33 1px, transparent 1px),
+    linear-gradient(90deg, #75997c33 1px, transparent 1px);
+  background-size: 40px 40px;
+  transform: perspective(180px) rotateX(48deg);
+  transform-origin: center top;
+}
+.city-sun {
+  position: absolute;
+  width: 31%;
+  aspect-ratio: 1;
+  border: 1px solid #a1b29844;
+  border-radius: 50%;
+  top: 10%;
+  left: 40%;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 10px,
+    #9ec09d11 11px 12px
+  );
+}
+.city-building {
+  position: absolute;
+  background: #1c3432;
+  border: 1px solid #65867555;
+  bottom: 34%;
+  width: 14%;
+  height: 53%;
+  box-shadow: 8px 0 0 #112626;
+}
+.city-building:after {
+  content: "";
+  position: absolute;
+  inset: 9px;
+  background: repeating-linear-gradient(
+    0deg,
+    #89b69a66 0 2px,
+    transparent 2px 15px
+  );
+  opacity: 0.55;
+}
+.city-building.one {
+  left: 13%;
+  height: 57%;
+  width: 12%;
+}
+.city-building.two {
+  right: 17%;
+  height: 42%;
+}
+.city-building.three {
+  right: 7%;
+  height: 70%;
+  width: 8%;
+}
+.snake-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 2px 12px #8ed99b44);
+}
+.serpent .art-caption {
+  color: #adcdc0;
+}
+.generic {
+  display: grid;
+  place-items: center;
+  background: #4a5c47;
+  color: #dfe8d2;
+}
+.generic .orbit-art {
+  width: 65%;
+  height: 85%;
+}
+@media (max-width: 1050px) {
+  .ramen-sign {
+    font-size: 15px;
+  }
+  .art-caption strong {
+    font-size: 27px;
+  }
+}
+@media (max-width: 760px) {
+  .art-caption {
+    bottom: 22px;
+  }
+  .art-caption strong {
+    font-size: 32px;
+  }
+  .ramen-sign {
+    font-size: 18px;
+  }
+}
