@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rainy Ramen — a cat, a small robot, and one bowl of noodles</title>
+<style>
+  :root{
+    --bg:#04060c;
+    --ink:#e8f1ff;
+    --muted:#8fa3bd;
+    --line:rgba(150,190,255,.16);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:#04060c;
+    background-image:radial-gradient(130% 85% at 50% 44%, #121d33 0%, #080d18 52%, #04060c 100%);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:"Inter","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .stage{position:fixed;inset:0;display:grid;place-items:center}
+  svg#scene{display:block;width:100%;height:100%}
+
+  /* ---------- HUD ---------- */
+  .hud{
+    position:fixed;left:clamp(16px,3vw,40px);bottom:clamp(16px,3vw,40px);
+    z-index:5;pointer-events:none;
+  }
+  .card{
+    max-width:min(360px,72vw);
+    padding:14px 18px 15px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:linear-gradient(180deg,rgba(9,14,26,.72),rgba(6,9,17,.62));
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 18px 40px -22px rgba(0,0,0,.95);
+  }
+  .eyebrow{
+    margin:0 0 6px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--muted);
+  }
+  .card h1{
+    margin:0;font-size:19px;font-weight:650;letter-spacing:.01em;
+  }
+  .card p.sub{
+    margin:7px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted);
+  }
+
+  .sound{
+    position:fixed;right:clamp(16px,3vw,40px);bottom:clamp(16px,3vw,40px);
+    z-index:5;display:inline-flex;align-items:center;gap:9px;
+    padding:10px 15px 10px 13px;border-radius:999px;cursor:pointer;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(9,14,26,.78),rgba(6,9,17,.66));
+    backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+    color:var(--ink);font:inherit;font-size:12.5px;letter-spacing:.03em;
+    transition:border-color .25s,color .25s,transform .25s;
+  }
+  .sound:hover{border-color:rgba(180,215,255,.42);transform:translateY(-1px)}
+  .sound:focus-visible{outline:2px solid #6fe3ff;outline-offset:3px}
+  .sound svg{width:15px;height:15px;flex:none}
+  .sound .on{display:none}
+  .sound[aria-pressed="true"]{border-color:rgba(255,110,170,.5);color:#ffd9ea}
+  .sound[aria-pressed="true"] .on{display:block}
+  .sound[aria-pressed="true"] .off{display:none}
+  .sound[aria-pressed="true"] .label::after{content:"on"}
+  .sound .label::after{content:"off"}
+
+  /* ---------- Animation ---------- */
+  .rain-rect{will-change:transform}
+  .rain-a{animation:fallA 1.15s linear infinite}
+  .rain-b{animation:fallB 1.75s linear infinite}
+  .rain-c{animation:fallC .82s linear infinite}
+  @keyframes fallA{from{transform:translateY(0)}to{transform:translateY(400px)}}
+  @keyframes fallB{from{transform:translateY(0)}to{transform:translateY(600px)}}
+  @keyframes fallC{from{transform:translateY(0)}to{transform:translateY(300px)}}
+
+  .sway{transform-box:fill-box;transform-origin:50% 0%;animation:sway 5.4s ease-in-out infinite}
+  .sway-b{animation-duration:6.8s;animation-delay:-2.1s}
+  @keyframes sway{
+    0%,100%{transform:rotate(-2.4deg)}
+    50%{transform:rotate(2.4deg)}
+  }
+
+  .flicker{animation:flicker 3.4s steps(1,end) infinite}
+  .flicker-b{animation-duration:4.9s;animation-delay:-1.6s}
+  .flicker-c{animation-duration:6.2s;animation-delay:-3.3s}
+  @keyframes flicker{
+    0%,7%,9%,11%,54%,56%,100%{opacity:1}
+    8%,10%{opacity:.32}
+    55%{opacity:.55}
+    78%{opacity:.86}
+  }
+
+  .glow-breathe{animation:breathe 6.5s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+  @keyframes breathe{
+    0%,100%{opacity:.62;transform:scale(1)}
+    50%{opacity:.92;transform:scale(1.035)}
+  }
+
+  .cat-breathe{transform-box:fill-box;transform-origin:50% 100%;animation:catBreathe 4.2s ease-in-out infinite}
+  @keyframes catBreathe{
+    0%,100%{transform:scaleY(1) translateY(0)}
+    50%{transform:scaleY(1.018) translateY(-1.5px)}
+  }
+
+  .blink{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5.6s ease-in-out infinite}
+  @keyframes blink{
+    0%,92%,100%{transform:scaleY(1)}
+    95%{transform:scaleY(.08)}
+    97%{transform:scaleY(1)}
+  }
+
+  .tail{transform-box:fill-box;transform-origin:100% 100%;animation:tail 3.6s ease-in-out infinite}
+  @keyframes tail{
+    0%,100%{transform:rotate(-3deg)}
+    50%{transform:rotate(5deg)}
+  }
+
+  .robot-bob{animation:bob 3.1s ease-in-out infinite}
+  @keyframes bob{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-3.5px)}
+  }
+
+  .umbrella-sway{transform-box:fill-box;transform-origin:88% 100%;animation:umb 6.4s ease-in-out infinite}
+  @keyframes umb{
+    0%,100%{transform:rotate(-1.6deg)}
+    50%{transform:rotate(1.6deg)}
+  }
+
+  .visor{animation:visor 4.4s ease-in-out infinite}
+  @keyframes visor{
+    0%,100%{opacity:1}
+    47%{opacity:1}
+    50%{opacity:.25}
+    53%{opacity:1}
+  }
+
+  .steam{opacity:0;animation:steam 4.6s ease-out infinite}
+  .steam-b{animation-duration:5.6s;animation-delay:-1.7s}
+  .steam-c{animation-duration:4.1s;animation-delay:-3.1s}
+  @keyframes steam{
+    0%{opacity:0;transform:translateY(14px) scale(.72)}
+    18%{opacity:.5}
+    62%{opacity:.26}
+    100%{opacity:0;transform:translateY(-72px) scale(1.5)}
+  }
+
+  .ripple{transform-box:fill-box;transform-origin:50% 50%;animation:ripple 2.6s ease-out infinite}
+  @keyframes ripple{
+    0%{transform:scale(.12);opacity:0}
+    12%{opacity:.75}
+    100%{transform:scale(1);opacity:0}
+  }
+
+  .splash{transform-box:fill-box;transform-origin:50% 50%;animation:splash 1.15s linear infinite}
+  @keyframes splash{
+    0%{transform:scale(.15);opacity:0}
+    10%{opacity:.85}
+    100%{transform:scale(1.9);opacity:0}
+  }
+
+  .drip{animation:drip 3.4s cubic-bezier(.42,.02,.86,.5) infinite}
+  @keyframes drip{
+    0%{transform:translateY(0);opacity:0}
+    12%{opacity:.9}
+    72%{opacity:.9}
+    100%{transform:translateY(62px);opacity:0}
+  }
+
+  .shimmer{animation:shimmer 7.5s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 50%}
+  .shimmer-b{animation-duration:9.5s;animation-delay:-3s}
+  @keyframes shimmer{
+    0%,100%{transform:scaleX(1) translateX(0);opacity:.55}
+    50%{transform:scaleX(1.08) translateX(6px);opacity:.8}
+  }
+
+  .mist{animation:mist 14s ease-in-out infinite alternate}
+  @keyframes mist{
+    from{transform:translateX(-22px);opacity:.5}
+    to{transform:translateX(26px);opacity:.78}
+  }
+
+  .lamp-swing{transform-box:fill-box;transform-origin:50% 0%;animation:lampSwing 5.9s ease-in-out infinite}
+  .lamp-swing-b{animation-duration:7.3s;animation-delay:-2.6s}
+  @keyframes lampSwing{
+    0%,100%{transform:rotate(-1.5deg)}
+    50%{transform:rotate(1.5deg)}
+  }
+
+  @media (max-width:760px), (max-height:560px){
+    .card{max-width:60vw;padding:10px 13px 11px;border-radius:12px}
+    .card h1{font-size:15px}
+    .card .eyebrow{font-size:9px;letter-spacing:.18em;margin-bottom:4px}
+    .card p.sub{display:none}
+    .sound{padding:8px 12px;font-size:11.5px}
+  }
+  @media (max-width:520px){
+    .card{max-width:none;left:0;right:0}
+    .hud{left:12px;right:12px;bottom:12px}
+    .sound{bottom:74px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important}
+    .steam{opacity:.34}
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+<svg id="scene" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice"
+     xmlns="http://www.w3.org/2000/svg" role="img"
+     aria-labelledby="sceneTitle sceneDesc">
+  <title id="sceneTitle">Rainy Ramen</title>
+  <desc id="sceneDesc">On a rainy neon night, a cat chef in a ramen shop hands a steaming bowl of
+  ramen across the counter to a small robot who is holding a transparent umbrella.</desc>
+
+  <defs>
+    <!-- ============ gradients ============ -->
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#04060d"/>
+      <stop offset="38%"  stop-color="#0a1120"/>
+      <stop offset="72%"  stop-color="#16223a"/>
+      <stop offset="100%" stop-color="#26364f"/>
+    </linearGradient>
+
+    <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#182238"/>
+      <stop offset="26%"  stop-color="#0d1526"/>
+      <stop offset="100%" stop-color="#04060c"/>
+    </linearGradient>
+
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#2e211b"/>
+      <stop offset="100%" stop-color="#170f0c"/>
+    </linearGradient>
+
+    <radialGradient id="interior" cx="46%" cy="66%" r="66%">
+      <stop offset="0%"   stop-color="#ffe0ae"/>
+      <stop offset="28%"  stop-color="#f0b269"/>
+      <stop offset="60%"  stop-color="#9c5f2c"/>
+      <stop offset="100%" stop-color="#331c10"/>
+    </radialGradient>
+
+    <radialGradient id="lantern" cx="36%" cy="30%" r="78%">
+      <stop offset="0%"   stop-color="#ffe2b4"/>
+      <stop offset="30%"  stop-color="#ff8a4e"/>
+      <stop offset="72%"  stop-color="#d3371f"/>
+      <stop offset="100%" stop-color="#8d1a12"/>
+    </radialGradient>
+
+    <linearGradient id="glass" x1=".08" y1="0" x2=".92" y2="1">
+      <stop offset="0%"   stop-color="#e6f8ff" stop-opacity=".42"/>
+      <stop offset="38%"  stop-color="#9fdcff" stop-opacity=".13"/>
+      <stop offset="72%"  stop-color="#8ad2ff" stop-opacity=".2"/>
+      <stop offset="100%" stop-color="#bdeaff" stop-opacity=".34"/>
+    </linearGradient>
+
+    <linearGradient id="metal" x1="0" y1="0" x2=".85" y2="1">
+      <stop offset="0%"   stop-color="#f0f5fb"/>
+      <stop offset="42%"  stop-color="#adbbcb"/>
+      <stop offset="100%" stop-color="#5f6e81"/>
+    </linearGradient>
+
+    <linearGradient id="metalDark" x1="0" y1="0" x2=".7" y2="1">
+      <stop offset="0%"   stop-color="#8e9dae"/>
+      <stop offset="100%" stop-color="#42505f"/>
+    </linearGradient>
+
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#fdf2df"/>
+      <stop offset="100%" stop-color="#e6cca6"/>
+    </linearGradient>
+
+    <linearGradient id="coat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#2b3b64"/>
+      <stop offset="100%" stop-color="#151f3a"/>
+    </linearGradient>
+
+    <linearGradient id="broth" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#f6c169"/>
+      <stop offset="100%" stop-color="#c98a2e"/>
+    </linearGradient>
+
+    <linearGradient id="bowlRed" x1="0" y1="0" x2=".6" y2="1">
+      <stop offset="0%"   stop-color="#e8604a"/>
+      <stop offset="45%"  stop-color="#c0392b"/>
+      <stop offset="100%" stop-color="#7d1f16"/>
+    </linearGradient>
+
+    <!-- reflection streaks -->
+    <linearGradient id="reflWarm" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#ffc478" stop-opacity=".92"/>
+      <stop offset="42%"  stop-color="#ff9a3c" stop-opacity=".4"/>
+      <stop offset="100%" stop-color="#ff8a2c" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="reflRed" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#ff6a50" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#ff3a24" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="reflPink" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#ff5aa8" stop-opacity=".8"/>
+      <stop offset="100%" stop-color="#ff2e88" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="reflCyan" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#7cefff" stop-opacity=".75"/>
+      <stop offset="100%" stop-color="#22c8ee" stop-opacity="0"/>
+    </linearGradient>
+
+    <radialGradient id="poolWarm" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#ffd193" stop-opacity=".85"/>
+      <stop offset="48%"  stop-color="#ff9c3e" stop-opacity=".34"/>
+      <stop offset="100%" stop-color="#ff8a2c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="poolCold" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#b6ecff" stop-opacity=".44"/>
+      <stop offset="100%" stop-color="#4fc8f0" stop-opacity="0"/>
+    </radialGradient>
+
+    <radialGradient id="vig" cx="50%" cy="40%" r="84%">
+      <stop offset="46%"  stop-color="#000000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000208" stop-opacity=".7"/>
+    </radialGradient>
+
+    <linearGradient id="streetSheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#5f8fc4" stop-opacity=".16"/>
+      <stop offset="45%"  stop-color="#3d6390" stop-opacity=".07"/>
+      <stop offset="100%" stop-color="#1d3352" stop-opacity=".03"/>
+    </linearGradient>
+
+    <radialGradient id="hazeWarm" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#ffb055" stop-opacity=".34"/>
+      <stop offset="100%" stop-color="#ff9a3c" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- ============ filters ============ -->
+    <filter id="glowS" x="-70%" y="-70%" width="240%" height="240%">
+      <feGaussianBlur stdDeviation="3.2"/>
+    </filter>
+    <filter id="glowM" x="-90%" y="-90%" width="280%" height="280%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+    <filter id="glowL" x="-140%" y="-140%" width="380%" height="380%">
+      <feGaussianBlur stdDeviation="26"/>
+    </filter>
+    <filter id="wetBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4.5 1.8"/>
+    </filter>
+    <filter id="softBlur" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <filter id="farBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2.2"/>
+    </filter>
+
+    <!-- keeps the cat's markings inside the head -->
+    <clipPath id="catHeadClip">
+      <ellipse cx="510" cy="476" rx="56" ry="49"/>
+    </clipPath>
+
+    <!-- ============ rain patterns ============ -->
+    <pattern id="rainA" width="180" height="400" patternUnits="userSpaceOnUse">
+      <g stroke="#cfe8ff" stroke-width="1.4" stroke-linecap="round" opacity=".3">
+        <line x1="18"  y1="22"  x2="4"   y2="94"/>
+        <line x1="56"  y1="66"  x2="42"  y2="138"/>
+        <line x1="100" y1="10"  x2="86"  y2="82"/>
+        <line x1="138" y1="94"  x2="124" y2="166"/>
+        <line x1="172" y1="42"  x2="158" y2="114"/>
+        <line x1="34"  y1="152" x2="20"  y2="224"/>
+        <line x1="78"  y1="198" x2="64"  y2="270"/>
+        <line x1="122" y1="144" x2="108" y2="216"/>
+        <line x1="162" y1="212" x2="148" y2="284"/>
+        <line x1="12"  y1="254" x2="-2"  y2="326"/>
+        <line x1="64"  y1="302" x2="50"  y2="374"/>
+        <line x1="108" y1="270" x2="94"  y2="342"/>
+        <line x1="150" y1="322" x2="136" y2="394"/>
+        <line x1="26"  y1="314" x2="12"  y2="386"/>
+        <line x1="92"  y1="290" x2="78"  y2="362"/>
+        <line x1="176" y1="132" x2="162" y2="204"/>
+      </g>
+    </pattern>
+
+    <pattern id="rainB" width="240" height="600" patternUnits="userSpaceOnUse">
+      <g stroke="#bfe0ff" stroke-width="2" stroke-linecap="round" opacity=".36">
+        <line x1="26"  y1="40"  x2="8"   y2="138"/>
+        <line x1="88"  y1="128" x2="70"  y2="226"/>
+        <line x1="150" y1="22"  x2="132" y2="120"/>
+        <line x1="212" y1="176" x2="194" y2="274"/>
+        <line x1="58"  y1="268" x2="40"  y2="366"/>
+        <line x1="120" y1="352" x2="102" y2="450"/>
+        <line x1="182" y1="240" x2="164" y2="338"/>
+        <line x1="30"  y1="430" x2="12"  y2="528"/>
+        <line x1="94"  y1="500" x2="76"  y2="598"/>
+        <line x1="156" y1="446" x2="138" y2="544"/>
+        <line x1="226" y1="392" x2="208" y2="490"/>
+        <line x1="66"  y1="96"  x2="48"  y2="194"/>
+        <line x1="196" y1="546" x2="178" y2="644"/>
+        <line x1="16"  y1="182" x2="-2"  y2="280"/>
+      </g>
+    </pattern>
+
+    <pattern id="rainC" width="120" height="300" patternUnits="userSpaceOnUse">
+      <g stroke="#e6f4ff" stroke-width="1" stroke-linecap="round" opacity=".2">
+        <line x1="14"  y1="16"  x2="5"   y2="64"/>
+        <line x1="46"  y1="52"  x2="37"  y2="100"/>
+        <line x1="78"  y1="8"   x2="69"  y2="56"/>
+        <line x1="110" y1="72"  x2="101" y2="120"/>
+        <line x1="30"  y1="118" x2="21"  y2="166"/>
+        <line x1="62"  y1="156" x2="53"  y2="204"/>
+        <line x1="96"  y1="134" x2="87"  y2="182"/>
+        <line x1="20"  y1="206" x2="11"  y2="254"/>
+        <line x1="56"  y1="240" x2="47"  y2="288"/>
+        <line x1="88"  y1="200" x2="79"  y2="248"/>
+        <line x1="112" y1="234" x2="103" y2="282"/>
+        <line x1="40"  y1="86"  x2="31"  y2="134"/>
+      </g>
+    </pattern>
+  </defs>
+
+  <!-- ==================== 1. SKY ==================== -->
+  <rect x="0" y="0" width="1200" height="800" fill="url(#sky)"/>
+
+  <!-- ==================== 2. FAR CITY ==================== -->
+  <g id="city-far" opacity=".92">
+    <g fill="#0a1020">
+      <rect x="-40"  y="196" width="180" height="480"/>
+      <rect x="96"   y="140" width="128" height="536"/>
+      <rect x="196"  y="228" width="120" height="448"/>
+      <rect x="330"  y="88"  width="86"  height="120"/>
+      <rect x="424"  y="52"  width="54"  height="160"/>
+      <rect x="672"  y="34"  width="72"  height="180"/>
+      <rect x="742"  y="76"  width="58"  height="140"/>
+      <rect x="880"  y="164" width="150" height="512"/>
+      <rect x="1024" y="112" width="118" height="564"/>
+      <rect x="1136" y="188" width="120" height="488"/>
+    </g>
+    <!-- antennas -->
+    <g stroke="#0d1426" stroke-width="3">
+      <line x1="152" y1="140" x2="152" y2="92"/>
+      <line x1="450" y1="52"  x2="450" y2="12"/>
+      <line x1="708" y1="34"  x2="708" y2="4"/>
+      <line x1="1082" y1="112" x2="1082" y2="70"/>
+    </g>
+    <!-- lit windows, generated deterministically by script -->
+    <g id="city-windows"></g>
+  </g>
+
+  <!-- far neon smears -->
+  <g filter="url(#farBlur)" opacity=".55">
+    <rect x="112" y="256" width="16" height="150" fill="#ff3f96"/>
+    <rect x="1060" y="236" width="16" height="190" fill="#3fd8ff"/>
+    <rect x="196" y="300" width="12" height="110" fill="#ffb24a"/>
+  </g>
+
+  <!-- ==================== 3. RAIN — far layer ==================== -->
+  <g clip-path="none">
+    <rect class="rain-rect rain-c" x="-200" y="-900" width="1600" height="2400" fill="url(#rainC)"/>
+  </g>
+
+  <!-- ==================== 4. NEIGHBOUR BUILDINGS ==================== -->
+  <!-- left -->
+  <g>
+    <rect x="-40" y="150" width="340" height="520" fill="#111726"/>
+    <rect x="-40" y="150" width="340" height="10" fill="#1b2437"/>
+    <rect x="262" y="150" width="38"  height="520" fill="#0c111d"/>
+    <!-- vertical neon sign -->
+    <g>
+      <rect x="126" y="196" width="86" height="290" rx="6" fill="#080b14" stroke="#222d44" stroke-width="2"/>
+      <g class="flicker">
+        <g filter="url(#glowM)" opacity=".95">
+          <text x="169" y="248" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="42" font-weight="700" fill="#ff2e88" text-anchor="middle">居</text>
+          <text x="169" y="308" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="42" font-weight="700" fill="#ff2e88" text-anchor="middle">酒</text>
+          <text x="169" y="368" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="42" font-weight="700" fill="#ff2e88" text-anchor="middle">屋</text>
+        </g>
+        <g>
+          <text x="169" y="248" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="42" font-weight="700" fill="#ffe4f1" text-anchor="middle">居</text>
+          <text x="169" y="308" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="42" font-weight="700" fill="#ffe4f1" text-anchor="middle">酒</text>
+          <text x="169" y="368" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="42" font-weight="700" fill="#ffe4f1" text-anchor="middle">屋</text>
+        </g>
+      </g>
+      <rect x="146" y="410" width="46" height="8" rx="4" fill="#3fd8ff" filter="url(#glowS)" class="flicker flicker-b"/>
+      <rect x="146" y="410" width="46" height="8" rx="4" fill="#d7f6ff" class="flicker flicker-b"/>
+    </g>
+    <!-- shop window -->
+    <rect x="20" y="470" width="112" height="118" rx="4" fill="#0a1220" stroke="#1c2739" stroke-width="2"/>
+    <rect x="30" y="482" width="92" height="94" fill="#132039" opacity=".85"/>
+    <rect x="30" y="482" width="92" height="94" fill="url(#reflCyan)" opacity=".35"/>
+    <g stroke="#1c2739" stroke-width="3">
+      <line x1="76" y1="482" x2="76" y2="576"/>
+      <line x1="30" y1="529" x2="122" y2="529"/>
+    </g>
+  </g>
+
+  <!-- right -->
+  <g>
+    <rect x="900" y="176" width="340" height="494" fill="#101625"/>
+    <rect x="900" y="176" width="340" height="10" fill="#1a2334"/>
+    <rect x="900" y="176" width="38"  height="494" fill="#0b101b"/>
+    <!-- vertical neon sign -->
+    <g>
+      <rect x="988" y="214" width="86" height="300" rx="6" fill="#080b14" stroke="#222d44" stroke-width="2"/>
+      <g class="flicker flicker-c">
+        <g filter="url(#glowM)" opacity=".95">
+          <text x="1031" y="266" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#3fd8ff" text-anchor="middle">カ</text>
+          <text x="1031" y="322" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#3fd8ff" text-anchor="middle">ラ</text>
+          <text x="1031" y="378" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#3fd8ff" text-anchor="middle">オ</text>
+          <text x="1031" y="434" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#3fd8ff" text-anchor="middle">ケ</text>
+        </g>
+        <g>
+          <text x="1031" y="266" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#e2faff" text-anchor="middle">カ</text>
+          <text x="1031" y="322" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#e2faff" text-anchor="middle">ラ</text>
+          <text x="1031" y="378" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#e2faff" text-anchor="middle">オ</text>
+          <text x="1031" y="434" font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+                font-size="40" font-weight="700" fill="#e2faff" text-anchor="middle">ケ</text>
+        </g>
+      </g>
+      <circle cx="1031" cy="470" r="12" fill="none" stroke="#ff2e88" stroke-width="4" filter="url(#glowS)"/>
+      <circle cx="1031" cy="470" r="12" fill="none" stroke="#ffd7ea" stroke-width="2"/>
+    </g>
+    <!-- dark shutters -->
+    <g fill="#0b1019">
+      <rect x="1120" y="240" width="104" height="14" rx="3"/>
+      <rect x="1120" y="262" width="104" height="14" rx="3"/>
+      <rect x="1120" y="284" width="104" height="14" rx="3"/>
+      <rect x="1120" y="306" width="104" height="14" rx="3"/>
+      <rect x="1120" y="328" width="104" height="14" rx="3"/>
+      <rect x="1120" y="350" width="104" height="14" rx="3"/>
+      <rect x="1120" y="372" width="104" height="14" rx="3"/>
+    </g>
+    <rect x="1104" y="400" width="136" height="120" rx="4" fill="#0a1220" stroke="#1c2739" stroke-width="2"/>
+    <rect x="1116" y="412" width="112" height="96" fill="#1a2b3f" opacity=".8"/>
+  </g>
+
+  <!-- ==================== 5. SHOP ==================== -->
+  <!-- body -->
+  <rect x="300" y="104" width="600" height="558" fill="url(#wall)"/>
+
+  <!-- roof -->
+  <g>
+    <polygon points="268,152 932,152 898,100 302,100" fill="#171010"/>
+    <rect x="268" y="152" width="664" height="22" fill="#2b1d16"/>
+    <rect x="268" y="152" width="664" height="4" fill="#3d2a20"/>
+    <rect x="280" y="174" width="640" height="14" fill="#0a0706" opacity=".85"/>
+    <g stroke="#241812" stroke-width="2" opacity=".9">
+      <line x1="292" y1="118" x2="908" y2="118"/>
+      <line x1="300" y1="136" x2="900" y2="136"/>
+    </g>
+    <!-- vent pipe -->
+    <g>
+      <rect x="352" y="62" width="26" height="42" fill="#1d1512"/>
+      <rect x="346" y="58" width="38" height="10" rx="3" fill="#2a1e19"/>
+    </g>
+    <!-- little weather vane cat silhouette -->
+    <g transform="translate(846,60)" opacity=".9">
+      <rect x="16" y="18" width="4" height="30" fill="#241a15"/>
+      <circle cx="18" cy="14" r="7" fill="#241a15"/>
+      <polygon points="12,9 15,1 18,8" fill="#241a15"/>
+      <polygon points="18,8 21,1 24,9" fill="#241a15"/>
+      <path d="M25 16 q14 -2 12 -12" stroke="#241a15" stroke-width="4" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- signboard -->
+  <g id="signBoard">
+    <rect x="358" y="192" width="484" height="112" rx="7" fill="#0d0a09"/>
+    <rect x="358" y="192" width="484" height="112" rx="7" fill="none" stroke="#ff3b6b" stroke-width="3" filter="url(#glowS)"/>
+    <rect x="358" y="192" width="484" height="112" rx="7" fill="none" stroke="#ff87ad" stroke-width="1.6"/>
+    <g class="flicker">
+      <text x="600" y="226" text-anchor="middle" font-size="15" letter-spacing="9"
+            font-family="'Inter','Segoe UI',system-ui,sans-serif" font-weight="600"
+            fill="#ff6f9d" filter="url(#glowS)">R A M E N</text>
+      <text x="600" y="226" text-anchor="middle" font-size="15" letter-spacing="9"
+            font-family="'Inter','Segoe UI',system-ui,sans-serif" font-weight="600"
+            fill="#ffd9e6">R A M E N</text>
+      <g filter="url(#glowM)" opacity=".9">
+        <text x="600" y="284" text-anchor="middle" font-size="56" font-weight="700" letter-spacing="6"
+              font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+              fill="#ffbe63">ラーメン</text>
+      </g>
+      <text x="600" y="284" text-anchor="middle" font-size="56" font-weight="700" letter-spacing="6"
+            font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+            fill="#fff4dc">ラーメン</text>
+    </g>
+  </g>
+
+  <!-- wood band under the sign -->
+  <rect x="300" y="304" width="600" height="20" fill="#221712"/>
+  <rect x="300" y="304" width="600" height="3"  fill="#3a271d"/>
+
+  <!-- opening frame -->
+  <rect x="344" y="324" width="512" height="282" fill="#0a0706"/>
+
+  <!-- ==================== 6. INTERIOR ==================== -->
+  <g>
+    <rect x="350" y="324" width="500" height="276" fill="url(#interior)"/>
+    <g opacity=".55" filter="url(#softBlur)">
+      <ellipse cx="470" cy="470" rx="150" ry="120" fill="#ffd79a"/>
+      <ellipse cx="760" cy="500" rx="130" ry="100" fill="#ffb964"/>
+    </g>
+
+    <!-- back wall panelling -->
+    <g stroke="#7a4a22" stroke-width="2" opacity=".35">
+      <line x1="380" y1="336" x2="380" y2="590"/>
+      <line x1="440" y1="336" x2="440" y2="590"/>
+      <line x1="500" y1="336" x2="500" y2="590"/>
+      <line x1="560" y1="336" x2="560" y2="590"/>
+      <line x1="620" y1="336" x2="620" y2="590"/>
+      <line x1="680" y1="336" x2="680" y2="590"/>
+      <line x1="740" y1="336" x2="740" y2="590"/>
+      <line x1="800" y1="336" x2="800" y2="590"/>
+    </g>
+
+    <!-- menu strips on the left wall -->
+    <g>
+      <rect x="368" y="418" width="34" height="120" rx="2" fill="#f2e2c4" opacity=".92"/>
+      <rect x="410" y="430" width="30" height="104" rx="2" fill="#e8d5b2" opacity=".85"/>
+      <rect x="448" y="424" width="30" height="112" rx="2" fill="#f2e2c4" opacity=".8"/>
+      <g fill="#8a6a3c" opacity=".75">
+        <rect x="374" y="428" width="22" height="3"/><rect x="374" y="440" width="18" height="3"/>
+        <rect x="374" y="452" width="22" height="3"/><rect x="374" y="464" width="14" height="3"/>
+        <rect x="374" y="476" width="20" height="3"/><rect x="374" y="488" width="16" height="3"/>
+        <rect x="416" y="440" width="18" height="3"/><rect x="416" y="452" width="14" height="3"/>
+        <rect x="416" y="464" width="18" height="3"/><rect x="416" y="476" width="12" height="3"/>
+        <rect x="454" y="434" width="18" height="3"/><rect x="454" y="446" width="14" height="3"/>
+        <rect x="454" y="458" width="18" height="3"/><rect x="454" y="470" width="16" height="3"/>
+      </g>
+    </g>
+
+    <!-- shelf with bowls -->
+    <g>
+      <rect x="580" y="432" width="252" height="9" rx="2" fill="#5c3a1e"/>
+      <rect x="580" y="432" width="252" height="3" rx="1.5" fill="#7d5228"/>
+      <g fill="#d8c3a0" stroke="#a98d64" stroke-width="1.5">
+        <path d="M596 432 q10 -15 22 0 z"/>
+        <path d="M636 432 q10 -15 22 0 z"/>
+        <path d="M676 432 q10 -15 22 0 z"/>
+        <path d="M716 432 q10 -15 22 0 z"/>
+        <path d="M756 432 q10 -15 22 0 z"/>
+        <path d="M796 432 q10 -15 22 0 z"/>
+      </g>
+      <g fill="none" stroke="#f0e2c6" stroke-width="1.6" opacity=".8">
+        <path d="M599 430 q7 -10 16 0"/>
+        <path d="M639 430 q7 -10 16 0"/>
+        <path d="M679 430 q7 -10 16 0"/>
+        <path d="M719 430 q7 -10 16 0"/>
+        <path d="M759 430 q7 -10 16 0"/>
+        <path d="M799 430 q7 -10 16 0"/>
+      </g>
+      <rect x="586" y="452" width="240" height="7" rx="2" fill="#4a2e17" opacity=".9"/>
+    </g>
+
+    <!-- big stock pot -->
+    <g>
+      <rect x="706" y="504" width="100" height="82" rx="8" fill="#3a2415"/>
+      <rect x="706" y="504" width="100" height="82" rx="8" fill="none" stroke="#6b4423" stroke-width="2"/>
+      <rect x="714" y="516" width="84" height="62" rx="5" fill="#241509"/>
+      <path d="M714 520 C714 560 720 574 732 576" fill="none" stroke="#a9713c" stroke-width="3" opacity=".5"/>
+      <ellipse cx="756" cy="506" rx="52" ry="11" fill="#5c3a1e"/>
+      <ellipse cx="756" cy="506" rx="43" ry="7.5" fill="#d9973f" opacity=".7"/>
+      <ellipse cx="748" cy="504" rx="16" ry="3.4" fill="#ffd58a" opacity=".6"/>
+      <rect x="694" y="518" width="16" height="10" rx="5" fill="#4a2e17"/>
+      <rect x="802" y="518" width="16" height="10" rx="5" fill="#4a2e17"/>
+      <g class="steam" stroke="#fff0d8" stroke-width="5" fill="none" stroke-linecap="round"
+         filter="url(#softBlur)" opacity=".5">
+        <path d="M742 496 c-10 -16 10 -25 0 -41"/>
+        <path d="M772 498 c-10 -16 10 -25 0 -41"/>
+      </g>
+    </g>
+
+    <!-- hanging pendant lamps -->
+    <g class="lamp-swing">
+      <line x1="410" y1="324" x2="410" y2="372" stroke="#2a1c12" stroke-width="2.5"/>
+      <path d="M386 400 L410 372 L434 400 Z" fill="#c0392b"/>
+      <path d="M386 400 L410 372 L434 400 Z" fill="#e8604a" opacity=".5"/>
+      <ellipse cx="410" cy="401" rx="24" ry="5" fill="#ffdca8"/>
+      <circle cx="410" cy="408" r="17" fill="#fff0c9" filter="url(#glowM)"/>
+      <circle cx="410" cy="404" r="7" fill="#fffdf4"/>
+    </g>
+    <g class="lamp-swing lamp-swing-b">
+      <line x1="806" y1="324" x2="806" y2="372" stroke="#2a1c12" stroke-width="2.5"/>
+      <path d="M782 400 L806 372 L830 400 Z" fill="#c0392b"/>
+      <path d="M782 400 L806 372 L830 400 Z" fill="#e8604a" opacity=".5"/>
+      <ellipse cx="806" cy="401" rx="24" ry="5" fill="#ffdca8"/>
+      <circle cx="806" cy="408" r="17" fill="#fff0c9" filter="url(#glowM)"/>
+      <circle cx="806" cy="404" r="7" fill="#fffdf4"/>
+    </g>
+
+    <!-- warm interior light bloom -->
+    <ellipse class="glow-breathe" cx="600" cy="530" rx="230" ry="150" fill="url(#hazeWarm)"/>
+  </g>
+
+  <!-- ==================== 7. NOREN CURTAIN ==================== -->
+  <g>
+    <rect x="344" y="318" width="512" height="10" rx="3" fill="#2b1d16"/>
+    <g>
+      <path d="M352 322 h92 v32 q-46 12 -92 0 z"  fill="#1e2b4e"/>
+      <path d="M352 322 h92 v10 q-46 6 -92 0 z"  fill="#28375e"/>
+      <path d="M454 322 h92 v36 q-46 12 -92 0 z" fill="#182342"/>
+      <path d="M454 322 h92 v10 q-46 6 -92 0 z" fill="#243156"/>
+      <path d="M556 322 h92 v44 q-46 12 -92 0 z" fill="#1e2b4e"/>
+      <path d="M556 322 h92 v10 q-46 6 -92 0 z" fill="#28375e"/>
+      <path d="M658 322 h92 v36 q-46 12 -92 0 z" fill="#182342"/>
+      <path d="M658 322 h92 v10 q-46 6 -92 0 z" fill="#243156"/>
+      <path d="M760 322 h92 v32 q-46 12 -92 0 z"  fill="#1e2b4e"/>
+      <path d="M760 322 h92 v10 q-46 6 -92 0 z"  fill="#28375e"/>
+      <!-- centre emblem -->
+      <circle cx="602" cy="352" r="15" fill="#f3ede0" opacity=".95"/>
+      <circle cx="602" cy="352" r="15" fill="none" stroke="#c0392b" stroke-width="2.5"/>
+      <path d="M592 350 q10 -9 20 0 q-10 9 -20 0 z" fill="#c0392b"/>
+      <circle cx="602" cy="346" r="2.6" fill="#c0392b"/>
+    </g>
+  </g>
+
+  <!-- ==================== 8. STREET ==================== -->
+  <rect x="0" y="662" width="1200" height="138" fill="url(#street)"/>
+  <rect x="0" y="662" width="1200" height="138" fill="url(#streetSheen)"/>
+
+  <!-- warm pool of light spilling out -->
+  <ellipse class="glow-breathe" cx="600" cy="716" rx="370" ry="86" fill="url(#poolWarm)"/>
+  <ellipse cx="169"  cy="700" rx="140" ry="56" fill="url(#poolWarm)" opacity=".4"/>
+  <ellipse cx="1031" cy="712" rx="150" ry="60" fill="url(#poolCold)"/>
+
+  <!-- vertical neon / lantern reflections on the wet asphalt -->
+  <g filter="url(#wetBlur)">
+    <g class="shimmer">
+      <rect x="296" y="662" width="46" height="132" fill="url(#reflRed)"/>
+      <rect x="858" y="662" width="46" height="132" fill="url(#reflRed)"/>
+    </g>
+    <g class="shimmer shimmer-b">
+      <rect x="392" y="662" width="120" height="136" fill="url(#reflWarm)"/>
+      <rect x="530" y="662" width="150" height="140" fill="url(#reflWarm)"/>
+      <rect x="704" y="662" width="112" height="128" fill="url(#reflWarm)"/>
+      <rect x="830" y="662" width="86"  height="116" fill="url(#reflWarm)"/>
+    </g>
+    <rect x="120" y="662" width="98"  height="140" fill="url(#reflPink)"/>
+    <rect x="978" y="662" width="106" height="150" fill="url(#reflCyan)"/>
+    <rect x="212" y="662" width="58"  height="110" fill="url(#reflWarm)" opacity=".7"/>
+  </g>
+
+  <!-- long mirror image of the shop sign -->
+  <g opacity=".55" filter="url(#wetBlur)">
+    <rect x="380" y="662" width="440" height="46" fill="#ff9a3c" opacity=".35"/>
+    <rect x="470" y="676" width="260" height="20" fill="#ffd9a0" opacity=".3"/>
+  </g>
+
+  <!-- water surface highlights -->
+  <g stroke="#9fc4e8" stroke-linecap="round" opacity=".22">
+    <line x1="120" y1="676" x2="330" y2="676" stroke-width="2"/>
+    <line x1="390" y1="688" x2="560" y2="688" stroke-width="2.6"/>
+    <line x1="620" y1="672" x2="880" y2="672" stroke-width="2.4"/>
+    <line x1="960" y1="684" x2="1150" y2="684" stroke-width="2"/>
+    <line x1="240" y1="742" x2="470" y2="742" stroke-width="2.2"/>
+    <line x1="700" y1="756" x2="1080" y2="756" stroke-width="2.4"/>
+    <line x1="60"  y1="712" x2="230" y2="712" stroke-width="1.8"/>
+  </g>
+
+  <!-- broken reflection ripples -->
+  <g stroke="#0a0f1a" stroke-width="3" opacity=".55" filter="url(#softBlur)">
+    <line x1="330" y1="690" x2="470" y2="690"/>
+    <line x1="520" y1="706" x2="700" y2="706"/>
+    <line x1="742" y1="686" x2="880" y2="686"/>
+    <line x1="120" y1="716" x2="240" y2="716"/>
+    <line x1="960" y1="700" x2="1110" y2="700"/>
+  </g>
+
+  <!-- puddles -->
+  <g>
+    <ellipse cx="196" cy="742" rx="152" ry="34" fill="#101a2c" opacity=".8"/>
+    <ellipse cx="196" cy="742" rx="152" ry="34" fill="none" stroke="#3c5a86" stroke-width="1.4" opacity=".5"/>
+    <ellipse cx="196" cy="742" rx="152" ry="34" fill="url(#poolCold)" opacity=".8"/>
+
+    <ellipse cx="470" cy="700" rx="120" ry="24" fill="#141d2f" opacity=".75"/>
+    <ellipse cx="470" cy="700" rx="120" ry="24" fill="none" stroke="#4b6288" stroke-width="1.2" opacity=".45"/>
+    <ellipse cx="470" cy="700" rx="120" ry="24" fill="url(#poolWarm)" opacity=".55"/>
+
+    <ellipse cx="912" cy="748" rx="176" ry="38" fill="#0f1928" opacity=".8"/>
+    <ellipse cx="912" cy="748" rx="176" ry="38" fill="none" stroke="#3a587f" stroke-width="1.4" opacity=".45"/>
+    <ellipse cx="912" cy="748" rx="176" ry="38" fill="url(#poolCold)" opacity=".55"/>
+
+    <ellipse cx="628" cy="762" rx="210" ry="30" fill="#0c1422" opacity=".7"/>
+    <ellipse cx="628" cy="762" rx="210" ry="30" fill="none" stroke="#37527a" stroke-width="1.2" opacity=".35"/>
+  </g>
+
+  <!-- puddle rims catching the neon -->
+  <g fill="none" stroke-linecap="round" opacity=".5">
+    <path d="M52 748 A 152 34 0 0 0 340 748" stroke="#7fc8f0" stroke-width="1.8"/>
+    <path d="M356 704 A 120 24 0 0 0 584 704" stroke="#ffb96a" stroke-width="1.6"/>
+    <path d="M744 760 A 176 38 0 0 0 1080 760" stroke="#6fc4ee" stroke-width="1.8"/>
+    <path d="M424 770 A 210 30 0 0 0 832 770" stroke="#8fb6dd" stroke-width="1.4" opacity=".7"/>
+  </g>
+  <g fill="#cfe6ff" opacity=".18">
+    <ellipse cx="150" cy="738" rx="60" ry="8"/>
+    <ellipse cx="980" cy="744" rx="70" ry="9"/>
+    <ellipse cx="600" cy="758" rx="90" ry="8"/>
+  </g>
+
+  <!-- mirrored reflection of the sign and lanterns, squashed by the wet ground -->
+  <g opacity=".6" filter="url(#wetBlur)" transform="translate(0,794) scale(1,-0.2)">
+    <use href="#signBoard"/>
+    <use href="#lanterns"/>
+  </g>
+
+  <!-- puddle ripples (script) -->
+  <g id="ripples" stroke="#bfe4ff" fill="none" stroke-width="1.4"></g>
+
+  <!-- ground mist -->
+  <g class="mist" opacity=".5" filter="url(#softBlur)">
+    <ellipse cx="260" cy="668" rx="300" ry="26" fill="#8fb6dd" opacity=".18"/>
+    <ellipse cx="940" cy="672" rx="320" ry="28" fill="#8fb6dd" opacity=".16"/>
+    <ellipse cx="600" cy="700" rx="360" ry="30" fill="#ffc98a" opacity=".16"/>
+  </g>
+
+  <!-- ==================== 9. CAT ==================== -->
+  <g id="cat">
+    <!-- tail, rising behind the cat's left shoulder -->
+    <g class="tail">
+      <path d="M452 600 C412 590 396 550 411 518 C420 500 440 495 448 507"
+            fill="none" stroke="#c2b195" stroke-width="11.5" stroke-linecap="round"/>
+      <path d="M452 600 C412 590 396 550 411 518 C420 500 440 495 448 507"
+            fill="none" stroke="#f0dcbc" stroke-width="9.5" stroke-linecap="round"/>
+      <path d="M411 518 C420 500 440 495 448 507"
+            fill="none" stroke="#a3b7ca" stroke-width="9.5" stroke-linecap="round"/>
+      <path d="M452 600 C424 592 407 566 406 540" fill="none" stroke="#ffffff" stroke-width="3"
+            stroke-linecap="round" opacity=".3"/>
+    </g>
+
+    <!-- body -->
+    <g class="cat-breathe">
+      <path d="M448 600 C446 546 470 514 510 512 C550 514 574 546 572 600 Z" fill="url(#fur)"/>
+      <!-- happi coat -->
+      <path d="M448 600 C446 546 470 514 510 512 L510 600 Z" fill="url(#coat)"/>
+      <path d="M572 600 C574 546 550 514 510 512 L510 600 Z" fill="url(#coat)"/>
+      <path d="M448 600 C446 546 470 514 510 512 L510 600 Z" fill="#000" opacity=".12"/>
+      <path d="M492 516 L510 556 L528 516" fill="none" stroke="#e8e2d4" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M452 592 h116 v10 h-116 z" fill="#c0392b" opacity=".85"/>
+      <path d="M494 552 q16 9 32 0" fill="none" stroke="#e8e2d4" stroke-width="3" opacity=".5"/>
+    </g>
+
+    <!-- head -->
+    <g>
+      <!-- ears -->
+      <polygon points="466,436 476,388 514,428" fill="#a9bccd"/>
+      <polygon points="474,431 482,399 507,425" fill="#eda7a7"/>
+      <polygon points="554,436 544,388 506,428" fill="#a9bccd"/>
+      <polygon points="546,431 538,399 513,425" fill="#eda7a7"/>
+      <!-- head -->
+      <ellipse cx="510" cy="476" rx="56" ry="49" fill="url(#fur)"/>
+      <!-- grey cap, clipped to the head -->
+      <g clip-path="url(#catHeadClip)">
+        <path d="M446 452 C452 414 478 402 510 402 C542 402 568 414 574 452
+                 C562 436 542 430 510 430 C478 430 458 436 446 452 Z" fill="#a3b7ca" opacity=".55"/>
+        <g stroke="#a3b7ca" stroke-width="3" stroke-linecap="round" fill="none" opacity=".5">
+          <path d="M502 424 q8 -7 16 0"/>
+          <path d="M494 436 q16 -9 32 0"/>
+        </g>
+      </g>
+      <!-- soft form shadow on the shaded side -->
+      <path d="M556 452 C568 470 570 500 552 518 C544 526 536 528 530 528
+               C556 508 564 476 556 452 Z" fill="#d8bb95" opacity=".45"/>
+      <!-- muzzle -->
+      <ellipse cx="510" cy="500" rx="30" ry="21" fill="#fffaf0" opacity=".9"/>
+      <!-- eyes -->
+      <g class="blink">
+        <ellipse cx="487" cy="472" rx="9.5" ry="11.5" fill="#221812"/>
+        <ellipse cx="533" cy="472" rx="9.5" ry="11.5" fill="#221812"/>
+        <ellipse cx="487" cy="472" rx="7" ry="9" fill="#f0b429"/>
+        <ellipse cx="533" cy="472" rx="7" ry="9" fill="#f0b429"/>
+        <ellipse cx="487" cy="472" rx="2.8" ry="8" fill="#1a120c"/>
+        <ellipse cx="533" cy="472" rx="2.8" ry="8" fill="#1a120c"/>
+        <circle cx="484" cy="467" r="3.2" fill="#fffdf6"/>
+        <circle cx="530" cy="467" r="3.2" fill="#fffdf6"/>
+        <circle cx="490" cy="478" r="1.6" fill="#fffdf6" opacity=".8"/>
+        <circle cx="536" cy="478" r="1.6" fill="#fffdf6" opacity=".8"/>
+      </g>
+      <!-- nose + mouth -->
+      <path d="M504 492 q6 -5 12 0 q-6 6 -12 0 z" fill="#e58a94"/>
+      <path d="M510 498 v5" stroke="#c9a17f" stroke-width="2" stroke-linecap="round"/>
+      <path d="M510 503 q-9 8 -17 1" fill="none" stroke="#c9a17f" stroke-width="2.4" stroke-linecap="round"/>
+      <path d="M510 503 q9 8 17 1"  fill="none" stroke="#c9a17f" stroke-width="2.4" stroke-linecap="round"/>
+      <!-- blush -->
+      <ellipse cx="470" cy="492" rx="12" ry="7" fill="#f08a94" opacity=".3"/>
+      <ellipse cx="550" cy="492" rx="12" ry="7" fill="#f08a94" opacity=".3"/>
+      <!-- whiskers -->
+      <g stroke="#e9dcc6" stroke-width="1.8" stroke-linecap="round" opacity=".85">
+        <path d="M474 490 q-30 -8 -46 -14"/>
+        <path d="M474 498 q-32 -1 -50 -2"/>
+        <path d="M474 506 q-30 6 -46 12"/>
+        <path d="M546 490 q30 -8 46 -14"/>
+        <path d="M546 498 q32 -1 50 -2"/>
+        <path d="M546 506 q30 6 46 12"/>
+      </g>
+    </g>
+
+    <!-- left arm resting on the counter -->
+    <path d="M466 554 C448 570 441 582 442 590" fill="none" stroke="#f4e2c4" stroke-width="21" stroke-linecap="round"/>
+    <ellipse cx="443" cy="590" rx="15" ry="11" fill="#fdf2df"/>
+    <g stroke="#d9c39d" stroke-width="1.6" opacity=".8">
+      <line x1="436" y1="584" x2="436" y2="596"/>
+      <line x1="444" y1="583" x2="444" y2="597"/>
+      <line x1="451" y1="585" x2="451" y2="595"/>
+    </g>
+
+    <!-- right arm offering the bowl -->
+    <path d="M556 552 C584 560 604 576 616 588" fill="none" stroke="#f4e2c4" stroke-width="21" stroke-linecap="round"/>
+    <ellipse cx="622" cy="590" rx="15" ry="11" fill="#fdf2df" transform="rotate(18 622 590)"/>
+    <g stroke="#d9c39d" stroke-width="1.6" opacity=".8" transform="rotate(18 622 590)">
+      <line x1="615" y1="584" x2="615" y2="596"/>
+      <line x1="623" y1="583" x2="623" y2="597"/>
+      <line x1="630" y1="585" x2="630" y2="595"/>
+    </g>
+  </g>
+
+  <!-- ==================== 10. COUNTER ==================== -->
+  <g>
+    <rect x="336" y="598" width="528" height="16" rx="3" fill="#7a5330"/>
+    <rect x="336" y="598" width="528" height="5"  rx="2.5" fill="#a5754a"/>
+    <rect x="336" y="614" width="528" height="34" fill="#3c2618"/>
+    <g stroke="#2a1a10" stroke-width="2" opacity=".8">
+      <line x1="392" y1="614" x2="392" y2="648"/>
+      <line x1="448" y1="614" x2="448" y2="648"/>
+      <line x1="504" y1="614" x2="504" y2="648"/>
+      <line x1="560" y1="614" x2="560" y2="648"/>
+      <line x1="616" y1="614" x2="616" y2="648"/>
+      <line x1="672" y1="614" x2="672" y2="648"/>
+      <line x1="728" y1="614" x2="728" y2="648"/>
+      <line x1="784" y1="614" x2="784" y2="648"/>
+      <line x1="840" y1="614" x2="840" y2="648"/>
+    </g>
+    <rect x="336" y="648" width="528" height="14" fill="#1b1009"/>
+    <!-- noren-ish cloth strip on the counter -->
+    <path d="M360 612 h150 v26 q-75 10 -150 0 z" fill="#8f2430" opacity=".9"/>
+    <path d="M360 612 h150 v8 q-75 5 -150 0 z" fill="#a8333f" opacity=".9"/>
+  </g>
+
+  <!-- ==================== 11. RAMEN BOWL ==================== -->
+  <g id="bowl">
+    <!-- bowl body -->
+    <path d="M600 586 C602 632 622 648 648 648 C674 648 694 632 696 586 Z" fill="url(#bowlRed)"/>
+    <path d="M600 586 C602 632 622 648 648 648 C674 648 694 632 696 586 Z" fill="none" stroke="#6d1a12" stroke-width="2"/>
+    <path d="M612 592 C614 626 628 640 646 642" fill="none" stroke="#ffb0a0" stroke-width="3" opacity=".55" stroke-linecap="round"/>
+    <!-- white band + wave motif -->
+    <path d="M604 606 C630 616 666 616 692 606 L691 616 C666 626 630 626 605 616 Z" fill="#f5ece0" opacity=".92"/>
+    <path d="M612 611 q9 -6 18 0 q9 6 18 0 q9 -6 18 0 q9 6 18 0" fill="none" stroke="#c0392b" stroke-width="2.2" opacity=".8"/>
+    <!-- rim -->
+    <ellipse cx="648" cy="586" rx="48" ry="11" fill="#a52d22"/>
+    <ellipse cx="648" cy="586" rx="43" ry="9" fill="url(#broth)"/>
+    <ellipse cx="648" cy="586" rx="43" ry="9" fill="none" stroke="#f7d79a" stroke-width="1.4" opacity=".7"/>
+    <!-- noodles -->
+    <g stroke="#f3d98f" stroke-width="3" fill="none" opacity=".95" stroke-linecap="round">
+      <path d="M618 584 q10 -6 20 0 q10 6 20 0"/>
+      <path d="M622 590 q12 -6 24 0 q12 6 24 0" opacity=".8"/>
+    </g>
+    <!-- chashu -->
+    <ellipse cx="626" cy="579" rx="17" ry="7.5" fill="#b06a4a" transform="rotate(-7 626 579)"/>
+    <ellipse cx="626" cy="579" rx="10" ry="4" fill="#d29a76" transform="rotate(-7 626 579)" opacity=".8"/>
+    <!-- egg half -->
+    <ellipse cx="664" cy="576" rx="12" ry="9.5" fill="#fdf4e2"/>
+    <ellipse cx="664" cy="576" rx="5.4" ry="4.4" fill="#f2a63c"/>
+    <ellipse cx="662.4" cy="574.4" rx="2" ry="1.6" fill="#ffd08a" opacity=".8"/>
+    <!-- nori -->
+    <rect x="678" y="560" width="15" height="27" rx="2" fill="#1d3527" transform="rotate(9 685 573)"/>
+    <rect x="678" y="560" width="15" height="5"  rx="2" fill="#2b4d38" transform="rotate(9 685 573)"/>
+    <!-- narutomaki -->
+    <circle cx="634" cy="592" r="8.5" fill="#fbf3ea"/>
+    <path d="M630 592 a4 4 0 1 1 4 4" fill="none" stroke="#ec7f96" stroke-width="2.2"/>
+    <!-- spring onion -->
+    <g fill="#8fd06a">
+      <circle cx="654" cy="594" r="2.6"/><circle cx="660" cy="597" r="2.2"/>
+      <circle cx="646" cy="597" r="2.2"/><circle cx="668" cy="592" r="2.4"/>
+    </g>
+    <!-- bowl glow -->
+    <ellipse cx="648" cy="586" rx="54" ry="14" fill="#ffcf8a" opacity=".22" filter="url(#glowM)"/>
+  </g>
+
+  <!-- steam -->
+  <g stroke="#fff4e2" stroke-width="7" fill="none" stroke-linecap="round" filter="url(#softBlur)">
+    <path class="steam"    d="M634 570 c-13 -20 13 -31 0 -51 c-13 -20 13 -31 0 -51"/>
+    <path class="steam steam-b" d="M656 572 c-12 -18 12 -29 0 -47 c-12 -18 12 -29 0 -47"/>
+    <path class="steam steam-c" d="M646 566 c-15 -22 15 -34 0 -56 c-15 -22 15 -34 0 -56" opacity=".8"/>
+  </g>
+
+  <!-- ==================== 12. ROBOT ==================== -->
+  <g id="robot">
+    <g class="robot-bob">
+      <!-- shadow -->
+      <ellipse cx="782" cy="762" rx="66" ry="12" fill="#020409" opacity=".55"/>
+
+      <!-- legs -->
+      <rect x="756" y="704" width="15" height="46" rx="7" fill="url(#metalDark)"/>
+      <rect x="792" y="704" width="15" height="46" rx="7" fill="url(#metalDark)"/>
+      <rect x="748" y="744" width="30" height="16" rx="7" fill="#4d5b6b"/>
+      <rect x="786" y="744" width="30" height="16" rx="7" fill="#4d5b6b"/>
+      <rect x="748" y="744" width="30" height="5"  rx="2.5" fill="#7e8ea0"/>
+      <rect x="786" y="744" width="30" height="5"  rx="2.5" fill="#7e8ea0"/>
+
+      <!-- body -->
+      <rect x="742" y="648" width="80" height="62" rx="15" fill="url(#metal)"/>
+      <rect x="742" y="648" width="80" height="62" rx="15" fill="none" stroke="#57667a" stroke-width="1.8"/>
+      <rect x="752" y="658" width="60" height="26" rx="6" fill="#1d2a38"/>
+      <rect x="752" y="658" width="60" height="26" rx="6" fill="none" stroke="#4b5b6e" stroke-width="1.4"/>
+      <g fill="#57e6ff" opacity=".9" class="visor">
+        <rect x="760" y="666" width="18" height="4" rx="2"/>
+        <rect x="784" y="666" width="20" height="4" rx="2"/>
+      </g>
+      <circle cx="762" cy="696" r="4.5" fill="#ff8a5c" class="visor"/>
+      <circle cx="762" cy="696" r="4.5" fill="#ffd0b8" opacity=".5"/>
+      <g stroke="#5d6d80" stroke-width="2" opacity=".8">
+        <line x1="780" y1="692" x2="812" y2="692"/>
+        <line x1="780" y1="699" x2="812" y2="699"/>
+      </g>
+
+      <!-- neck -->
+      <rect x="768" y="632" width="28" height="18" rx="5" fill="#63728a"/>
+      <!-- scarf -->
+      <path d="M740 636 q42 16 84 0 l4 12 q-46 16 -92 0 z" fill="#c0392b"/>
+      <path d="M740 636 q42 16 84 0 l2 6 q-44 15 -88 0 z" fill="#e8604a" opacity=".7"/>
+      <path d="M820 646 q16 12 10 34 l-14 -4 q6 -18 -2 -26 z" fill="#a52d22"/>
+
+      <!-- head -->
+      <rect x="736" y="558" width="88" height="80" rx="24" fill="url(#metal)"/>
+      <rect x="736" y="558" width="88" height="80" rx="24" fill="none" stroke="#57667a" stroke-width="1.8"/>
+      <rect x="740" y="562" width="80" height="30" rx="20" fill="#ffffff" opacity=".35"/>
+      <!-- visor -->
+      <rect x="748" y="576" width="64" height="34" rx="11" fill="#07141d"/>
+      <rect x="748" y="576" width="64" height="34" rx="11" fill="none" stroke="#3f5568" stroke-width="1.6"/>
+      <g class="visor">
+        <ellipse cx="768" cy="593" rx="9" ry="10" fill="#6df0ff" filter="url(#glowS)"/>
+        <ellipse cx="792" cy="593" rx="9" ry="10" fill="#6df0ff" filter="url(#glowS)"/>
+        <ellipse cx="768" cy="593" rx="6" ry="7" fill="#eafeff"/>
+        <ellipse cx="792" cy="593" rx="6" ry="7" fill="#eafeff"/>
+        <ellipse cx="766" cy="590" rx="2.4" ry="2.8" fill="#ffffff"/>
+        <ellipse cx="790" cy="590" rx="2.4" ry="2.8" fill="#ffffff"/>
+      </g>
+      <ellipse cx="780" cy="606" rx="12" ry="3" fill="#3fd8ff" opacity=".35"/>
+      <!-- ear pods -->
+      <rect x="726" y="582" width="14" height="26" rx="7" fill="#5d6d80"/>
+      <rect x="820" y="582" width="14" height="26" rx="7" fill="#5d6d80"/>
+      <!-- antenna -->
+      <line x1="780" y1="558" x2="780" y2="530" stroke="#6f8095" stroke-width="3.4" stroke-linecap="round"/>
+      <circle cx="780" cy="524" r="7" fill="#ff6ea8" filter="url(#glowS)"/>
+      <circle cx="780" cy="524" r="4" fill="#ffe1ee"/>
+
+      <!-- left arm reaching for the bowl -->
+      <path d="M748 672 C722 682 704 672 694 650 C688 636 682 628 676 624"
+            fill="none" stroke="url(#metalDark)" stroke-width="15" stroke-linecap="round"/>
+      <circle cx="748" cy="672" r="10" fill="#7e8ea0"/>
+      <circle cx="704" cy="670" r="8" fill="#8b9bae"/>
+      <g transform="rotate(-32 672 620)">
+        <rect x="658" y="610" width="28" height="22" rx="9" fill="#cfdae6"/>
+        <rect x="658" y="610" width="28" height="22" rx="9" fill="none" stroke="#66768a" stroke-width="1.6"/>
+        <line x1="666" y1="613" x2="666" y2="629" stroke="#8b9bae" stroke-width="2"/>
+        <line x1="676" y1="613" x2="676" y2="629" stroke="#8b9bae" stroke-width="2"/>
+      </g>
+
+      <!-- right arm holding the umbrella -->
+      <path d="M814 668 C840 664 848 646 842 622"
+            fill="none" stroke="url(#metalDark)" stroke-width="15" stroke-linecap="round"/>
+      <circle cx="814" cy="668" r="10" fill="#7e8ea0"/>
+      <circle cx="844" cy="636" r="8" fill="#8b9bae"/>
+      <g transform="rotate(12 844 616)">
+        <rect x="830" y="604" width="28" height="22" rx="9" fill="#cfdae6"/>
+        <rect x="830" y="604" width="28" height="22" rx="9" fill="none" stroke="#66768a" stroke-width="1.6"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ==================== 13. UMBRELLA ==================== -->
+  <g id="umbrella">
+    <g class="umbrella-sway">
+      <!-- pole -->
+      <line x1="845" y1="620" x2="820" y2="470" stroke="#c3d0dd" stroke-width="5" stroke-linecap="round"/>
+      <line x1="845" y1="620" x2="820" y2="470" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" opacity=".5"/>
+      <path d="M845 620 q14 10 8 24" fill="none" stroke="#c3d0dd" stroke-width="5" stroke-linecap="round"/>
+
+      <!-- canopy -->
+      <path d="M668 495 A 150 84 0 0 1 968 495 Z" fill="url(#glass)"/>
+      <path d="M668 495 A 150 84 0 0 1 968 495 Z" fill="none" stroke="#dff2ff" stroke-width="2.4" opacity=".9"/>
+      <path d="M668 495 A 150 84 0 0 1 968 495 Z" fill="none" stroke="#8fd4ff" stroke-width="6" opacity=".3" filter="url(#glowM)"/>
+      <!-- pooled light along the lower edge of the canopy -->
+      <path d="M690 478 A 150 84 0 0 0 946 478 A 150 84 0 0 1 690 478 Z" fill="#cdeeff" opacity=".22"/>
+
+      <!-- ribs -->
+      <g fill="none" stroke="#e2f3ff" stroke-width="1.5" opacity=".62">
+        <path d="M818 411 C782 418 744 452 716 492"/>
+        <path d="M818 411 C794 424 772 458 762 494"/>
+        <path d="M818 411 C830 424 842 458 848 494"/>
+        <path d="M818 411 C852 418 890 452 918 492"/>
+        <path d="M818 411 C818 430 818 466 818 494"/>
+      </g>
+      <!-- top ferrule -->
+      <line x1="818" y1="411" x2="818" y2="396" stroke="#c3d0dd" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="818" cy="394" r="4" fill="#e8f3ff"/>
+
+      <!-- specular highlight -->
+      <path d="M726 470 C748 434 780 414 818 411 C790 424 762 448 744 472 Z" fill="#ffffff" opacity=".4"/>
+      <path d="M862 424 C880 440 898 462 908 482 C892 470 872 452 856 440 Z" fill="#ffffff" opacity=".22"/>
+
+      <!-- raindrops beading on the canopy (script adds sliding ones) -->
+      <g fill="#dff2ff" opacity=".7">
+        <ellipse cx="722" cy="464" rx="2.4" ry="3.4"/>
+        <ellipse cx="764" cy="442" rx="2" ry="2.9"/>
+        <ellipse cx="850" cy="438" rx="2.6" ry="3.7"/>
+        <ellipse cx="896" cy="462" rx="2.2" ry="3.2"/>
+        <ellipse cx="806" cy="420" rx="1.8" ry="2.6"/>
+      </g>
+      <g id="drips" fill="#e6f6ff"></g>
+    </g>
+  </g>
+
+  <!-- ==================== 14. HANGING LANTERNS ==================== -->
+  <g id="lanterns">
+  <g class="sway">
+    <line x1="318" y1="176" x2="318" y2="212" stroke="#2a1c12" stroke-width="2.5"/>
+    <rect x="308" y="208" width="20" height="9" rx="3" fill="#2b1d16"/>
+    <ellipse cx="318" cy="262" rx="30" ry="44" fill="url(#lantern)"/>
+    <ellipse cx="318" cy="262" rx="30" ry="44" fill="none" stroke="#8d1a12" stroke-width="1.5" opacity=".6"/>
+    <g stroke="#b8241c" stroke-width="1.6" opacity=".55" fill="none">
+      <ellipse cx="318" cy="262" rx="19" ry="44"/>
+      <ellipse cx="318" cy="262" rx="8"  ry="44"/>
+      <line x1="288" y1="246" x2="348" y2="246"/>
+      <line x1="288" y1="278" x2="348" y2="278"/>
+    </g>
+    <text x="318" y="274" text-anchor="middle" font-size="30" font-weight="700"
+          font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+          fill="#3d0d08">麺</text>
+    <rect x="308" y="302" width="20" height="8" rx="3" fill="#2b1d16"/>
+    <ellipse cx="318" cy="262" rx="46" ry="58" fill="#ff7a3c" opacity=".22" filter="url(#glowM)"/>
+  </g>
+  <g class="sway sway-b">
+    <line x1="880" y1="176" x2="880" y2="212" stroke="#2a1c12" stroke-width="2.5"/>
+    <rect x="870" y="208" width="20" height="9" rx="3" fill="#2b1d16"/>
+    <ellipse cx="880" cy="262" rx="30" ry="44" fill="url(#lantern)"/>
+    <ellipse cx="880" cy="262" rx="30" ry="44" fill="none" stroke="#8d1a12" stroke-width="1.5" opacity=".6"/>
+    <g stroke="#b8241c" stroke-width="1.6" opacity=".55" fill="none">
+      <ellipse cx="880" cy="262" rx="19" ry="44"/>
+      <ellipse cx="880" cy="262" rx="8"  ry="44"/>
+      <line x1="850" y1="246" x2="910" y2="246"/>
+      <line x1="850" y1="278" x2="910" y2="278"/>
+    </g>
+    <text x="880" y="274" text-anchor="middle" font-size="30" font-weight="700"
+          font-family="'Yu Gothic','Meiryo','Hiragino Kaku Gothic ProN','Noto Sans JP','MS PGothic',sans-serif"
+          fill="#3d0d08">営</text>
+    <rect x="870" y="302" width="20" height="8" rx="3" fill="#2b1d16"/>
+    <ellipse cx="880" cy="262" rx="46" ry="58" fill="#ff7a3c" opacity=".22" filter="url(#glowM)"/>
+  </g>
+  </g>
+
+  <!-- ==================== 15. RAIN — mid + front ==================== -->
+  <rect class="rain-rect rain-b" x="-200" y="-900" width="1600" height="2400" fill="url(#rainB)" opacity=".62"/>
+  <rect class="rain-rect rain-a" x="-200" y="-900" width="1600" height="2400" fill="url(#rainA)"/>
+
+  <!-- ground splashes (script) -->
+  <g id="splashes" stroke="#cfeaff" fill="none" stroke-width="1.5"></g>
+
+  <!-- ==================== 16. ATMOSPHERE ==================== -->
+  <g opacity=".5" filter="url(#softBlur)">
+    <ellipse cx="600" cy="470" rx="380" ry="230" fill="url(#hazeWarm)"/>
+  </g>
+  <rect x="0" y="0" width="1200" height="800" fill="url(#vig)"/>
+</svg>
+</div>
+
+<div class="hud">
+  <div class="card">
+    <p class="eyebrow">Variora · Rainy Ramen</p>
+    <h1>Rainy Ramen</h1>
+    <p class="sub">A cat, a small robot, and one bowl of noodles — on a wet neon night. Everything you see and hear is drawn and synthesised in code.</p>
+  </div>
+</div>
+
+<button class="sound" id="sound" aria-pressed="false" aria-label="Toggle rain ambience">
+  <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 9.5h3.2L12 5.5v13L7.2 14.5H4z"/>
+    <g class="on">
+      <path d="M16 9.2a4 4 0 0 1 0 5.6"/>
+      <path d="M18.6 6.6a7.6 7.6 0 0 1 0 10.8"/>
+    </g>
+    <g class="off">
+      <path d="M16.4 9.6l4.2 4.8"/>
+      <path d="M20.6 9.6l-4.2 4.8"/>
+    </g>
+  </svg>
+  <span class="label">Rain sound </span>
+</button>
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------------------------------------------------------------
+     Deterministic pseudo-random source.
+     Same scene every load — important for a side-by-side comparison.
+  --------------------------------------------------------------- */
+  function mulberry32(a){
+    return function(){
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      let t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  const rand = mulberry32(0x5A17C0DE);
+  const rnd = (min, max) => min + rand() * (max - min);
+  const pick = arr => arr[Math.floor(rand() * arr.length)];
+
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    return n;
+  };
+
+  /* ---------------------------------------------------------------
+     1. Distant city windows
+  --------------------------------------------------------------- */
+  const winColors = [
+    ["#ffcf8a", .78], ["#ffb35c", .6], ["#8fe4ff", .5],
+    ["#ffd9a0", .55], ["#5fd0ff", .4], ["#ffe9c4", .45]
+  ];
+  const towers = [
+    { x:-40,  y:196, w:180, h:480 },
+    { x:96,   y:140, w:128, h:536 },
+    { x:196,  y:228, w:120, h:448 },
+    { x:330,  y:88,  w:86,  h:120 },
+    { x:424,  y:52,  w:54,  h:160 },
+    { x:672,  y:34,  w:72,  h:180 },
+    { x:742,  y:76,  w:58,  h:140 },
+    { x:880,  y:164, w:150, h:512 },
+    { x:1024, y:112, w:118, h:564 },
+    { x:1136, y:188, w:120, h:488 }
+  ];
+  const winGroup = document.getElementById("city-windows");
+  towers.forEach(t => {
+    const cols = Math.max(2, Math.floor(t.w / 22));
+    const rows = Math.max(2, Math.floor(t.h / 26));
+    for (let c = 0; c < cols; c++){
+      for (let r = 0; r < rows; r++){
+        if (rand() > .42) continue;
+        const [fill, op] = pick(winColors);
+        winGroup.appendChild(el("rect", {
+          x: (t.x + 10 + c * 22).toFixed(1),
+          y: (t.y + 14 + r * 26).toFixed(1),
+          width: 9, height: 12, rx: 1.6,
+          fill,
+          opacity: (op * rnd(.75, 1.5)).toFixed(2)
+        }));
+      }
+    }
+  });
+
+  /* ---------------------------------------------------------------
+     2. Puddle ripples
+  --------------------------------------------------------------- */
+  const puddles = [
+    { cx:196, cy:742, rx:152, ry:34, n:7 },
+    { cx:470, cy:700, rx:120, ry:24, n:6 },
+    { cx:912, cy:748, rx:176, ry:38, n:8 },
+    { cx:628, cy:778, rx:210, ry:30, n:6 }
+  ];
+  const rippleGroup = document.getElementById("ripples");
+  puddles.forEach(p => {
+    for (let i = 0; i < p.n; i++){
+      const t = rnd(-.75, .75);
+      const c = el("ellipse", {
+        cx: (p.cx + t * p.rx * .82).toFixed(1),
+        cy: (p.cy + rnd(-.6, .6) * p.ry * .7).toFixed(1),
+        rx: (rnd(14, 34)).toFixed(1),
+        ry: (rnd(4, 9)).toFixed(1),
+        opacity: 0
+      });
+      c.setAttribute("class", "ripple");
+      c.style.animationDelay = (-rnd(0, 2.6)).toFixed(2) + "s";
+      c.style.animationDuration = rnd(2.1, 3.4).toFixed(2) + "s";
+      rippleGroup.appendChild(c);
+    }
+  });
+
+  /* ---------------------------------------------------------------
+     3. Ground splashes
+  --------------------------------------------------------------- */
+  const splashGroup = document.getElementById("splashes");
+  for (let i = 0; i < 64; i++){
+    const x = rnd(-10, 1210);
+    const y = 664 + Math.pow(rand(), .72) * 134;      // denser near the shop
+    const s = el("ellipse", {
+      cx: x.toFixed(1), cy: y.toFixed(1),
+      rx: (rnd(7, 15)).toFixed(1),
+      ry: (rnd(2, 4.2)).toFixed(1),
+      opacity: 0
+    });
+    s.setAttribute("class", "splash");
+    s.style.animationDelay = (-rnd(0, 1.15)).toFixed(2) + "s";
+    s.style.animationDuration = rnd(.9, 1.5).toFixed(2) + "s";
+    s.setAttribute("stroke-width", rnd(1, 2).toFixed(2));
+    splashGroup.appendChild(s);
+  }
+
+  /* ---------------------------------------------------------------
+     4. Droplets sliding off the umbrella
+  --------------------------------------------------------------- */
+  const dripGroup = document.getElementById("drips");
+  const dripSeeds = [
+    { x:700, y:478, d:0.0 }, { x:742, y:458, d:1.1 },
+    { x:784, y:436, d:0.6 }, { x:828, y:428, d:2.0 },
+    { x:872, y:444, d:1.5 }, { x:912, y:470, d:2.6 },
+    { x:762, y:470, d:0.4 }, { x:858, y:452, d:2.9 }
+  ];
+  dripSeeds.forEach(d => {
+    const g = el("g", { class: "drip" });
+    g.style.animationDelay = (-d.d).toFixed(2) + "s";
+    g.appendChild(el("ellipse", {
+      cx: d.x, cy: d.y, rx: 3.2, ry: 4.6, fill: "#e6f6ff", opacity: .95
+    }));
+    g.appendChild(el("ellipse", {
+      cx: d.x - 1, cy: d.y - 1.4, rx: 1.2, ry: 1.6, fill: "#ffffff"
+    }));
+    dripGroup.appendChild(g);
+  });
+
+  /* ---------------------------------------------------------------
+     5. Keep the whole illustration visible on narrow viewports,
+        and fill the frame on wide ones.
+  --------------------------------------------------------------- */
+  const scene = document.getElementById("scene");
+  function fit(){
+    const a = window.innerWidth / window.innerHeight;
+    scene.setAttribute("preserveAspectRatio",
+      a < 1.16 ? "xMidYMid meet" : "xMidYMid slice");
+  }
+  fit();
+  window.addEventListener("resize", fit);
+
+  /* ---------------------------------------------------------------
+     6. WebAudio rain — synthesised, no external assets.
+        Brown-ish noise through a band-pass, a slow LFO for gusting,
+        and a low rumble that swells occasionally like far-off thunder.
+  --------------------------------------------------------------- */
+  const btn = document.getElementById("sound");
+  let audio = null;
+
+  function buildRain(){
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    const ctx = new Ctx();
+
+    const master = ctx.createGain();
+    master.gain.value = 0;
+    master.connect(ctx.destination);
+
+    // --- noise source (brown noise: integrated white noise) ---
+    const seconds = 6;
+    const buffer = ctx.createBuffer(1, ctx.sampleRate * seconds, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+    let last = 0;
+    for (let i = 0; i < data.length; i++){
+      const white = Math.random() * 2 - 1;
+      last = (last + 0.021 * white) / 1.021;
+      data[i] = last * 3.4;
+    }
+    const noise = ctx.createBufferSource();
+    noise.buffer = buffer;
+    noise.loop = true;
+
+    // --- shaping ---
+    const highpass = ctx.createBiquadFilter();
+    highpass.type = "highpass";
+    highpass.frequency.value = 210;
+
+    const lowpass = ctx.createBiquadFilter();
+    lowpass.type = "lowpass";
+    lowpass.frequency.value = 2400;
+    lowpass.Q.value = 0.6;
+
+    const rainGain = ctx.createGain();
+    rainGain.gain.value = 0.62;
+
+    noise.connect(highpass);
+    highpass.connect(lowpass);
+    lowpass.connect(rainGain);
+    rainGain.connect(master);
+
+    // --- gusting LFO ---
+    const lfo = ctx.createOscillator();
+    lfo.type = "sine";
+    lfo.frequency.value = 0.068;
+    const lfoDepth = ctx.createGain();
+    lfoDepth.gain.value = 0.16;
+    lfo.connect(lfoDepth);
+    lfoDepth.connect(rainGain.gain);
+
+    // --- a soft low bed so the rain has weight ---
+    const bed = ctx.createOscillator();
+    bed.type = "sine";
+    bed.frequency.value = 46;
+    const bedGain = ctx.createGain();
+    bedGain.gain.value = 0.05;
+    bed.connect(bedGain);
+    bedGain.connect(master);
+
+    noise.start();
+    lfo.start();
+    bed.start();
+
+    // --- occasional distant thunder ---
+    function thunder(){
+      const t = ctx.currentTime;
+      const dur = 4.5;
+      const buf = ctx.createBuffer(1, ctx.sampleRate * dur, ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < d.length; i++){
+        const p = i / d.length;
+        d[i] = (Math.random() * 2 - 1) * Math.pow(1 - p, 2.4);
+      }
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      const lp = ctx.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.setValueAtTime(320, t);
+      lp.frequency.exponentialRampToValueAtTime(90, t + dur);
+      const g = ctx.createGain();
+      g.gain.setValueAtTime(0.0001, t);
+      g.gain.exponentialRampToValueAtTime(0.5, t + 0.9);
+      g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+      src.connect(lp); lp.connect(g); g.connect(master);
+      src.start(t); src.stop(t + dur);
+      timer = window.setTimeout(thunder, rnd(22000, 48000));
+    }
+    let timer = window.setTimeout(thunder, rnd(9000, 18000));
+
+    return {
+      ctx,
+      fade(to, seconds){
+        const now = ctx.currentTime;
+        master.gain.cancelScheduledValues(now);
+        master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), now);
+        master.gain.linearRampToValueAtTime(to, now + seconds);
+      },
+      stop(){
+        window.clearTimeout(timer);
+        try { noise.stop(); lfo.stop(); bed.stop(); } catch (_) {}
+        ctx.close();
+      }
+    };
+  }
+
+  btn.addEventListener("click", () => {
+    const on = btn.getAttribute("aria-pressed") === "true";
+    if (on){
+      btn.setAttribute("aria-pressed", "false");
+      btn.setAttribute("aria-label", "Toggle rain ambience");
+      if (audio) audio.fade(0, 0.9);
+      return;
+    }
+    if (!audio) audio = buildRain();
+    if (!audio) return;
+    audio.ctx.resume && audio.ctx.resume();
+    btn.setAttribute("aria-pressed", "true");
+    btn.setAttribute("aria-label", "Turn rain ambience off");
+    audio.fade(0.42, 2.4);
+  });
+})();
+</script>
+</body>
+</html>
