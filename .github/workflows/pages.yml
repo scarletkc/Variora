@@ -34,11 +34,27 @@ jobs:
         with:
           node-version: "24"
           cache: npm
+      - name: Select checks
+        id: changes
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: node site/scripts/ci-changes.mjs
+      - name: Cache Next.js builds
+        uses: actions/cache@v6
+        with:
+          path: site/.next/cache
+          key: ${{ runner.os }}-node24-next-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-node24-next-${{ hashFiles('package-lock.json') }}-
       - run: npm ci
       - run: npm run format:check
       - run: npm test
       - run: npx playwright install --with-deps chromium
+        if: steps.changes.outputs.browser_tests == 'true'
       - run: npm --workspace site run test:e2e
+        if: steps.changes.outputs.browser_tests == 'true'
+        env:
+          VARIORA_E2E_RESTORE_CATALOG: "false"
       - run: npm run build
       - uses: actions/upload-pages-artifact@v5
         with:

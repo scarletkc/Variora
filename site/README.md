@@ -53,6 +53,10 @@ Browser tests build a temporary fixture catalog, exercise desktop and mobile vie
 
 ## Publishing
 
-[Website workflow](../.github/workflows/pages.yml) validates and deploys relevant `main` changes through GitHub Actions to GitHub Pages. Manual runs also require `main`; pull requests do not trigger the workflow. The deployed artifact is the production `site/out/` export, built after the browser fixture checks. New implementations are indexed on the next deployment.
+[Website workflow](../.github/workflows/pages.yml) validates and deploys relevant `main` changes through GitHub Actions to GitHub Pages. Manual runs also require `main`; pull requests do not trigger the workflow. New implementations are indexed on the next deployment.
+
+Every run checks formatting, runs unit tests, and builds the production `site/out/` export. Changes limited to project descriptions, model records, screenshots, project `site.json` metadata, or this README skip browser installation and browser tests. Code, app assets, dependencies, tests, configuration, and mixed changes run the full checks. Manual runs and unavailable change history also run the full checks. The classification is defined by `needsBrowserTests` in [scripts/ci-changes.mjs](scripts/ci-changes.mjs).
+
+The workflow caches npm downloads and `site/.next/cache` between runs. Browser binaries are installed only when browser tests run. Full checks build a fixture site first, discard its export, then build the production site. CI sets `VARIORA_E2E_RESTORE_CATALOG=false` to let that final build regenerate the catalog once; local browser tests restore the catalog by default.
 
 GitHub Pages must use **GitHub Actions** as its source and `variora.fog.moe` as its custom domain. Cloudflare DNS uses a DNS-only CNAME from `variora.fog.moe` to `scarletkc.github.io`. HTTPS is managed and enforced by GitHub Pages. Check the repository's Pages settings and workflow runs for current deployment status.

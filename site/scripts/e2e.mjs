@@ -42,7 +42,12 @@ try {
   run("@playwright/test/cli", ["test"]);
 } finally {
   // A fixture build must never be the artifact subsequently deployed.
-  run("./catalog.mjs", []);
-  await rm(path.join(site, "out"), { recursive: true, force: true });
-  await rm(temp, { recursive: true, force: true });
+  try {
+    if (process.env.VARIORA_E2E_RESTORE_CATALOG !== "false") {
+      run("./catalog.mjs", []);
+    }
+  } finally {
+    await rm(path.join(site, "out"), { recursive: true, force: true });
+    await rm(temp, { recursive: true, force: true });
+  }
 }

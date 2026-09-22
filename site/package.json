@@ -7,7 +7,7 @@
     "dev": "npm run catalog && next dev",
     "build": "npm run catalog && next build",
     "check": "npm run catalog && tsc --noEmit",
-    "test": "node --test tests/catalog.test.mjs",
+    "test": "node --test tests/*.test.mjs",
     "test:e2e": "node scripts/e2e.mjs",
     "serve": "node scripts/serve.mjs"
   },
