@@ -6,6 +6,7 @@
 | Reasoning effort | max |
 | Provider | Cognition |
 | Harness | Devin CLI 3000.11.1 |
+| Prompt | [PROMPT.md](../../PROMPT.md) @ `184d49a` (2026-09-22) |
 
 ## Assistance used
 
@@ -33,3 +34,4 @@ npm test       # headless Playwright smoke test, writes screenshots/
 - All textures are generated in canvas at runtime; all audio is synthesized Web Audio (saw pad drone, speed-following engine hum and wind noise, pickup chimes, noise-burst crash). No external assets.
 - Checks performed: `npm test` — 11/11 Playwright checks passed on Windows 11, headless Chromium (SwiftShader): boot to intro, WebGL canvas, countdown → playing, movement, orb collection, autopilot run, death → game over, retry, zero console/page errors. Screenshots in `screenshots/` are captures from that run.
 - Known limitations: pointer-lock steering is desktop-only (touch drag steers on mobile); the `__NEON` debug hooks (teleport/autopilot) exposed for tests ignore obstacles and can crash the snake.
+- Revision history: original run merged in PR #14; post-merge review follow-up aligned the lockfile `name` with `package.json` and recorded the prompt revision. No game code changed.
