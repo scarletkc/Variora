@@ -10,7 +10,9 @@ import { createProvenanceReader } from "../scripts/provenance.mjs";
 const exec = promisify(execFile);
 async function fixture(t, email = "123+original@users.noreply.github.com") {
   const root = await mkdtemp(path.join(tmpdir(), "variora-provenance-"));
-  t.after(() => rm(root, { recursive: true, force: true }));
+  t.after(() =>
+    rm(root, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 }),
+  );
   const model = path.join(root, "projects/example/models/demo");
   await mkdir(model, { recursive: true });
   const env = {
