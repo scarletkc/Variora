@@ -22,6 +22,7 @@ Browse [models](models/). Add one row per saved implementation, linking its reco
 
 | Implementation | Criteria met | Visual observations | Evidence |
 | --- | --- | --- | --- |
+| [grok-4.7-xhigh run 01](models/grok-4-7-xhigh/) | Structural A1 and vector-restriction checks passed. Visual A2–A4 not checked. The 10-minute budget was exceeded. | Not recorded. The brief forbids preview before submission. | [Generation record](models/grok-4-7-xhigh/README.md). Screenshot not captured. |
 
 ## Visual comparison
 
