@@ -4,49 +4,26 @@ Different models, the same brief. A collection of demos built from shared prompt
 
 ## Projects
 
-- [Rainy Ramen](projects/rainy-ramen/): a static SVG illustration of a cat-run ramen shop on a rainy night.
-- [Neon Serpent](projects/neon-serpent/): a first-person snake game set in a procedural, neon-lit Japanese city.
+- [Rainy Ramen](projects/rainy-ramen/): a cat-run ramen shop illustrated in SVG and presented in HTML.
+- [Neon Serpent](projects/neon-serpent/): a first-person snake game in a futuristic Japanese city.
 
 ## Layout
 
 ```text
 projects/
   <project>/
-    README.md                 # Overview and comparison
-    PROMPT.md                 # Exact shared prompt
-    assets/                   # Shared inputs, when needed
+    PROMPT.md                 # Shared prompt
+    README.md                 # Results and links
     models/
       <model>/
-        README.md             # Model details, setup, and observations
-        app/                  # Complete runnable demo
-        screenshots/          # Captured results
+        README.md             # Model, harness, assistance, and run instructions
+        app/                  # Implementation
+        screenshots/          # Optional captures
 templates/
-  project/                    # Starting point for a comparison
-  model/                      # Starting point for an implementation
+  project/
+  model/
 ```
-
-Each implementation keeps its dependencies, lockfiles, and configuration inside `app/`. Its README provides the commands needed to run it.
 
 ## Add a comparison
 
-1. Copy [the project template](templates/project/) into `projects/<project>/`.
-2. Replace the placeholders in `PROMPT.md` with the exact prompt to send to every model. Put any shared input files in `assets/` and name them in the prompt.
-3. Commit the shared inputs, then follow the [implementation workflow](AGENTS.md#implementation-workflow) to create a new branch for each model run before copying [the model template](templates/model/) into `projects/<project>/models/<model>/`.
-4. Save the generated demo in `app/` and fill in the model README. Keep any README generated with the demo inside `app/`.
-5. Add comparison rows to the project README and link the project under [Projects](#projects).
-
-For example, with the shared project inputs already prepared and the agreed commit checked out, start one model run from the repository root in PowerShell:
-
-```powershell
-git switch -c feat/todo-app/model-a-run-01
-Copy-Item -Recurse templates/model projects/todo-app/models/model-a
-```
-
-Use lowercase, hyphenated directory names. Include the model version in its folder name; record the exact model ID in its README. For another attempt or configuration, create a sibling such as `<model>-run-02` and keep the earlier result.
-
-## Comparison records
-
-- Start each model in a fresh session with the same prompt, input assets, and starting files. Keep access to other implementations out of that session's workspace and follow the [implementation isolation rule](AGENTS.md#isolation).
-- Commit the shared inputs before generation and record that commit in each model README. If the requirements change, start a new project comparison, such as `<project>-v2`.
-- Record the provider, harness name and version, model settings, skills, tools, subagents, follow-up prompts, and human edits in the implementation record. Distinguish available capabilities from those actually used. Use `unknown` for unavailable details and `not measured` for unmeasured time or cost.
-- Check every implementation against the acceptance criteria in the prompt. Link observations to screenshots or verification results, and distinguish measured results from personal impressions.
+Copy the [project template](templates/project/) into `projects/<project>/` and write a concise shared prompt. Each model follows the [repository rules](AGENTS.md), keeps its implementation in `models/<model>/app/`, and uses the [model record template](templates/model/README.md) for its README. Link the results from the project README.

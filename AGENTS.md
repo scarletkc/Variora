@@ -8,8 +8,8 @@ Do not use persistent memory, prior-session history, or notes from previous runs
 
 ## Implementation workflow
 
-1. Before creating any implementation files or writing code, create and switch to a new branch for the project's model run, starting from the agreed shared-inputs commit. Give each model run its own branch, for example `feat/rainy-ramen/model-a-run-01`. Do not begin implementation on `main` or another model's branch. Use separate worktrees or checkouts for concurrent runs.
-2. Complete the implementation and generation record on that branch. Validate only as allowed by the project prompt, and preserve any submission frozen by its generation deadline.
-3. Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages and PR titles, for example `feat(rainy-ramen): add model-a SVG implementation`.
-4. Commit the scoped changes, push the model's branch, and create a pull request targeting `main`. Describe the implementation and actual verification results, linking evidence and noting any unchecked requirements. Leave the PR open for review.
-5. Present the created PR URL as the final delivery, together with a concise summary of the result and validation.
+1. Before creating any implementation files or writing code, create and switch to a new branch for the model's implementation. Each model must use its own branch. Do not begin implementation on `main` or another model's branch.
+2. Implement the project prompt and fill in the [model record](templates/model/README.md).
+3. Use [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for commit messages and PR titles.
+4. Commit and push the model's branch, then create a pull request targeting `main`. Leave the PR open for review.
+5. Present the created PR URL with a short summary of the result and checks performed.
