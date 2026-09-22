@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#080e14" />
+    <meta
+      name="description"
+      content="A first-person snake run through the neon streets of a future Shinjuku. Collect energy. Grow longer. Stay alive."
+    />
+    <title>Neon Serpent — After Hours</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23080e14'/%3E%3Cpath d='M45 16H24a9 9 0 0 0 0 18h16a7 7 0 0 1 0 14H17' fill='none' stroke='%23ff7648' stroke-width='8'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body data-state="loading">
+    <main id="game" aria-label="Neon Serpent game">
+      <canvas
+        id="city"
+        aria-label="First-person view of the neon city"
+      ></canvas>
+      <div class="screen-shade" aria-hidden="true"></div>
+      <div class="edge-mark edge-left" aria-hidden="true"></div>
+      <div class="edge-mark edge-right" aria-hidden="true"></div>
+
+      <header class="topbar">
+        <a class="brand" href="./index.html" aria-label="Neon Serpent home">
+          <svg viewBox="0 0 38 38" aria-hidden="true">
+            <path d="M29 7H14a7 7 0 0 0 0 14h10a5 5 0 0 1 0 10H8" />
+            <path d="m24 3 7 4-7 4M14 27l-7 4 7 4" />
+          </svg>
+          <span>NEON SERPENT<small>夜行性 / AFTER HOURS</small></span>
+        </a>
+        <div class="location">
+          <span class="live-dot"></span> TOKYO, JP
+          <span class="divider">/</span> 03:47 AM
+        </div>
+        <div class="top-actions">
+          <button
+            id="sound"
+            class="quiet-button"
+            type="button"
+            aria-label="Turn sound on"
+            aria-pressed="false"
+          >
+            <span id="sound-icon" aria-hidden="true">◖</span
+            ><span id="sound-label">SOUND OFF</span>
+          </button>
+          <button
+            id="pause"
+            class="quiet-button"
+            type="button"
+            aria-label="Pause game"
+            hidden
+          >
+            Ⅱ <span>PAUSE</span>
+          </button>
+        </div>
+      </header>
+
+      <section id="intro" class="intro" aria-labelledby="title">
+        <div class="eyebrow"><span></span> FIRST-PERSON SNAKE / 01</div>
+        <h1 id="title">
+          NEON<br /><span>SERPENT</span><i>ネオン・サーペント</i>
+        </h1>
+        <p class="intro-copy">
+          The city never sleeps.<br />Neither does the hunt.
+        </p>
+        <p class="brief">
+          Chase energy. Grow your tail.<br />Don't let the city — or yourself —
+          catch you.
+        </p>
+        <button id="start" class="primary-button" type="button" disabled>
+          <span id="start-label">CONNECTING</span
+          ><span aria-hidden="true">↗</span>
+        </button>
+        <div class="start-hint" id="start-hint">ESTABLISHING NEURAL LINK…</div>
+      </section>
+
+      <aside class="district" id="district" aria-label="District">
+        <span class="district-jp" lang="ja">新宿</span>
+        <div class="district-line"></div>
+        <span class="eyebrow">SECTOR 07</span>
+        <h2>SHINJUKU</h2>
+        <p>WET STREETS. LIVE WIRES.</p>
+        <div class="district-bottom">
+          <span>35°41′N 139°42′E</span><span class="live-dot"></span>
+        </div>
+      </aside>
+
+      <section id="run-hud" class="run-hud" aria-label="Run statistics" hidden>
+        <div class="score-panel">
+          <span class="eyebrow">ENERGY HARVESTED</span
+          ><strong id="score">000000</strong
+          ><span class="run-meta"
+            ><span id="core-count">00</span> CORES <b>/</b>
+            <span id="length">14</span> SEGMENTS</span
+          >
+        </div>
+        <div class="target">
+          <span id="target-arrow" aria-hidden="true">↑</span>
+          <div>
+            <span class="eyebrow">NEAREST CORE</span
+            ><strong id="target-distance">12 M</strong>
+          </div>
+        </div>
+        <div class="crosshair" aria-hidden="true"><span></span><i></i></div>
+        <div class="route-tip" id="route-tip">FOLLOW THE AMBER LIGHT</div>
+        <div class="map-panel">
+          <div class="map-header"><span>SECTOR 07</span><span>N ↑</span></div>
+          <canvas
+            id="map"
+            width="240"
+            height="240"
+            aria-label="Minimap: orange is you, cyan is your tail, amber dots are energy, grey blocks are buildings"
+          ></canvas>
+          <div class="map-key"><i></i> YOU <i></i> ENERGY</div>
+        </div>
+        <div class="telemetry">
+          <div><strong id="speed">00</strong><span>KM/H</span></div>
+          <div class="boost-gauge">
+            <span><b>OVERDRIVE</b><kbd>SHIFT / W</kbd></span>
+            <div class="gauge-track"><div id="charge"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="modal"
+        class="modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        hidden
+      >
+        <div class="modal-card">
+          <span class="eyebrow" id="modal-kicker">NEURAL LINK SUSPENDED</span>
+          <h2 id="modal-title">STAY SHARP.</h2>
+          <p id="modal-copy">The city will wait.</p>
+          <div class="result-stats" id="result-stats" hidden>
+            <div><span>ENERGY</span><strong id="final-score">0</strong></div>
+            <div>
+              <span>DISTANCE</span><strong id="final-distance">0 M</strong>
+            </div>
+            <div><span>BEST</span><strong id="best">0</strong></div>
+          </div>
+          <button id="resume" class="primary-button" type="button">
+            <span>RESUME RUN</span><span aria-hidden="true">↗</span></button
+          ><button id="restart" class="secondary-button" type="button">
+            NEW RUN
+          </button>
+        </div>
+      </section>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <div id="flash" class="flash" aria-hidden="true"></div>
+      <div
+        id="touch-controls"
+        class="touch-controls"
+        aria-label="Touch driving controls"
+        hidden
+      >
+        <button type="button" data-control="left" aria-label="Steer left">
+          ←</button
+        ><button type="button" data-control="boost" aria-label="Hold to boost">
+          BOOST</button
+        ><button type="button" data-control="right" aria-label="Steer right">
+          →
+        </button>
+      </div>
+
+      <footer class="footer">
+        <div class="link-status">
+          <span class="live-dot"></span
+          ><span id="link-status">SYSTEM INITIALIZING</span>
+        </div>
+        <div class="controls-legend">
+          <span><kbd>A</kbd><kbd>D</kbd> STEER</span
+          ><span><kbd>W</kbd> BOOST</span><span><kbd>ESC</kbd> PAUSE</span>
+        </div>
+        <span class="footer-note">DON'T CROSS YOUR OWN PATH.</span>
+      </footer>
+      <noscript
+        ><div class="no-script">
+          Enable JavaScript to enter Neon Serpent.
+        </div></noscript
+      >
+    </main>
+    <script defer src="./bundle.js"></script>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "name": "neon-serpent-gpt-6-astra-xhigh",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node serve.mjs",
+    "build": "esbuild app/game.js --bundle --format=iife --target=es2022 --minify --legal-comments=eof --outfile=app/bundle.js",
+    "test": "node --test tests/simulation.test.mjs",
+    "test:browser": "node tests/browser.mjs",
+    "test:catalog": "node --test tests/catalog.test.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "esbuild": "0.25.9"
+  }
+}
