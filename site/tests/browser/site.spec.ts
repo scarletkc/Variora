@@ -87,29 +87,6 @@ test("language switching preserves project and preview selection", async ({
   await expect(page).toHaveURL(/\/ko\/$/);
 });
 
-test("previews run module scripts, isolate parent access, and reload", async ({
-  page,
-}) => {
-  await page.goto("/en/preview/?project=rainy-ramen&model=e2e-fixture");
-  await expect(page).toHaveTitle("E2E fixture - Rainy Ramen - Variora");
-  const frame = page.frameLocator("iframe");
-  await expect(frame.getByText("Parent isolated")).toBeVisible();
-  await frame.getByRole("button", { name: "Count: 0" }).click();
-  await expect(frame.getByRole("button")).toHaveText("Count: 1");
-  await page.getByRole("button", { name: "Reload" }).click();
-  await expect(frame.getByRole("button")).toHaveText("Count: 0");
-  await page.getByRole("button", { name: "Full screen", exact: false }).click();
-  await expect(
-    page.getByRole("button", { name: "Exit full screen", exact: false }),
-  ).toBeVisible();
-  await page
-    .getByRole("button", { name: "Exit full screen", exact: false })
-    .click();
-  await page.getByRole("link", { name: "Back to project" }).click();
-  await expect(page.locator("h1")).toHaveText("Rainy Ramen");
-  await expect(page).toHaveTitle("Rainy Ramen - Variora");
-});
-
 test("invalid previews show a recoverable empty state", async ({ page }) => {
   await page.goto("/en/preview/?project=missing&model=missing");
   await expect(page).toHaveTitle("Implementation preview - Variora");

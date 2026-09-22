@@ -4,14 +4,7 @@ The Next.js site at [variora.fog.moe](https://variora.fog.moe) is a static catal
 
 ## Development
 
-From the repository root, with Node.js 24:
-
-```sh
-npm ci
-npm run dev
-```
-
-`npm run build` exports the site to `site/out/`. To serve the export locally, run `npm --workspace site run serve` and open `http://127.0.0.1:4173`.
+See the [development guide](docs/development.md) for setup, local servers, preview compatibility, and checks, and the [site development manual](docs/README.md) for design and content conventions.
 
 ## Catalog and previews
 
@@ -30,26 +23,13 @@ For a different static output directory or HTML entry, add `preview.json` beside
 
 The directory must already exist in the checkout. Paths must stay inside the model directory, and the entry must stay inside the preview directory. Explicit invalid configuration fails the build. Dotfiles, dependencies, and unsupported file extensions are excluded; see `extensions` in [scripts/catalog.mjs](scripts/catalog.mjs) for the asset allowlist. Use relative asset URLs so each implementation can run under its own preview path.
 
-Previews run in an iframe that permits scripts, pointer lock, and fullscreen while isolating the parent page. Implementations cannot access the site's DOM, cookies, or local storage. External module and data servers must permit cross-origin requests. Project artwork on catalog cards is illustrative, not a screenshot of a model result.
+Previews run in an iframe that permits scripts, pointer lock, and fullscreen while isolating the parent page. Implementations cannot access the site's DOM, cookies, or local storage. Project artwork on catalog cards is illustrative, not a screenshot of a model result.
 
 ## Languages and themes
 
 UI translations live in [lib/i18n.ts](lib/i18n.ts). Each language has static routes under `/en/`, `/zh/`, `/ja/`, and `/ko/`. The root chooses a saved language or a supported browser language, falling back to English. Changing languages preserves the page, query, and anchor. Original project names, prompts, and model records retain their source language.
 
 The theme follows the system by default. Visitors can save a light or dark preference. Fonts are served with the site; the bundled [DM Sans](public/licenses/dm-sans.txt) and [Instrument Serif](public/licenses/instrument-serif.txt) licenses are included.
-
-## Checks
-
-```sh
-npm test
-npm run format:check
-npm run check
-npx playwright install chromium
-npm --workspace site run test:e2e
-npm run build
-```
-
-Browser tests build a temporary fixture catalog, exercise desktop and mobile views, and remove the fixture export afterward. Run `npm run build` afterward to produce a deployable export. `VARIORA_PROJECTS_DIR` overrides the catalog input directory for isolated test builds.
 
 ## Publishing
 

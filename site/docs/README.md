@@ -5,15 +5,8 @@ The site is a compact demo gallery — not a marketing page. Keep it that way: n
 hero blocks, slogans, or decorative copy that doesn't help a visitor open a
 demo.
 
-## Commands
-
-- `npm run dev` — dev server
-- `npm run build` — static export (`out/`)
-- `npm run check` — catalog generation + `tsc --noEmit`
-- `npm test` — unit + design-token guard tests (`tests/*.test.mjs`)
-- `npm run format:check` — Prettier (run from repo root)
-- `node scripts/e2e.mjs` — Playwright browser suite (port 4173 must be free)
-- `node scripts/serve.mjs` — serve `out/` on :4173
+See [Development](development.md) for setup, commands, preview compatibility,
+and browser checks.
 
 ## Design system (`app/globals.css`)
 

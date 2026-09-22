@@ -31,15 +31,34 @@ try {
   );
   await writeFile(
     path.join(model, "app/main.js"),
-    'let count=0;document.querySelector("#counter").onclick=e=>e.target.textContent="Count: "+(++count);try{parent.document.body;document.querySelector("#isolation").textContent="Parent accessible"}catch{document.querySelector("#isolation").textContent="Parent isolated"}',
+    'import {bindCounter} from "./counter.mjs";bindCounter();try{parent.document.body;document.querySelector("#isolation").textContent="Parent accessible"}catch{document.querySelector("#isolation").textContent="Parent isolated"}',
+  );
+  await writeFile(
+    path.join(model, "app/counter.mjs"),
+    'export function bindCounter(){let count=0;document.querySelector("#counter").onclick=e=>e.target.textContent="Count: "+(++count)}',
+  );
+  await writeFile(
+    path.join(model, "app/classic.html"),
+    '<!doctype html><html lang="en"><title>Classic fixture</title><body><p id="ready"></p><script src="./classic.js"></script></body></html>',
+  );
+  await writeFile(
+    path.join(model, "app/classic.js"),
+    'document.querySelector("#ready").textContent="Ready"',
   );
   const env = {
     ...process.env,
     VARIORA_PROJECTS_DIR: path.join(temp, "projects"),
   };
   run("./catalog.mjs", [], env);
+  run("@playwright/test/cli", ["test", "tests/browser/preview.spec.ts"], {
+    ...env,
+    VARIORA_E2E_SERVER: "dev",
+  });
   run("next/dist/bin/next", ["build"], env);
-  run("@playwright/test/cli", ["test"]);
+  run("@playwright/test/cli", ["test"], {
+    ...env,
+    VARIORA_E2E_SERVER: "static",
+  });
 } finally {
   // A fixture build must never be the artifact subsequently deployed.
   try {
