@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rainy Ramen</title>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: #05070c;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+    }
+
+    .stage {
+      position: relative;
+      width: min(100vw, 100vh);
+      height: min(100vw, 100vh);
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+      shape-rendering: geometricPrecision;
+    }
+
+    #listen {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 2;
+      min-height: 44px;
+      padding: 0 16px;
+      border: 1px solid rgba(255, 214, 160, 0.5);
+      border-radius: 999px;
+      background: rgba(8, 10, 16, 0.72);
+      color: #f6ead8;
+      font-family: Palatino, "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+      font-size: 15px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+    }
+
+    #listen:focus-visible {
+      outline: 2px solid #ffd7a1;
+      outline-offset: 3px;
+    }
+
+    .drop {
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    .steam {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: rise 3.4s ease-in infinite;
+    }
+
+    .steam-b { animation-delay: -1.1s; }
+    .steam-c { animation-delay: -2.2s; }
+
+    #umbrella {
+      transform-box: view-box;
+      transform-origin: 200px 790px;
+      animation: sway 4.4s ease-in-out infinite;
+    }
+
+    .blink {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: blink 5.2s infinite;
+    }
+
+    .blink-late { animation-delay: -2.4s; }
+
+    .pulse {
+      animation: pulse 3.2s ease-in-out infinite;
+    }
+
+    .flicker {
+      animation: flicker 3.6s linear infinite;
+    }
+
+    .shimmer {
+      animation: shimmer 4.8s ease-in-out infinite;
+    }
+
+    .ripple {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: rip 3s ease-out infinite;
+    }
+
+    .ripple-b { animation-delay: -1.5s; }
+
+    @keyframes fall {
+      from { transform: translateY(0); }
+      to { transform: translateY(220px); }
+    }
+
+    @keyframes rise {
+      0% { opacity: 0; transform: translateY(16px); }
+      25% { opacity: 0.85; }
+      100% { opacity: 0; transform: translateY(-78px); }
+    }
+
+    @keyframes sway {
+      0%, 100% { transform: rotate(-1.4deg); }
+      50% { transform: rotate(1.6deg); }
+    }
+
+    @keyframes blink {
+      0%, 92%, 97%, 100% { transform: scaleY(1); }
+      94.5% { transform: scaleY(0.08); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.45; }
+      50% { opacity: 0.85; }
+    }
+
+    @keyframes flicker {
+      0%, 18%, 22%, 57%, 61%, 100% { opacity: 1; }
+      20% { opacity: 0.45; }
+      59% { opacity: 0.72; }
+    }
+
+    @keyframes shimmer {
+      0%, 100% { opacity: 0.28; }
+      50% { opacity: 0.5; }
+    }
+
+    @keyframes rip {
+      0% { transform: scale(0.35); opacity: 0.55; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .drop, .steam, #umbrella, .blink, .pulse, .flicker, .shimmer, .ripple {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <button id="listen" type="button" aria-pressed="false">Listen</button>
+    <svg id="scene" viewBox="0 0 1024 1024" role="img" aria-labelledby="scene-title">
+      <title id="scene-title">A cat serves ramen to a robot holding a clear umbrella outside a neon ramen shop in the rain</title>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#070b14"/>
+          <stop offset="48%" stop-color="#142743"/>
+          <stop offset="78%" stop-color="#1b3d62"/>
+          <stop offset="100%" stop-color="#101820"/>
+        </linearGradient>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#24384c"/>
+          <stop offset="42%" stop-color="#152230"/>
+          <stop offset="100%" stop-color="#090d12"/>
+        </linearGradient>
+        <radialGradient id="moon-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#f4ecd8" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#f4ecd8" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="shop-glow" cx="48%" cy="42%" r="60%">
+          <stop offset="0%" stop-color="#ffe6b8" stop-opacity="0.95"/>
+          <stop offset="45%" stop-color="#ff9a42" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#ff7a30" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="lantern-body" cx="40%" cy="36%" r="68%">
+          <stop offset="0%" stop-color="#fff3c4"/>
+          <stop offset="32%" stop-color="#ffb14a"/>
+          <stop offset="70%" stop-color="#ff4524"/>
+          <stop offset="100%" stop-color="#b81818"/>
+        </radialGradient>
+        <radialGradient id="lantern-halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffb15a" stop-opacity="0.7"/>
+          <stop offset="100%" stop-color="#ff6a32" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="spill" x1="0.45" y1="0" x2="0.5" y2="1">
+          <stop offset="0%" stop-color="#ffc98a" stop-opacity="0.55"/>
+          <stop offset="55%" stop-color="#ff9a4a" stop-opacity="0.16"/>
+          <stop offset="100%" stop-color="#ff9a4a" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f7fbff"/>
+          <stop offset="40%" stop-color="#d5e4ef"/>
+          <stop offset="100%" stop-color="#7f97ab"/>
+        </linearGradient>
+        <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#3a4d68"/>
+          <stop offset="100%" stop-color="#151c2a"/>
+        </linearGradient>
+        <radialGradient id="plastic" cx="40%" cy="35%" r="65%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.04"/>
+          <stop offset="75%" stop-color="#d7f4ff" stop-opacity="0.16"/>
+          <stop offset="100%" stop-color="#c5eaff" stop-opacity="0.32"/>
+        </radialGradient>
+        <radialGradient id="vignette" cx="50%" cy="46%" r="68%">
+          <stop offset="0%" stop-color="#05070c" stop-opacity="0"/>
+          <stop offset="62%" stop-color="#05070c" stop-opacity="0.05"/>
+          <stop offset="100%" stop-color="#05070c" stop-opacity="0.58"/>
+        </radialGradient>
+        <filter id="glow" x="-70%" y="-70%" width="240%" height="240%">
+          <feGaussianBlur stdDeviation="3.6"/>
+        </filter>
+        <filter id="neon" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.8"/>
+        </filter>
+        <filter id="wide-glow" x="-90%" y="-90%" width="280%" height="280%">
+          <feGaussianBlur stdDeviation="14"/>
+        </filter>
+        <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="8"/>
+        </filter>
+        <clipPath id="window-clip">
+          <polygon points="458,404 642,380 670,628 486,658"/>
+        </clipPath>
+        <clipPath id="wall-clip">
+          <polygon points="392,292 728,258 766,724 430,774"/>
+        </clipPath>
+        <clipPath id="street-clip">
+          <polygon points="0,600 1024,560 1024,1024 0,1024"/>
+        </clipPath>
+        <mask id="rain-mask" maskUnits="userSpaceOnUse">
+          <rect width="1024" height="1024" fill="#fff"/>
+          <ellipse cx="504" cy="568" rx="86" ry="76" fill="#000"/>
+          <ellipse cx="270" cy="748" rx="70" ry="62" fill="#000"/>
+          <ellipse cx="424" cy="708" rx="86" ry="48" fill="#000"/>
+        </mask>
+        <g id="kana" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16,14 H58"/>
+          <path d="M22,32 C24,50 40,66 64,78"/>
+          <path d="M22,100 H56"/>
+          <path d="M60,116 L14,174"/>
+          <path d="M16,130 L56,160"/>
+          <path d="M18,190 L28,206"/>
+          <path d="M28,206 C44,222 68,216 72,198"/>
+        </g>
+      </defs>
+
+      <rect width="1024" height="1024" fill="url(#sky)"/>
+      <circle cx="150" cy="124" r="120" fill="url(#moon-glow)"/>
+      <circle cx="150" cy="124" r="44" fill="#f6f1e4"/>
+      <ellipse cx="138" cy="116" rx="9" ry="7" fill="#e3d9c4" opacity="0.75"/>
+      <ellipse cx="164" cy="134" rx="6" ry="5" fill="#e6decc" opacity="0.6"/>
+      <g fill="#eef3fb">
+        <circle cx="260" cy="70" r="1.5"/>
+        <circle cx="340" cy="120" r="1.2" opacity="0.75"/>
+        <circle cx="470" cy="54" r="1.6"/>
+        <circle cx="860" cy="78" r="1.3" opacity="0.8"/>
+        <circle cx="960" cy="150" r="1.2" opacity="0.6"/>
+        <circle cx="70" cy="210" r="1.2" opacity="0.7"/>
+      </g>
+      <polygon points="0,610 0,430 54,430 54,470 110,448 150,478 210,456 210,548 250,566 250,610" fill="#0d1524"/>
+      <g id="rain-far"></g>
+
+      <g clip-path="url(#street-clip)">
+        <polygon points="0,620 1024,568 1024,1024 0,1024" fill="url(#ground)"/>
+        <path d="M0,790 C280,770 620,804 1024,748" fill="none" stroke="#8fb4cc" stroke-width="2" opacity="0.16"/>
+        <path d="M0,900 C320,882 680,920 1024,860" fill="none" stroke="#8fb4cc" stroke-width="2" opacity="0.12"/>
+      </g>
+
+      <polygon points="728,258 940,196 978,640 766,724" fill="#4a3124"/>
+      <polygon points="812,390 886,364 910,590 836,622" fill="#160e0c"/>
+      <polygon points="886,430 902,424 916,560 898,570" fill="#ffb15e" opacity="0.9"/>
+
+      <polygon points="392,292 728,258 766,724 430,774" fill="#7b4c2e"/>
+      <g clip-path="url(#wall-clip)" fill="none" stroke="#3a2418" stroke-width="3" opacity="0.28">
+        <line x1="490" y1="280" x2="530" y2="760"/>
+        <line x1="590" y1="270" x2="628" y2="748"/>
+        <line x1="680" y1="262" x2="716" y2="734"/>
+      </g>
+      <g clip-path="url(#wall-clip)">
+        <ellipse cx="560" cy="520" rx="200" ry="170" fill="#ffb060" opacity="0.14"/>
+      </g>
+
+      <polygon points="348,318 760,262 728,258 392,292" fill="#2a201c"/>
+      <polygon points="348,318 760,262 786,214 366,268" fill="url(#roof)"/>
+      <polygon points="760,262 972,198 990,164 786,214" fill="#2c3c54"/>
+      <g fill="none" stroke="#0e1420" stroke-linecap="round">
+        <path d="M356,304 C540,270 680,268 754,258" stroke-width="3.5"/>
+        <path d="M364,286 C548,250 690,248 770,236" stroke-width="3"/>
+        <path d="M774,250 C860,214 930,200 980,176" stroke-width="3"/>
+      </g>
+
+      <g clip-path="url(#window-clip)">
+        <polygon points="458,404 642,380 670,628 486,658" fill="#6a3018"/>
+        <polygon points="500,454 590,442 606,560 516,574" fill="#ff9a48"/>
+        <polygon points="458,404 500,454 516,574 486,658" fill="#7a3818"/>
+        <polygon points="642,380 590,442 606,560 670,628" fill="#e07838"/>
+        <polygon points="486,658 670,628 606,560 516,574" fill="#542c16"/>
+        <ellipse cx="560" cy="520" rx="130" ry="100" fill="url(#shop-glow)"/>
+        <line x1="548" y1="408" x2="548" y2="446" stroke="#3a2418" stroke-width="2.5"/>
+        <circle class="pulse" cx="548" cy="456" r="28" fill="#ffd7a0" opacity="0.8" filter="url(#glow)"/>
+        <circle cx="548" cy="456" r="8" fill="#fff6dc"/>
+        <polygon points="508,492 582,482 586,496 512,506" fill="#5c3a28"/>
+        <ellipse cx="522" cy="486" rx="12" ry="5" fill="#fffaf4"/>
+        <ellipse cx="548" cy="482" rx="12" ry="5" fill="#fffaf4"/>
+        <ellipse cx="574" cy="478" rx="12" ry="5" fill="#fffaf4"/>
+        <rect x="526" y="452" width="8" height="22" rx="2" fill="#3a2218"/>
+        <rect x="542" y="456" width="7" height="18" rx="2" fill="#9a3030"/>
+        <ellipse cx="592" cy="575" rx="26" ry="11" fill="#3a342e"/>
+        <ellipse cx="592" cy="566" rx="18" ry="6" fill="#c46830"/>
+        <path class="steam" d="M584,558 C578,540 594,530 586,512" fill="none" stroke="#fff6ea" stroke-width="4" stroke-linecap="round" opacity="0.7"/>
+      </g>
+
+      <polygon points="458,404 642,380 670,628 486,658" fill="none" stroke="#3a2418" stroke-width="16" stroke-linejoin="round"/>
+      <polygon points="458,404 642,380 670,628 486,658" fill="none" stroke="#e6c48a" stroke-width="4" stroke-linejoin="round"/>
+      <line x1="450" y1="400" x2="654" y2="376" stroke="#2a1a12" stroke-width="7" stroke-linecap="round"/>
+      <path d="M466,402 L528,392 L522,458 Q496,470 470,454 Z" fill="#16243c"/>
+      <path d="M548,388 L620,376 L614,444 Q582,456 552,440 Z" fill="#16243c"/>
+      <circle cx="500" cy="432" r="8" fill="#f3ecdf"/>
+      <circle cx="590" cy="418" r="8" fill="#f3ecdf"/>
+
+      <path d="M470,620 C510,648 548,662 590,648 C610,638 600,612 572,604 C520,588 486,598 470,620 Z" fill="#ef8b3c"/>
+      <path d="M492,630 L572,618 L582,700 L486,714 Z" fill="#f7f3ea"/>
+      <rect x="522" y="652" width="22" height="16" rx="3" fill="#e4d3bc"/>
+
+      <polygon points="430,690 710,632 668,604 468,656" fill="#c49262"/>
+      <polygon points="430,690 710,632 724,674 448,736" fill="#6b442c"/>
+      <polygon points="448,736 724,674 742,708 470,776" fill="#3e2a1e"/>
+
+      <polygon points="400,700 720,640 900,960 760,1024 120,1024 180,900" fill="url(#spill)"/>
+      <g class="shimmer" clip-path="url(#street-clip)">
+        <ellipse cx="560" cy="940" rx="180" ry="40" fill="#ffb15a" filter="url(#soft)"/>
+        <ellipse cx="390" cy="900" rx="16" ry="50" fill="#ff5a32" filter="url(#soft)"/>
+        <ellipse cx="720" cy="910" rx="14" ry="58" fill="#ff4b93" filter="url(#soft)"/>
+        <ellipse cx="270" cy="980" rx="40" ry="12" fill="#b7c9d8" opacity="0.7" filter="url(#soft)"/>
+      </g>
+      <g fill="none" stroke="#9ec4de" stroke-width="1.5">
+        <ellipse class="ripple" cx="250" cy="968" rx="18" ry="6"/>
+        <ellipse class="ripple ripple-b" cx="620" cy="930" rx="22" ry="7"/>
+      </g>
+
+      <g id="cat">
+        <path d="M452,548 L466,478 L508,530 Z" fill="#ef8b3c"/>
+        <path d="M462,530 L472,496 L496,524 Z" fill="#f3a8b4"/>
+        <path d="M512,524 L552,474 L566,548 Z" fill="#ef8b3c"/>
+        <path d="M524,528 L550,492 L558,542 Z" fill="#f3a8b4"/>
+        <circle cx="504" cy="568" r="56" fill="#ef8b3c"/>
+        <path d="M456,534 Q504,508 556,536" fill="none" stroke="#fffaf4" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="560" cy="542" r="5" fill="#fffaf4"/>
+        <path d="M474,524 L486,510 L498,528" fill="#c4622a"/>
+        <path d="M512,518 L524,504 L538,524" fill="#c4622a"/>
+        <ellipse cx="492" cy="590" rx="28" ry="20" fill="#ffe6c4"/>
+        <g class="blink">
+          <ellipse cx="478" cy="560" rx="8.5" ry="9.5" fill="#24180f"/>
+          <ellipse cx="474" cy="564" rx="3.5" ry="4" fill="#140e0a"/>
+          <circle cx="482" cy="556" r="2.2" fill="#fff"/>
+        </g>
+        <g class="blink">
+          <ellipse cx="522" cy="556" rx="8.5" ry="9.5" fill="#24180f"/>
+          <ellipse cx="518" cy="560" rx="3.5" ry="4" fill="#140e0a"/>
+          <circle cx="526" cy="552" r="2.2" fill="#fff"/>
+        </g>
+        <ellipse cx="486" cy="586" rx="5" ry="3.5" fill="#e98a9a"/>
+        <path d="M476,598 Q486,606 496,598" fill="none" stroke="#6a3830" stroke-width="2.4" stroke-linecap="round"/>
+        <ellipse cx="452" cy="582" rx="8" ry="4.5" fill="#f0a0a8" opacity="0.5"/>
+        <ellipse cx="536" cy="576" rx="8" ry="4.5" fill="#f0a0a8" opacity="0.4"/>
+        <g fill="none" stroke="#fff6ea" stroke-width="1.6" stroke-linecap="round">
+          <line x1="462" y1="586" x2="424" y2="580"/>
+          <line x1="462" y1="592" x2="420" y2="592"/>
+          <line x1="464" y1="598" x2="428" y2="606"/>
+          <line x1="520" y1="582" x2="558" y2="576"/>
+          <line x1="522" y1="588" x2="562" y2="588"/>
+          <line x1="520" y1="594" x2="556" y2="602"/>
+        </g>
+        <path d="M530,640 C590,628 612,590 588,552 C574,528 604,516 616,530" fill="none" stroke="#c4622a" stroke-width="16" stroke-linecap="round"/>
+        <path d="M536,634 C586,624 602,594 586,564" fill="none" stroke="#ef8d3c" stroke-width="9" stroke-linecap="round"/>
+        <ellipse cx="596" cy="548" rx="7" ry="5" fill="#9a4a1c" transform="rotate(25 596 548)"/>
+        <path d="M520,618 L546,652 L500,658 Z" fill="#fffaf4"/>
+        <path d="M546,652 L564,678 L524,670 Z" fill="#fffaf4"/>
+        <path d="M534,632 C508,658 486,678 470,696" fill="none" stroke="#8a3e16" stroke-width="28" stroke-linecap="round"/>
+        <path d="M534,632 C508,658 486,678 470,696" fill="none" stroke="#f09a4a" stroke-width="16" stroke-linecap="round"/>
+        <ellipse cx="560" cy="652" rx="16" ry="11" fill="#f2b56e"/>
+      </g>
+
+      <g id="bowl">
+        <ellipse cx="426" cy="716" rx="60" ry="24" fill="#3a2418" opacity="0.35"/>
+        <ellipse cx="424" cy="708" rx="60" ry="24" fill="#fffaf6"/>
+        <ellipse cx="424" cy="700" rx="50" ry="16" fill="none" stroke="#e23a32" stroke-width="5"/>
+        <ellipse cx="424" cy="706" rx="44" ry="14" fill="#e9923a"/>
+        <ellipse cx="424" cy="702" rx="36" ry="8" fill="#ffd27a" opacity="0.7"/>
+        <g fill="none" stroke="#f6d56a" stroke-width="3.4" stroke-linecap="round">
+          <path d="M394,704 C408,694 418,712 432,702 C446,692 456,710 470,700"/>
+          <path d="M398,712 C414,704 426,716 442,708 C454,702 464,712 476,706"/>
+        </g>
+        <path d="M396,692 L412,688 L418,716 L400,712 Z" fill="#1d3d32"/>
+        <circle cx="408" cy="708" r="8" fill="#ff8aa8"/>
+        <path d="M408,702 C413,706 413,712 408,714 C403,712 403,706 408,702" fill="none" stroke="#fff" stroke-width="1.7"/>
+        <circle cx="448" cy="698" r="10" fill="#fff6e4"/>
+        <circle cx="448" cy="698" r="5.5" fill="#f0c030"/>
+        <rect x="430" y="694" width="4" height="11" rx="1.5" fill="#3f8f48"/>
+        <rect x="438" y="696" width="4" height="10" rx="1.5" fill="#3f8f48"/>
+        <ellipse cx="456" cy="736" rx="24" ry="13" fill="#f2b56e"/>
+        <ellipse cx="442" cy="730" rx="8" ry="6" fill="#e7a068"/>
+        <ellipse cx="478" cy="694" rx="12" ry="8" fill="#f6c48a"/>
+      </g>
+
+      <g id="robot">
+        <ellipse cx="270" cy="972" rx="64" ry="13" fill="#05070c" opacity="0.42"/>
+        <path d="M248,910 L236,958" fill="none" stroke="#6d8498" stroke-width="16" stroke-linecap="round"/>
+        <path d="M300,916 L312,948" fill="none" stroke="#8aa0b4" stroke-width="16" stroke-linecap="round"/>
+        <ellipse cx="232" cy="964" rx="22" ry="12" fill="#d5e3ee"/>
+        <ellipse cx="314" cy="954" rx="22" ry="12" fill="#c5d4e2"/>
+        <path d="M226,808 Q270,790 316,812 L330,930 Q270,954 214,932 Z" fill="url(#metal)"/>
+        <rect x="252" y="846" width="40" height="32" rx="6" fill="#243140"/>
+        <circle cx="272" cy="862" r="5" fill="#5cefff"/>
+        <path d="M236,845 C200,820 188,800 200,778" fill="none" stroke="#6a8296" stroke-width="18" stroke-linecap="round"/>
+        <path d="M236,845 C200,820 188,800 200,778" fill="none" stroke="#c5d6e4" stroke-width="11" stroke-linecap="round"/>
+        <path d="M308,860 C348,820 368,776 356,728" fill="none" stroke="#b08978" stroke-width="20" stroke-linecap="round"/>
+        <path d="M308,860 C348,820 368,776 356,728" fill="none" stroke="#f0d2c0" stroke-width="12" stroke-linecap="round"/>
+        <ellipse cx="360" cy="718" rx="16" ry="13" fill="#f4dcc8"/>
+        <ellipse cx="374" cy="706" rx="7" ry="5" fill="#f8e6d6" transform="rotate(-35 374 706)"/>
+        <ellipse cx="380" cy="714" rx="7" ry="5" fill="#f8e6d6" transform="rotate(-8 380 714)"/>
+        <ellipse cx="378" cy="724" rx="7" ry="5" fill="#f8e6d6" transform="rotate(18 378 724)"/>
+        <g transform="rotate(8 270 748)">
+          <circle cx="270" cy="748" r="44" fill="#d5e4ee"/>
+          <ellipse cx="288" cy="742" rx="14" ry="24" fill="#ffc9a4" opacity="0.35"/>
+          <ellipse cx="254" cy="730" rx="16" ry="9" fill="#fff" opacity="0.4"/>
+          <line x1="270" y1="706" x2="274" y2="672" stroke="#243140" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="274" cy="664" r="6.5" fill="#16343a"/>
+          <circle cx="274" cy="664" r="3.5" fill="#7ef6ff"/>
+          <g class="blink blink-late">
+            <ellipse cx="254" cy="744" rx="9" ry="10" fill="#102028"/>
+            <ellipse cx="258" cy="742" rx="3.6" ry="4" fill="#062028"/>
+            <circle cx="256" cy="740" r="2.2" fill="#d9fbff"/>
+          </g>
+          <g class="blink blink-late">
+            <ellipse cx="292" cy="740" rx="9" ry="10" fill="#102028"/>
+            <ellipse cx="296" cy="738" rx="3.6" ry="4" fill="#062028"/>
+            <circle cx="294" cy="736" r="2.2" fill="#d9fbff"/>
+          </g>
+          <path d="M258,766 Q272,776 288,764" fill="none" stroke="#243140" stroke-width="2.6" stroke-linecap="round"/>
+        </g>
+      </g>
+
+      <g id="lantern">
+        <polygon points="360,300 384,308 358,318" fill="#2a1a12"/>
+        <line x1="372" y1="308" x2="360" y2="378" stroke="#2a1a12" stroke-width="2.4"/>
+        <circle class="pulse" cx="364" cy="448" r="90" fill="url(#lantern-halo)"/>
+        <ellipse cx="364" cy="384" rx="16" ry="7" fill="#241610"/>
+        <ellipse cx="364" cy="448" rx="34" ry="52" fill="url(#lantern-body)"/>
+        <g stroke="#7a1c14" stroke-width="2" opacity="0.4">
+          <line x1="334" y1="424" x2="394" y2="424"/>
+          <line x1="332" y1="448" x2="396" y2="448"/>
+          <line x1="334" y1="472" x2="394" y2="472"/>
+        </g>
+        <path d="M352,412 C348,440 350,470 354,492" fill="none" stroke="#fff1cc" stroke-width="5" stroke-linecap="round" opacity="0.55"/>
+        <ellipse cx="364" cy="498" rx="14" ry="6" fill="#241610"/>
+        <path d="M364,504 L364,530" stroke="#e23a32" stroke-width="2.2" stroke-linecap="round"/>
+        <path d="M364,512 L352,534" stroke="#e23a32" stroke-width="1.8" stroke-linecap="round"/>
+        <path d="M364,512 L376,534" stroke="#e23a32" stroke-width="1.8" stroke-linecap="round"/>
+      </g>
+
+      <g id="sign" transform="translate(676,418) rotate(-3)">
+        <rect width="78" height="236" rx="8" fill="#14060e"/>
+        <rect x="4" y="4" width="70" height="228" rx="5" fill="none" stroke="#ff4b93" stroke-width="1.5" opacity="0.8"/>
+        <use href="#kana" stroke="#ff3d86" stroke-width="11" filter="url(#neon)" class="flicker"/>
+        <use href="#kana" stroke="#fff7fb" stroke-width="3.6"/>
+      </g>
+
+      <g id="umbrella">
+        <path d="M262,512 Q228,650 200,790" fill="none" stroke="#d5e4ee" stroke-width="9" stroke-linecap="round"/>
+        <path d="M262,512 Q228,650 200,790" fill="none" stroke="#f7fbff" stroke-width="4" stroke-linecap="round"/>
+        <path d="M200,790 C192,812 214,822 222,804" fill="none" stroke="#f7fbff" stroke-width="5" stroke-linecap="round"/>
+        <circle cx="200" cy="786" r="13" fill="#d5e2ec"/>
+        <path d="M96,688 C132,548 196,492 268,502 C344,490 412,552 424,652 C390,706 176,712 96,688 Z" fill="url(#plastic)" stroke="#f7fbff" stroke-width="3.6" stroke-linejoin="round"/>
+        <g fill="none" stroke="#f7fbff" stroke-width="1.7" stroke-linecap="round" opacity="0.75">
+          <line x1="268" y1="508" x2="120" y2="676"/>
+          <line x1="268" y1="508" x2="170" y2="590"/>
+          <line x1="268" y1="508" x2="230" y2="530"/>
+          <line x1="268" y1="508" x2="330" y2="530"/>
+          <line x1="268" y1="508" x2="380" y2="600"/>
+          <line x1="268" y1="508" x2="410" y2="656"/>
+        </g>
+        <path d="M168,590 Q230,530 310,538" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity="0.38"/>
+        <g fill="#fff">
+          <ellipse cx="176" cy="630" rx="4" ry="6" opacity="0.75"/>
+          <ellipse cx="250" cy="560" rx="3.5" ry="5" opacity="0.7"/>
+          <ellipse cx="340" cy="610" rx="4" ry="6" opacity="0.65"/>
+          <ellipse cx="210" cy="670" rx="3" ry="4.5" opacity="0.6"/>
+        </g>
+        <path d="M124,684 L118,722" fill="none" stroke="#e7f4ff" stroke-width="2.2" stroke-linecap="round" opacity="0.85"/>
+      </g>
+
+      <g id="steam" fill="none" stroke-linecap="round">
+        <path class="steam" d="M400,690 C382,650 394,620 376,578 C362,544 378,516 368,480" stroke="#fff" stroke-width="7" opacity="0.8"/>
+        <path class="steam steam-b" d="M424,688 C414,646 398,622 410,576 C418,540 400,512 408,476" stroke="#fff" stroke-width="6" opacity="0.75"/>
+        <path class="steam steam-c" d="M448,696 C462,666 444,648 454,626" stroke="#fff" stroke-width="5" opacity="0.7"/>
+      </g>
+
+      <g id="rain-near" mask="url(#rain-mask)"></g>
+      <g fill="none" stroke="#d5e8f6" stroke-width="1.5" stroke-linecap="round" opacity="0.6">
+        <path d="M230,986 L224,978 M230,986 L236,978"/>
+        <path d="M640,952 L634,944 M640,952 L646,944"/>
+        <path d="M860,990 L854,982 M860,990 L866,982"/>
+      </g>
+      <rect width="1024" height="1024" fill="url(#vignette)" pointer-events="none"/>
+    </svg>
+  </main>
+  <script>
+    (function () {
+      var svgNS = "http://www.w3.org/2000/svg";
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      function sheet(id, count, period, length, width, opacity, color, duration) {
+        var group = document.getElementById(id);
+        var i, x, y0, k, y, line;
+        for (i = 0; i < count; i += 1) {
+          x = Math.random() * 1080 - 30;
+          y0 = Math.random() * period - period;
+          for (k = 0; y0 + k * period < 1100; k += 1) {
+            y = y0 + k * period;
+            line = document.createElementNS(svgNS, "line");
+            line.setAttribute("x1", x.toFixed(1));
+            line.setAttribute("y1", y.toFixed(1));
+            line.setAttribute("x2", (x + length * 0.16).toFixed(1));
+            line.setAttribute("y2", (y + length).toFixed(1));
+            line.setAttribute("stroke", color);
+            line.setAttribute("stroke-width", width);
+            line.setAttribute("stroke-linecap", "round");
+            line.setAttribute("opacity", opacity);
+            if (!reduceMotion) {
+              line.classList.add("drop");
+              line.style.animationDuration = duration + "s";
+            }
+            group.appendChild(line);
+          }
+        }
+      }
+
+      sheet("rain-far", 42, 220, 18, "1.2", "0.28", "#d7ecff", 1.7);
+      sheet("rain-near", 36, 220, 28, "1.6", "0.55", "#e7f6ff", 1.05);
+      sheet("rain-near", 14, 220, 22, "1.4", "0.4", "#ffe0b8", 1.15);
+
+      var button = document.getElementById("listen");
+      var audio = null;
+      var drips = 0;
+      var soundOn = false;
+
+      function noiseBuffer(ctx) {
+        var length = ctx.sampleRate * 2;
+        var buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+        var data = buffer.getChannelData(0);
+        var last = 0;
+        var i, white;
+        for (i = 0; i < length; i += 1) {
+          white = Math.random() * 2 - 1;
+          last = (last + white * 0.25) * 0.96;
+          data[i] = last * 3.2;
+        }
+        return buffer;
+      }
+
+      function loopNoise(ctx, buffer, type, freq, q, gainValue) {
+        var source = ctx.createBufferSource();
+        var filter = ctx.createBiquadFilter();
+        var gain = ctx.createGain();
+        source.buffer = buffer;
+        source.loop = true;
+        filter.type = type;
+        filter.frequency.value = freq;
+        filter.Q.value = q;
+        gain.gain.value = gainValue;
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        source.start();
+        return gain;
+      }
+
+      function drip(ctx) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        var now = ctx.currentTime;
+        osc.type = "sine";
+        osc.frequency.value = 1500 + Math.random() * 1400;
+        gain.gain.setValueAtTime(0.0001, now);
+        gain.gain.exponentialRampToValueAtTime(0.07, now + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+
+      function buildAudio() {
+        var ctx = new AudioContext();
+        var buffer = noiseBuffer(ctx);
+        var rain = loopNoise(ctx, buffer, "bandpass", 1400, 0.65, 0.16);
+        loopNoise(ctx, buffer, "lowpass", 420, 0.7, 0.08);
+        var hum = ctx.createOscillator();
+        var humGain = ctx.createGain();
+        hum.type = "sine";
+        hum.frequency.value = 92;
+        humGain.gain.value = 0.02;
+        hum.connect(humGain);
+        humGain.connect(ctx.destination);
+        hum.start();
+        var lfo = ctx.createOscillator();
+        var lfoGain = ctx.createGain();
+        lfo.frequency.value = 0.18;
+        lfoGain.gain.value = 0.045;
+        lfo.connect(lfoGain);
+        lfoGain.connect(rain.gain);
+        lfo.start();
+        drips = window.setInterval(function () {
+          if (ctx.state === "running" && Math.random() < 0.55) drip(ctx);
+        }, 680);
+        return ctx;
+      }
+
+      button.addEventListener("click", function () {
+        if (!audio) audio = buildAudio();
+        soundOn = !soundOn;
+        if (soundOn) {
+          audio.resume();
+          button.textContent = "Quiet";
+          button.setAttribute("aria-pressed", "true");
+        } else {
+          audio.suspend();
+          button.textContent = "Listen";
+          button.setAttribute("aria-pressed", "false");
+        }
+      });
+    }());
+  </script>
+</body>
+</html>
