@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鹈鹕骑自行车</title>
+<style>
+  html, body {
+    margin: 0;
+    height: 100%;
+    background: #dff2f8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  }
+  svg { width: min(100vw, 1100px); height: auto; display: block; cursor: pointer; }
+  .hint {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #4a6b7a;
+    font-size: 13px;
+    letter-spacing: 2px;
+    opacity: .65;
+    user-select: none;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+<svg id="scene" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a8ddf0"/>
+      <stop offset="1" stop-color="#eafaff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 天空 -->
+  <rect x="0" y="0" width="900" height="600" fill="url(#sky)"/>
+
+  <!-- 太阳 -->
+  <g id="sunG" transform="translate(115 95)">
+    <g id="sunRays" stroke="#ffd94d" stroke-width="4" stroke-linecap="round"></g>
+    <circle r="36" fill="#ffd94d"/>
+    <circle r="30" fill="#ffe27a"/>
+  </g>
+
+  <!-- 云 -->
+  <g id="clouds" fill="#ffffff" opacity=".92"></g>
+
+  <!-- 远山 -->
+  <g id="hillsFar" fill="#b7e0ae"></g>
+  <g id="hillsNear" fill="#93cf87"></g>
+
+  <!-- 草地 -->
+  <rect x="0" y="470" width="900" height="130" fill="#8fcb72"/>
+  <g id="trees"></g>
+  <g id="tuftsMid"></g>
+
+  <!-- 路面 -->
+  <rect x="0" y="518" width="900" height="62" fill="#e7d3a2"/>
+  <rect x="0" y="518" width="900" height="4" fill="#d9c18a"/>
+  <g id="stones"></g>
+  <line id="roadDash" x1="0" y1="550" x2="900" y2="550" stroke="#fffdf2" stroke-width="5"
+        stroke-dasharray="34 30" stroke-linecap="round"/>
+
+  <!-- 远处飞鸟 -->
+  <g id="birds" stroke="#5a7a8a" stroke-width="2" fill="none" stroke-linecap="round"></g>
+
+  <!-- ============ 自行车 + 鹈鹕 ============ -->
+  <g id="bikeRider">
+    <!-- 地面阴影 -->
+    <ellipse cx="450" cy="523" rx="195" ry="13" fill="rgba(60,80,60,.14)"/>
+    <ellipse cx="300" cy="521" rx="42" ry="6" fill="rgba(60,80,60,.16)"/>
+    <ellipse cx="600" cy="521" rx="42" ry="6" fill="rgba(60,80,60,.16)"/>
+
+    <!-- 远侧腿 + 曲柄（在车轮后面） -->
+    <g id="farLeg">
+      <line id="crankF" x1="430" y1="452" x2="430" y2="418" stroke="#6b767e" stroke-width="5" stroke-linecap="round"/>
+      <rect id="pedalF" x="-13" y="0" width="26" height="6" rx="2" fill="#2e3338"/>
+      <path id="thighF" stroke="#e3eaed" stroke-width="15" stroke-linecap="round" fill="none"/>
+      <path id="shinF"  stroke="#d97f27" stroke-width="8"  stroke-linecap="round" fill="none"/>
+      <ellipse id="footF" rx="12" ry="6" fill="#d97f27"/>
+    </g>
+
+    <!-- 车轮 -->
+    <g id="wheelR">
+      <circle cx="300" cy="445" r="75" fill="none" stroke="#39404a" stroke-width="9"/>
+      <circle cx="300" cy="445" r="63" fill="none" stroke="#cfd8dd" stroke-width="4"/>
+      <g id="spokesR" stroke="#aab6bd" stroke-width="2"></g>
+      <circle cx="300" cy="445" r="7" fill="#6b767e"/>
+    </g>
+    <g id="wheelF">
+      <circle cx="600" cy="445" r="75" fill="none" stroke="#39404a" stroke-width="9"/>
+      <circle cx="600" cy="445" r="63" fill="none" stroke="#cfd8dd" stroke-width="4"/>
+      <g id="spokesF" stroke="#aab6bd" stroke-width="2"></g>
+      <circle cx="600" cy="445" r="7" fill="#6b767e"/>
+    </g>
+
+    <!-- 车架 -->
+    <g id="frame" stroke="#17a398" stroke-width="7" stroke-linecap="round" fill="none">
+      <path d="M300 445 L372 330"/>
+      <path d="M300 445 L430 452"/>
+      <path d="M430 452 L366 328"/>
+      <path d="M369 325 L580 317"/>
+      <path d="M430 452 L588 340"/>
+      <path d="M576 309 L590 346" stroke-width="8"/>
+      <path d="M590 343 Q596 390 600 445"/>
+    </g>
+
+    <!-- 链条 + 牙盘 + 飞轮 -->
+    <line id="chainTop" x1="431" y1="434" x2="300" y2="436" stroke="#555f66" stroke-width="3" stroke-dasharray="7 5"/>
+    <line id="chainBot" x1="300" y1="454" x2="429" y2="470" stroke="#555f66" stroke-width="3" stroke-dasharray="7 5"/>
+    <circle cx="300" cy="445" r="9" fill="none" stroke="#8a959c" stroke-width="4"/>
+    <circle cx="430" cy="452" r="18" fill="none" stroke="#8a959c" stroke-width="4"/>
+
+    <!-- 座垫 / 座管 -->
+    <line x1="364" y1="326" x2="358" y2="310" stroke="#9aa5ab" stroke-width="5" stroke-linecap="round"/>
+    <path d="M344 309 Q350 299 372 298 Q394 299 396 307 Q392 313 370 313 Q350 313 344 309 Z" fill="#6b4f35"/>
+
+    <!-- 车把 + 把立 -->
+    <line x1="578" y1="312" x2="580" y2="287" stroke="#8a959c" stroke-width="6" stroke-linecap="round"/>
+    <path d="M582 287 Q575 279 564 282" stroke="#8a959c" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <line x1="564" y1="282" x2="554" y2="285" stroke="#3a3f44" stroke-width="9" stroke-linecap="round"/>
+
+    <!-- 车筐 + 鱼 -->
+    <g id="basketG">
+      <path d="M586 298 L648 294 L640 336 L594 338 Z" fill="#d29a5b" stroke="#b57f42" stroke-width="2"/>
+      <path d="M588 310 L645 306 M590 322 L643 318 M604 297 L602 337 M622 296 L620 337 M638 295 L635 337"
+            stroke="#b57f42" stroke-width="1.5" fill="none"/>
+      <g id="fishTail">
+        <path d="M612 297 L604 276 Q612 281 616 289 L624 273 Q629 284 631 295 Z"
+              fill="#3fa7b8" stroke="#2e8a99" stroke-width="1.5"/>
+      </g>
+    </g>
+
+    <!-- 近侧曲柄 + 脚踏 -->
+    <line id="crankN" x1="430" y1="452" x2="430" y2="486" stroke="#7b868d" stroke-width="6" stroke-linecap="round"/>
+    <rect id="pedalN" x="-13" y="0" width="26" height="6" rx="2" fill="#39404a"/>
+
+    <!-- ============ 鹈鹕（随踩踏起伏） ============ -->
+    <g id="rider">
+      <!-- 尾巴 -->
+      <g id="tail">
+        <path d="M348 292 Q300 282 258 296 Q300 300 346 306 Z" fill="#f4f9fb" stroke="#dfe8ec" stroke-width="2"/>
+        <path d="M350 304 Q305 300 266 314 Q308 314 348 316 Z" fill="#eef5f8" stroke="#dfe8ec" stroke-width="2"/>
+      </g>
+
+      <!-- 身体 -->
+      <ellipse cx="370" cy="282" rx="55" ry="40" fill="#eef4f6" transform="rotate(-14 395 262)"/>
+      <ellipse cx="395" cy="262" rx="80" ry="56" fill="#fdfdfd" stroke="#dfe8ec" stroke-width="2"
+               transform="rotate(-14 395 262)"/>
+
+      <!-- 脖子 -->
+      <path d="M448 244 C476 224 487 192 491 162 C494 142 506 133 521 132"
+            stroke="#e2ebee" stroke-width="27" stroke-linecap="round" fill="none"/>
+      <path d="M448 244 C476 224 487 192 491 162 C494 142 506 133 521 132"
+            stroke="#ffffff" stroke-width="21" stroke-linecap="round" fill="none"/>
+
+      <!-- 头 + 喙 + 头盔 -->
+      <g id="headG">
+        <circle cx="521" cy="133" r="20" fill="#ffffff" stroke="#dfe8ec" stroke-width="1.5"/>
+        <g id="pouchG">
+          <path d="M541 138 C570 148 596 162 612 178 C632 196 666 184 688 163
+                   C670 198 624 210 590 196 C565 186 547 162 541 138 Z"
+                fill="#f79d45" stroke="#dd8626" stroke-width="1.5"/>
+        </g>
+        <path d="M537 121 C600 124 662 138 694 156 C698 159 695 164 688 164
+                 C640 154 580 145 540 139 C536 133 535 126 537 121 Z"
+              fill="#ffb04d" stroke="#dd8626" stroke-width="1.5" stroke-linejoin="round"/>
+        <path d="M560 128 C600 132 640 141 666 150" stroke="#dd8626" stroke-width="1.5"
+              fill="none" opacity=".55"/>
+        <circle cx="528" cy="127" r="4.2" fill="#263238"/>
+        <circle cx="529.5" cy="125.5" r="1.3" fill="#ffffff"/>
+        <path d="M501 122 Q503 98 526 97 Q550 99 553 121 Q550 112 527 112 Q505 113 501 122 Z"
+              fill="#ffd23f" stroke="#e0a92a" stroke-width="1.5"/>
+        <path d="M550 119 L544 138 Q538 148 531 149" stroke="#b98b1e" stroke-width="2" fill="none"/>
+      </g>
+
+      <!-- 围巾 -->
+      <path d="M452 236 Q466 218 490 210" stroke="#e85545" stroke-width="11" stroke-linecap="round" fill="none"/>
+      <path id="scarfTail" fill="#e85545"/>
+
+      <!-- 臀部绒毛（盖住大腿根部） -->
+      <circle cx="366" cy="312" r="17" fill="#fdfdfd" stroke="#dfe8ec" stroke-width="1.5"/>
+    </g>
+
+    <!-- 近侧翅膀（扶车把） -->
+    <g id="armG">
+      <path id="armBack" stroke="#e2ebee" stroke-width="16" stroke-linecap="round" fill="none"/>
+      <path id="armMain" stroke="#ffffff" stroke-width="12" stroke-linecap="round" fill="none"/>
+      <path id="fingers" stroke="#eef5f8" stroke-width="4" stroke-linecap="round" fill="none"/>
+    </g>
+
+    <!-- 近侧腿 -->
+    <g id="nearLeg">
+      <path id="thighN0" stroke="#e0e8eb" stroke-width="18" stroke-linecap="round" fill="none"/>
+      <path id="thighN"  stroke="#ffffff" stroke-width="14" stroke-linecap="round" fill="none"/>
+      <path id="shinN"   stroke="#f29133" stroke-width="8"  stroke-linecap="round" fill="none"/>
+      <ellipse id="footN" rx="12" ry="6" fill="#f29133"/>
+      <path id="toesN" stroke="#f29133" stroke-width="3" stroke-linecap="round" fill="none"/>
+    </g>
+  </g>
+
+  <!-- 前景草 -->
+  <g id="tuftsFg"></g>
+</svg>
+
+<div class="hint">鹈鹕骑行中 · 点击画面变速</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const wrap = (x, m) => ((x % m) + m) % m;
+
+/* ---------- 常量 ---------- */
+const R = 75;                       // 轮半径
+const BB = { x: 430, y: 452 };      // 五通（脚踏轴心）
+const CRANK = 34;                   // 曲柄长
+const L1 = 100, L2 = 98;            // 大腿 / 小腿长
+const hipNear = { x: 368, y: 316 };
+const hipFar  = { x: 360, y: 313 };
+const GRIP = { x: 558, y: 285 };    // 车把握点
+
+/* ---------- 生成重复元素 ---------- */
+// 辐条
+for (const [id, cx, cy] of [['spokesR', 300, 445], ['spokesF', 600, 445]]) {
+  const g = $(id);
+  for (let i = 0; i < 4; i++) {
+    const l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', cx - 63); l.setAttribute('y1', cy);
+    l.setAttribute('x2', cx + 63); l.setAttribute('y2', cy);
+    l.setAttribute('transform', `rotate(${i * 45} ${cx} ${cy})`);
+    g.appendChild(l);
+  }
+}
+// 太阳光芒
+{
+  const g = $('sunRays');
+  for (let i = 0; i < 12; i++) {
+    const l = document.createElementNS(NS, 'line');
+    l.setAttribute('x1', 0); l.setAttribute('y1', -46);
+    l.setAttribute('x2', 0); l.setAttribute('y2', -58);
+    l.setAttribute('transform', `rotate(${i * 30})`);
+    g.appendChild(l);
+  }
+}
+// 云
+const clouds = [];
+{
+  const g = $('clouds');
+  const defs = [
+    { x: 180, y: 80,  s: 1.1, v: 24 },
+    { x: 480, y: 130, s: 0.8, v: 34 },
+    { x: 720, y: 60,  s: 1.3, v: 20 },
+    { x: 900, y: 165, s: 0.7, v: 42 },
+  ];
+  for (const d of defs) {
+    const c = document.createElementNS(NS, 'g');
+    c.innerHTML = `<ellipse cx="0" cy="0" rx="42" ry="18"/>
+                   <ellipse cx="30" cy="-10" rx="30" ry="16"/>
+                   <ellipse cx="-30" cy="-8" rx="26" ry="14"/>
+                   <ellipse cx="5" cy="-16" rx="24" ry="14"/>`;
+    g.appendChild(c);
+    clouds.push({ el: c, ...d });
+  }
+}
+// 山（两层，路径宽 1800，平移取模循环）
+{
+  const far = 'M0 470 Q150 380 300 470 Q450 400 600 470 Q750 390 900 470 ' +
+              'Q1050 380 1200 470 Q1350 400 1500 470 Q1650 390 1800 470 L1800 472 L0 472 Z';
+  const near = 'M0 470 Q200 408 400 470 Q600 418 800 470 Q1000 405 1200 470 ' +
+               'Q1400 420 1600 470 Q1750 440 1800 470 L1800 472 L0 472 Z';
+  const pf = document.createElementNS(NS, 'path'); pf.setAttribute('d', far);
+  const pn = document.createElementNS(NS, 'path'); pn.setAttribute('d', near);
+  $('hillsFar').appendChild(pf); $('hillsNear').appendChild(pn);
+}
+// 树（中景）
+const trees = [];
+{
+  const g = $('trees');
+  const xs = [80, 300, 520, 700, 860];
+  for (const x of xs) {
+    const el = document.createElementNS(NS, 'g');
+    const s = 0.7 + (x % 3) * 0.25;
+    el.innerHTML = `<rect x="-4" y="-46" width="8" height="46" rx="3" fill="#8a6b4a"/>
+                    <circle cx="0" cy="-58" r="26" fill="#5da84f"/>
+                    <circle cx="-18" cy="-46" r="17" fill="#6cb85d"/>
+                    <circle cx="18" cy="-48" r="18" fill="#6cb85d"/>`;
+    g.appendChild(el);
+    trees.push({ el, x0: x, y: 470, s, f: 0.45, range: 1140 });
+  }
+}
+// 草叶
+function blade(color) {
+  return `<path d="M0 0 Q-3 -12 -8 -17 M0 0 Q0 -15 2 -19 M0 0 Q4 -12 10 -16"
+          stroke="${color}" stroke-width="2.5" fill="none" stroke-linecap="round"/>`;
+}
+const tufts = [];
+{
+  const gM = $('tuftsMid'), gF = $('tuftsFg');
+  for (let i = 0; i < 16; i++) {
+    const el = document.createElementNS(NS, 'g');
+    el.innerHTML = blade('#5da84f');
+    gM.appendChild(el);
+    tufts.push({ el, x0: i * 62 + (i % 3) * 17, y: 486 + (i * 29) % 30,
+                 s: 0.7 + (i % 4) * 0.15, f: 1.0, range: 1000 });
+  }
+  for (let i = 0; i < 10; i++) {
+    const el = document.createElementNS(NS, 'g');
+    el.innerHTML = blade('#4e9143') +
+      (i % 3 === 0 ? '<circle cx="6" cy="-20" r="4" fill="#ff8a80"/><circle cx="6" cy="-20" r="1.6" fill="#ffd94d"/>' : '');
+    gF.appendChild(el);
+    tufts.push({ el, x0: i * 108 + 30, y: 586 + (i * 13) % 12,
+                 s: 1.3 + (i % 3) * 0.25, f: 1.35, range: 1150 });
+  }
+}
+// 路面石子
+const stones = [];
+{
+  const g = $('stones');
+  for (let i = 0; i < 12; i++) {
+    const el = document.createElementNS(NS, 'ellipse');
+    el.setAttribute('rx', 2 + (i % 3)); el.setAttribute('ry', 1.5 + (i % 2));
+    el.setAttribute('fill', '#d9c493');
+    g.appendChild(el);
+    stones.push({ el, x0: i * 83 + 20, y: 526 + (i * 37) % 46 });
+  }
+}
+// 飞鸟
+const birds = [];
+{
+  const g = $('birds');
+  for (const [x, y] of [[300, 88], [640, 118]]) {
+    const el = document.createElementNS(NS, 'path');
+    el.setAttribute('d', 'M0 0 Q6 -7 12 0 Q18 -7 24 0');
+    g.appendChild(el);
+    birds.push({ el, x0: x, y });
+  }
+}
+
+/* ---------- 腿部 IK ---------- */
+function solveLeg(H, F) {
+  let dx = F.x - H.x, dy = F.y - H.y, d = Math.hypot(dx, dy);
+  const m = L1 + L2 - 0.01;
+  if (d > m) { dx *= m / d; dy *= m / d; F = { x: H.x + dx, y: H.y + dy }; d = m; }
+  const ux = dx / d, uy = dy / d;
+  const a = (L1 * L1 - L2 * L2 + d * d) / (2 * d);
+  const h = Math.sqrt(Math.max(0, L1 * L1 - a * a));
+  const k1 = { x: H.x + a * ux - h * uy, y: H.y + a * uy + h * ux };
+  const k2 = { x: H.x + a * ux + h * uy, y: H.y + a * uy - h * ux };
+  return { knee: k1.x > k2.x ? k1 : k2, foot: F };
+}
+
+function setLeg(leg, hip, phase, bob) {
+  const P = { x: BB.x + CRANK * Math.cos(phase), y: BB.y + CRANK * Math.sin(phase) };
+  const H = { x: hip.x, y: hip.y + bob };
+  const { knee, foot } = solveLeg(H, { x: P.x - 2, y: P.y - 9 });
+
+  leg.crank.setAttribute('x2', P.x); leg.crank.setAttribute('y2', P.y);
+  leg.pedal.setAttribute('transform', `translate(${P.x} ${P.y + 3})`);
+  leg.thigh.setAttribute('d', `M${H.x} ${H.y} L${knee.x} ${knee.y}`);
+  if (leg.thigh0) leg.thigh0.setAttribute('d', `M${H.x} ${H.y} L${knee.x} ${knee.y}`);
+  leg.shin.setAttribute('d', `M${knee.x} ${knee.y} L${foot.x} ${foot.y}`);
+  leg.foot.setAttribute('cx', foot.x); leg.foot.setAttribute('cy', foot.y);
+  leg.foot.setAttribute('transform', `rotate(-10 ${foot.x} ${foot.y})`);
+  if (leg.toes) leg.toes.setAttribute('d',
+    `M${foot.x + 8} ${foot.y - 2} L${foot.x + 15} ${foot.y + 1} M${foot.x + 8} ${foot.y + 2} L${foot.x + 14} ${foot.y + 5}`);
+}
+
+const legNear = {
+  crank: $('crankN'), pedal: $('pedalN'),
+  thigh: $('thighN'), thigh0: $('thighN0'),
+  shin: $('shinN'), foot: $('footN'), toes: $('toesN'),
+};
+const legFar = {
+  crank: $('crankF'), pedal: $('pedalF'),
+  thigh: $('thighF'), shin: $('shinF'), foot: $('footF'),
+};
+
+/* ---------- 动画主循环 ---------- */
+let scrollV = 300, crankW = 5.4, fast = false;
+const jump = parseFloat(new URLSearchParams(location.search).get('t')) || 0;
+let t = jump, th = jump * crankW, dist = jump * scrollV,
+    wang = jump * scrollV / R * 57.2958, cdist = jump * scrollV / R * 9;
+let last = performance.now();
+
+addEventListener('pointerdown', () => {
+  fast = !fast;
+  scrollV = fast ? 540 : 300;
+  crankW  = fast ? 8.6 : 5.4;
+});
+
+function frame(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+  t += dt;
+  th += crankW * dt;
+  dist += scrollV * dt;
+  wang += scrollV / R * dt * 57.2958;
+  cdist += scrollV / R * 9 * dt;
+
+  const bob = 2.4 * Math.sin(2 * th + 0.6);
+
+  // 车轮
+  $('spokesR').setAttribute('transform', `rotate(${wang % 360} 300 445)`);
+  $('spokesF').setAttribute('transform', `rotate(${wang % 360} 600 445)`);
+
+  // 链条 + 路面虚线
+  $('chainTop').setAttribute('stroke-dashoffset', -cdist);
+  $('chainBot').setAttribute('stroke-dashoffset', -cdist);
+  $('roadDash').setAttribute('stroke-dashoffset', -dist);
+
+  // 鹈鹕身体起伏 / 点头 / 尾巴 / 喉囊
+  $('rider').setAttribute('transform', `translate(0 ${bob.toFixed(2)})`);
+  $('headG').setAttribute('transform', `rotate(${(2.4 * Math.sin(2 * th + 1.4)).toFixed(2)} 495 160)`);
+  $('tail').setAttribute('transform', `rotate(${(3 * Math.sin(2 * th + 0.4)).toFixed(2)} 346 300)`);
+  $('pouchG').setAttribute('transform', `rotate(${(1.6 * Math.sin(2 * th + 1.9)).toFixed(2)} 542 140)`);
+
+  // 围巾飘动
+  const w1 = 4 * Math.sin(5 * t), w2 = 6 * Math.sin(5 * t - 1), w3 = 9 * Math.sin(5 * t - 2.2);
+  $('scarfTail').setAttribute('d',
+    `M462 224 C448 ${212 + w1} 428 ${208 + w2} 402 ${210 + w3}
+     L404 ${220 + w3} C428 ${220 + w2} 448 ${224 + w1} 464 234 Z`);
+
+  // 翅膀扶把
+  const sy = 246 + bob;
+  const armD = `M430 ${sy} Q500 ${304 + bob * 0.35} ${GRIP.x} ${GRIP.y}`;
+  $('armBack').setAttribute('d', armD);
+  $('armMain').setAttribute('d', armD);
+  $('fingers').setAttribute('d',
+    `M${GRIP.x - 2} ${GRIP.y - 6} L${GRIP.x + 3} ${GRIP.y + 2}
+     M${GRIP.x - 7} ${GRIP.y - 4} L${GRIP.x - 2} ${GRIP.y + 4}`);
+
+  // 双腿蹬踏
+  setLeg(legNear, hipNear, th, bob);
+  setLeg(legFar,  hipFar,  th + Math.PI, bob);
+
+  // 鱼尾巴摆动
+  $('fishTail').setAttribute('transform', `rotate(${(9 * Math.sin(6 * t)).toFixed(2)} 618 294)`);
+
+  // 太阳转动
+  $('sunRays').setAttribute('transform', `rotate(${(t * 8) % 360})`);
+
+  // 背景滚动
+  for (const c of clouds) {
+    const x = wrap(c.x - t * c.v, 1420) - 260;
+    c.el.setAttribute('transform', `translate(${x} ${c.y}) scale(${c.s})`);
+  }
+  $('hillsFar').setAttribute('transform', `translate(${-(wrap(dist * 0.13, 900))} 0)`);
+  $('hillsNear').setAttribute('transform', `translate(${-(wrap(dist * 0.28, 900))} 0)`);
+  for (const tr of trees) {
+    const x = wrap(tr.x0 - dist * tr.f, tr.range) - 140;
+    tr.el.setAttribute('transform', `translate(${x} ${tr.y}) scale(${tr.s})`);
+  }
+  for (const tf of tufts) {
+    const x = wrap(tf.x0 - dist * tf.f, tf.range) - 60;
+    tf.el.setAttribute('transform', `translate(${x} ${tf.y}) scale(${tf.s})`);
+  }
+  for (const s of stones) {
+    s.el.setAttribute('cx', wrap(s.x0 - dist, 960) - 30);
+    s.el.setAttribute('cy', s.y);
+  }
+  for (const b of birds) {
+    const x = wrap(b.x0 - t * 22, 1250) - 200;
+    b.el.setAttribute('transform', `translate(${x} ${b.y + 6 * Math.sin(1.5 * t + b.x0)})`);
+  }
+
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
