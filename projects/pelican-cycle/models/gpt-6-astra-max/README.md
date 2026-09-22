@@ -9,7 +9,7 @@
 
 ## Assistance used
 
-- Skills: none during the original generation. Submission documentation used `ux-writing`. Source: [scarletkc/agents](https://github.com/scarletkc/agents), locally installed skill; version unknown.
+- Skills: none during the original generation. Submission documentation and prompt translation used `ux-writing` and `talk-like-scarletkc`. Source: [scarletkc/agents](https://github.com/scarletkc/agents), locally installed skills; versions unknown.
 - Tools and plugins: Codex file patching for the original implementation; PowerShell, Git, GitHub CLI, and the GitHub connector for packaging and the pull request; Codex app tools for opening the file and attaching the PR.
 - Subagents: none.
 
@@ -25,8 +25,12 @@ The page uses inline SVG for the pelican, bicycle, and coastal scenery. CSS anim
 
 Generation record:
 
-- The original user request is preserved verbatim in [PROMPT.md](../../PROMPT.md). The repository-rules link was added when submitting the result.
+- This implementation used the original Chinese request quoted below. [PROMPT.md](../../PROMPT.md) contains its English translation, prepared after generation, followed by the repository-rules link added during submission.
 - Generated on 2026-09-14 in Codex desktop on Windows, in one attempt, with no retries, manual edits, or assistance from other models. Model identity and reasoning effort were supplied by the user; additional generation settings and resource limits are unknown.
 - Imported on 2026-09-22 from the original `pelican-cycle.html`, copied unchanged to `app/index.html`. Follow-up instructions requested the PR and alignment with the Rainy Ramen documentation format.
+
+Original generation prompt:
+
+> 创建一个HTML，内容是SVG绘制一个鹈鹕骑自行车的2D动画，你不需要任何测试
 
 No automated tests, browser inspection, visual checks, or site build were run. The original prompt explicitly said tests were unnecessary. Rendering, animation controls, mobile layout, and browser compatibility remain unverified. No screenshots or performance measurements were captured.

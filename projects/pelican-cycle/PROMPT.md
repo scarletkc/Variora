@@ -1,5 +1,7 @@
 # Pelican Cycle
 
-创建一个HTML，内容是SVG绘制一个鹈鹕骑自行车的2D动画，你不需要任何测试
+Create a 2D SVG animation of a pelican riding a bicycle and present it as an HTML page.
+
+No testing is required.
 
 Follow the [repository rules](../AGENTS.md).
