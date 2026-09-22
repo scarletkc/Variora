@@ -27,7 +27,13 @@ The scene contains a pelican on a yellow bicycle against a sky and road backgrou
 Generation record:
 
 - The supplied `pelican-bike.html` is imported unchanged as `app/index.html`. The submission does not regenerate or revise the implementation.
-- The original generation prompt, prompt revision, generation date, number of attempts, retries, manual edits, and assistance from other models are unknown. [PROMPT.md](../../PROMPT.md) records the shared project brief; the supplied artifact was not accompanied by a generation transcript.
+- The contributor confirms one implementation attempt using the original Chinese prompt quoted below. [PROMPT.md](../../PROMPT.md) contains its English translation. The generation date, manual edits, and assistance from other models are unknown.
 - The shared environment is contributor-reported. Detailed tool availability and additional generation settings are unknown, so this record does not establish a controlled model-only comparison.
 
-The source was inspected for packaging. No automated tests, browser inspection, visual checks, or site build were run during submission. Checks performed during the original generation are unknown. Rendering, animation behavior, mobile layout, and browser compatibility remain unverified; no screenshots or measurements were captured during submission.
+Original generation prompt:
+
+> 创建一个HTML，内容是SVG绘制一个鹈鹕骑自行车的2D动画，你不需要任何测试
+
+The source was inspected for packaging. No automated tests, browser inspection, or visual checks were run on this implementation during submission. Checks performed during the original generation are unknown. Its rendering, animation behavior, mobile layout, and browser compatibility remain unverified.
+
+The shared project cover is separate CSS/SVG artwork authored during submission. It is not a screenshot or output of this model.
