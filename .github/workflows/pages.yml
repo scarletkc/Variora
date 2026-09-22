@@ -1,0 +1,61 @@
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      [
+        "site/**",
+        "projects/**",
+        "package.json",
+        "package-lock.json",
+        ".gitattributes",
+        ".prettierignore",
+        ".github/workflows/pages.yml",
+      ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm --workspace site run test:e2e
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/out
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment

@@ -2,6 +2,8 @@
 
 Different models, the same brief. A collection of demos built from shared prompts, with source code, screenshots, and notes for comparing the results.
 
+[Explore the projects](https://variora.fog.moe) · [Website development](site/README.md)
+
 ## Projects
 
 - [Rainy Ramen](projects/rainy-ramen/): a cat-run ramen shop illustrated in SVG and presented in HTML.
