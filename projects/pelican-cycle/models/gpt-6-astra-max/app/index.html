@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light">
-  <title>鹈鹕的海岸骑行</title>
+  <title>A Pelican's Coastal Ride</title>
   <style>
     :root {
       --paper: #f4eddf;
@@ -107,16 +107,16 @@
   <main class="page" id="postcard">
     <header>
       <div>
-        <p class="eyebrow">THE SLOW COAST CLUB / 海岸慢骑俱乐部</p>
-        <h1>今天，顺风。<span>Let's roll.</span></h1>
+        <p class="eyebrow">THE SLOW COAST CLUB</p>
+        <h1>Tailwinds today.<span>Let's roll.</span></h1>
       </div>
-      <div class="edition">A LITTLE RIDE, A LITTLE JOY<br>海岸漫游 · 001</div>
+      <div class="edition">A LITTLE RIDE, A LITTLE JOY<br>COASTAL RIDE · 001</div>
     </header>
 
     <div class="frame">
       <svg class="scene" viewBox="0 0 1000 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="scene-title scene-desc">
-        <title id="scene-title">鹈鹕的海岸骑行</title>
-        <desc id="scene-desc">一只戴着绿色小帽、系着橙色围巾的白色鹈鹕，骑着橙红色自行车沿海岸前进。脚蹼随着踏板绕圈，两只车轮不停转动，海风吹起围巾，远处有太阳、海岛和海鸟。</desc>
+        <title id="scene-title">A Pelican's Coastal Ride</title>
+        <desc id="scene-desc">A white pelican in a green cap and an orange scarf rides an orange-red bicycle along the coast. Its webbed feet follow the pedals as both wheels turn and the sea breeze lifts its scarf, with sunshine, islands, and seabirds in the distance.</desc>
         <defs>
           <linearGradient id="sky" x2="0" y2="1">
             <stop stop-color="#e5eee6"/>
@@ -293,10 +293,10 @@
     </div>
 
     <footer>
-      <p class="caption"><strong>海风刚好，去兜个圈。</strong><br>一只鹈鹕，一辆单车，一个不用赶路的下午。</p>
+      <p class="caption"><strong>A perfect breeze for a little ride.</strong><br>A pelican, a bicycle, and an unhurried afternoon.</p>
       <div class="controls">
-        <button id="toggle" type="button" aria-label="暂停动画" aria-pressed="false"><span class="button-icon" aria-hidden="true"></span><span id="toggle-label">歇一会儿</span></button>
-        <label class="speed" for="speed">慢慢骑 <input id="speed" type="range" min="0.5" max="2" step="0.25" value="1" aria-label="骑行速度"><output id="speed-value" for="speed">1×</output></label>
+        <button id="toggle" type="button" aria-label="Pause animation" aria-pressed="false"><span class="button-icon" aria-hidden="true"></span><span id="toggle-label">Take a break</span></button>
+        <label class="speed" for="speed">Pace <input id="speed" type="range" min="0.5" max="2" step="0.25" value="1" aria-label="Cycling speed"><output id="speed-value" for="speed">1×</output></label>
       </div>
     </footer>
     <div class="bottom-note"><span>POSTCARDS FROM AN UNHURRIED WORLD</span><span>EST. TODAY</span></div>
@@ -327,8 +327,8 @@
         card.classList.toggle('paused', paused);
         card.classList.toggle('motion-enabled', !paused);
         toggle.setAttribute('aria-pressed', String(paused));
-        toggle.setAttribute('aria-label', paused ? '继续动画' : '暂停动画');
-        label.textContent = paused ? '继续兜风' : '歇一会儿';
+        toggle.setAttribute('aria-label', paused ? 'Resume animation' : 'Pause animation');
+        label.textContent = paused ? 'Keep riding' : 'Take a break';
         for (const animation of animations) {
           if (paused) animation.pause();
           else animation.play();

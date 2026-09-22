@@ -9,15 +9,15 @@
 
 ## Assistance used
 
-- Skills: none during the original generation. Submission documentation and prompt translation used `ux-writing` and `talk-like-scarletkc`. Source: [scarletkc/agents](https://github.com/scarletkc/agents), locally installed skills; versions unknown.
-- Tools and plugins: Codex file patching for the original implementation; PowerShell, Git, GitHub CLI, and the GitHub connector for packaging and the pull request; Codex app tools for opening the file and attaching the PR.
+- Skills: none during the original generation. Follow-up documentation, prompt translation, and English interface copy used `ux-writing` and `talk-like-scarletkc`. Source: [scarletkc/agents](https://github.com/scarletkc/agents), locally installed skills; versions unknown.
+- Tools and plugins: Codex file patching for the original implementation and English text update; PowerShell, Git, GitHub CLI, and the GitHub connector for packaging and the pull request; Codex app tools for opening the file and attaching the PR.
 - Subagents: none.
 
 ## Run
 
 Open [app/index.html](app/index.html) directly in a browser with JavaScript enabled. There is no build step, package installation, or network dependency. The same file can be served by any static HTTP server.
 
-Use **歇一会儿** to pause the animation and **继续兜风** to resume. The **慢慢骑** slider adjusts the speed. Reduced motion preferences start the animation paused; the resume button enables it.
+Use **Take a break** to pause the animation and **Keep riding** to resume. The **Pace** slider adjusts the speed. Reduced motion preferences start the animation paused; the resume button enables it.
 
 ## Notes
 
@@ -26,8 +26,9 @@ The page uses inline SVG for the pelican, bicycle, and coastal scenery. CSS anim
 Generation record:
 
 - This implementation used the original Chinese request quoted below. [PROMPT.md](../../PROMPT.md) contains its English translation, prepared after generation, followed by the repository-rules link added during submission.
-- Generated on 2026-09-14 in Codex desktop on Windows, in one attempt, with no retries, manual edits, or assistance from other models. Model identity and reasoning effort were supplied by the user; additional generation settings and resource limits are unknown.
-- Imported on 2026-09-22 from the original `pelican-cycle.html`, copied unchanged to `app/index.html`. Follow-up instructions requested the PR and alignment with the Rainy Ramen documentation format.
+- Generated on 2026-09-14 in Codex desktop on Windows, in one attempt, with no retries or assistance from other models. Model identity and reasoning effort were supplied by the user; additional generation settings and resource limits are unknown.
+- Imported on 2026-09-22 from the original `pelican-cycle.html`, initially copied unchanged to `app/index.html`.
+- Follow-up edits translated the visible and accessibility text into English and set the document language to `en`. The SVG artwork, styling, and animation logic remain as generated.
 
 Original generation prompt:
 
