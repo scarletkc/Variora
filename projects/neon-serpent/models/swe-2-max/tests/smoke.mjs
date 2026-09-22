@@ -92,6 +92,30 @@ try {
   await page.waitForFunction(() => __NEON.state === "playing", null, { timeout: 8000 });
   check("retry restarts", true);
 
+  // file:// regression: classic bundle must boot with no server at all.
+  const fileUrl = "file:///" + path.join(root, "app", "index.html").replace(/\\/g, "/");
+  await page.goto(fileUrl, { waitUntil: "load" });
+  await page.waitForFunction(() => window.__NEON, null, { timeout: 15000 });
+  check("boots over file://", true);
+  await page.click("#start");
+  await page.waitForFunction(() => __NEON.state === "countdown", null, { timeout: 8000 });
+  check("file:// start works", true);
+
+  // Sandboxed iframe (site preview): opaque origin, localStorage throws.
+  await page.goto(`http://localhost:${port}/tests/sandboxed.html`, { waitUntil: "load" });
+  const frame = page.frames().find((f) => f.url().includes("/app/index.html"));
+  check("sandboxed frame loaded", !!frame);
+  if (frame) {
+    await frame.waitForFunction(() => window.__NEON, null, { timeout: 15000 });
+    check("boots in sandboxed iframe", true);
+    await page.frameLocator("#f").locator("#start").click();
+    await frame.waitForFunction(
+      () => __NEON.state === "countdown" || __NEON.state === "playing",
+      null, { timeout: 8000 },
+    );
+    check("sandboxed start works", true);
+  }
+
   check("no console/page errors", errors.length === 0, errors.slice(0, 4).join(" | "));
 } finally {
   await browser.close();

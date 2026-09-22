@@ -3,11 +3,15 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "esbuild app/main.js --bundle --format=iife --outfile=app/bundle.js",
+    "pretest": "npm run build",
+    "preserve": "npm run build",
     "serve": "node serve.mjs",
     "vendor": "node scripts/vendor-three.mjs",
     "test": "node tests/smoke.mjs"
   },
   "devDependencies": {
+    "esbuild": "0.28.2",
     "playwright": "1.63.0",
     "three": "0.186.0"
   }

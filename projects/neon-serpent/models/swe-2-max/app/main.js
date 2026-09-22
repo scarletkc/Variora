@@ -6,6 +6,7 @@ import { Orbs } from "./orbs.js";
 import { Input } from "./input.js";
 import { AudioEngine } from "./audio.js";
 import { HUD } from "./hud.js";
+import { store } from "./store.js";
 
 const STEP = 1 / 60;
 const canvas = document.getElementById("gl");
@@ -34,7 +35,7 @@ const hud = new HUD();
 
 let state = "intro";        // intro | countdown | playing | paused | dying | dead
 let score = 0;
-let best = Number(localStorage.getItem("neon-serpent-best") || 0);
+let best = Number(store.get("neon-serpent-best") || 0);
 let countdownT = 0, countStep = 0;
 let deathT = 0, deathCause = null;
 let camYaw = snake.heading;
@@ -215,7 +216,7 @@ function frame() {
     if (deathT <= 0) {
       state = "dead";
       best = Math.max(best, score);
-      localStorage.setItem("neon-serpent-best", String(best));
+      store.set("neon-serpent-best", String(best));
       audio.gameover();
       hud.dead(score, best, deathCause);
     }

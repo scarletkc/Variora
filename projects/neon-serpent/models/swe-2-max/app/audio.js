@@ -1,8 +1,10 @@
 // All audio is synthesized with the Web Audio API — no assets.
+import { store } from "./store.js";
+
 export class AudioEngine {
   constructor() {
     this.ctx = null;
-    this.muted = localStorage.getItem("neon-serpent-muted") === "1";
+    this.muted = store.get("neon-serpent-muted") === "1";
     this._pluckTimer = null;
   }
 
@@ -178,7 +180,7 @@ export class AudioEngine {
 
   toggleMute() {
     this.muted = !this.muted;
-    localStorage.setItem("neon-serpent-muted", this.muted ? "1" : "0");
+    store.set("neon-serpent-muted", this.muted ? "1" : "0");
     if (this.master) {
       this.master.gain.setTargetAtTime(this.muted ? 0 : 0.65, this.ctx.currentTime, 0.05);
     }

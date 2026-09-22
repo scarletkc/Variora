@@ -68,6 +68,34 @@
   </div>
 </div>
 
-<script type="module" src="main.js"></script>
+<div id="boot-error" class="overlay hidden">
+  <div class="panel">
+    <div class="jp">起動失敗</div>
+    <h1>BOOT&nbsp;FAILED</h1>
+    <p class="tag" id="boot-error-msg">The game did not start. Try a current desktop browser.</p>
+  </div>
+</div>
+
+<!-- Classic script (not a module): also works from file:// and sandboxed
+     previews where module CORS or opaque origins would block loading. -->
+<script src="bundle.js"></script>
+<script>
+  (function () {
+    function fail(msg) {
+      var el = document.getElementById("boot-error");
+      var m = document.getElementById("boot-error-msg");
+      if (m && msg) m.textContent = String(msg);
+      if (el) el.classList.remove("hidden");
+    }
+    window.addEventListener("error", function (e) {
+      if (!window.__NEON) fail(e && e.message);
+    });
+    setTimeout(function () {
+      if (!window.__NEON) {
+        fail("The game did not start. Try a current desktop browser with WebGL enabled.");
+      }
+    }, 6000);
+  })();
+</script>
 </body>
 </html>
