@@ -1,0 +1,262 @@
+html, body {
+  margin: 0;
+  height: 100%;
+  background: #04040c;
+  overflow: hidden;
+  font-family: "Hiragino Kaku Gothic Pro", "Yu Gothic", Meiryo, "Segoe UI", sans-serif;
+}
+
+.scene-wrap {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+#scene {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+.caption {
+  position: fixed;
+  left: 18px;
+  bottom: 14px;
+  color: #b9c6e8;
+  opacity: 0.65;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-shadow: 0 1px 6px #000;
+  pointer-events: none;
+}
+
+#soundToggle {
+  position: fixed;
+  right: 18px;
+  bottom: 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(160, 190, 255, 0.35);
+  background: rgba(14, 18, 38, 0.72);
+  color: #b9c6e8;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+}
+#soundToggle:hover { border-color: rgba(160, 190, 255, 0.7); color: #e6eeff; }
+#soundToggle:focus-visible { outline: 2px solid #5ef2ff; outline-offset: 2px; }
+
+/* ---------- rain (drops get duration/delay inline from JS) ---------- */
+.drop {
+  stroke-linecap: round;
+  animation-name: rainFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes rainFall {
+  from { transform: translateY(-80px); }
+  to   { transform: translateY(880px); }
+}
+
+.splash {
+  fill: none;
+  stroke: #b8d4ff;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: splashK 0.9s ease-out infinite;
+}
+@keyframes splashK {
+  0%   { transform: scale(0.2); opacity: 0.55; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+.drip {
+  animation: dripFall 0.85s cubic-bezier(0.5, 0, 0.9, 0.6) infinite;
+}
+@keyframes dripFall {
+  0%   { transform: translateY(0); opacity: 0; }
+  8%   { opacity: 0.9; }
+  100% { transform: translateY(296px); opacity: 0; }
+}
+
+/* ---------- neon + lights ---------- */
+.neon-flicker {
+  animation: flicker 6s linear infinite;
+}
+@keyframes flicker {
+  0%, 6.5%, 8%, 100% { opacity: 1; }
+  7%   { opacity: 0.55; }
+  52%, 53.5% { opacity: 1; }
+  52.7% { opacity: 0.7; }
+  83%, 84.2% { opacity: 1; }
+  83.6% { opacity: 0.6; }
+}
+
+.vend-glow {
+  animation: vendPulse 4s ease-in-out infinite alternate;
+}
+@keyframes vendPulse {
+  from { opacity: 0.85; }
+  to   { opacity: 1; }
+}
+
+/* ---------- lantern sway ---------- */
+.lantern {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: sway 4.2s ease-in-out infinite alternate;
+}
+@keyframes sway {
+  from { transform: rotate(-3.2deg); }
+  to   { transform: rotate(3.2deg); }
+}
+
+/* noren panels sway gently out of phase */
+.noren {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: norenSway 3.6s ease-in-out infinite alternate;
+}
+@keyframes norenSway {
+  from { transform: rotate(-1.6deg); }
+  to   { transform: rotate(1.8deg); }
+}
+
+/* ---------- steam wisps ---------- */
+.steam .wisp, g.wisp, .wisp {
+  transform-box: fill-box;
+  animation: rise 3.2s ease-in-out infinite;
+  opacity: 0;
+}
+@keyframes rise {
+  0%   { transform: translateY(0) scale(0.9); opacity: 0; }
+  30%  { opacity: 0.55; }
+  100% { transform: translateY(-26px) scale(1.12); opacity: 0; }
+}
+
+/* ---------- ground ---------- */
+.ripple {
+  transform-box: fill-box;
+  transform-origin: center;
+  stroke-width: 1.4;
+  animation: rippleK 2.8s ease-out infinite;
+}
+@keyframes rippleK {
+  0%   { transform: scale(0.25); opacity: 0.6; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+.wobble {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+  animation: wobbleK 3.4s ease-in-out infinite alternate;
+}
+@keyframes wobbleK {
+  from { transform: skewX(-1.4deg); opacity: 0.92; }
+  to   { transform: skewX(1.4deg);  opacity: 1; }
+}
+
+/* ---------- cat ---------- */
+.tail {
+  transform-box: fill-box;
+  transform-origin: 90% 90%;
+  animation: wag 3s ease-in-out infinite alternate;
+}
+@keyframes wag {
+  from { transform: rotate(-4deg); }
+  to   { transform: rotate(5deg); }
+}
+
+.hachi-tail {
+  transform-box: fill-box;
+  transform-origin: 100% 50%;
+  animation: flutter 1.8s ease-in-out infinite alternate;
+}
+@keyframes flutter {
+  from { transform: rotate(-6deg); }
+  to   { transform: rotate(7deg); }
+}
+
+/* ---------- robot ---------- */
+.bob {
+  animation: bob 3.4s ease-in-out infinite alternate;
+}
+@keyframes bob {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-4px); }
+}
+
+.robot-head {
+  transform-box: fill-box;
+  transform-origin: 50% 95%;
+  animation: headTilt 5s ease-in-out infinite alternate;
+}
+@keyframes headTilt {
+  from { transform: rotate(-4deg); }
+  to   { transform: rotate(-1deg); }
+}
+
+.eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: blink 4.6s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 90%, 100% { transform: scaleY(1); }
+  94%           { transform: scaleY(0.12); }
+}
+
+.antenna {
+  animation: antennaPulse 2.4s ease-in-out infinite alternate;
+}
+@keyframes antennaPulse {
+  from { opacity: 0.45; }
+  to   { opacity: 1; }
+}
+
+.heartbeat {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: beat 1.3s ease-in-out infinite;
+}
+@keyframes beat {
+  0%, 100% { transform: scale(1);    opacity: 0.9; }
+  12%      { transform: scale(1.18); opacity: 1; }
+  24%      { transform: scale(1); }
+  36%      { transform: scale(1.12); }
+}
+
+.usplash {
+  animation: usplashK 1.4s ease-out infinite;
+  opacity: 0;
+}
+@keyframes usplashK {
+  0%   { opacity: 0; }
+  12%  { opacity: 0.9; }
+  55%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.slide-drop {
+  animation: slideDrop 2.6s ease-in infinite;
+  opacity: 0;
+}
+@keyframes slideDrop {
+  0%   { transform: translate(0, 0);      opacity: 0; }
+  15%  { opacity: 0.9; }
+  85%  { opacity: 0.7; }
+  100% { transform: translate(52px, 46px); opacity: 0; }
+}
+
+.rim-drip {
+  animation: rimFall 2.1s cubic-bezier(0.55, 0, 0.95, 0.55) infinite;
+  opacity: 0;
+}
+@keyframes rimFall {
+  0%   { transform: translateY(0); opacity: 0; }
+  10%  { opacity: 0.85; }
+  100% { transform: translateY(263px); opacity: 0; }
+}
+
