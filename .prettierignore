@@ -1,0 +1,8 @@
+node_modules/
+site/.next/
+site/.generated/
+site/out/
+site/public/previews/
+site/playwright-report/
+site/test-results/
+site/next-env.d.ts

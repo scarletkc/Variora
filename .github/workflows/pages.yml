@@ -1,0 +1,77 @@
+name: Website
+
+on:
+  push:
+    branches: [main]
+    paths:
+      [
+        "site/**",
+        "projects/**",
+        "package.json",
+        "package-lock.json",
+        ".gitattributes",
+        ".prettierignore",
+        ".github/workflows/pages.yml",
+      ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "24"
+          cache: npm
+      - name: Select checks
+        id: changes
+        env:
+          BEFORE_SHA: ${{ github.event.before }}
+        run: node site/scripts/ci-changes.mjs
+      - name: Cache Next.js builds
+        uses: actions/cache@v6
+        with:
+          path: site/.next/cache
+          key: ${{ runner.os }}-node24-next-${{ hashFiles('package-lock.json') }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-node24-next-${{ hashFiles('package-lock.json') }}-
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+        if: steps.changes.outputs.browser_tests == 'true'
+      - run: npm --workspace site run test:e2e
+        if: steps.changes.outputs.browser_tests == 'true'
+        env:
+          VARIORA_E2E_RESTORE_CATALOG: "false"
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site/out
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/deploy-pages@v5
+        id: deployment

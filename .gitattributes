@@ -2,3 +2,8 @@
 *.md text eol=lf
 .gitignore text eol=lf
 .gitattributes text eol=lf
+.prettierignore text eol=lf
+site/** text=auto eol=lf
+/package*.json text eol=lf
+/projects/*/site.json text eol=lf
+.github/workflows/*.yml text eol=lf

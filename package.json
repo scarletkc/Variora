@@ -1,0 +1,14 @@
+{
+  "name": "variora",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix site run dev",
+    "build": "npm --prefix site run build",
+    "check": "npm --prefix site run check",
+    "test": "npm --prefix site test",
+    "format:check": "prettier --check \"site/**/*.{ts,tsx,css,mjs,json,md}\" \"projects/*/site.json\" .github/workflows/pages.yml package.json"
+  },
+  "workspaces": [
+    "site"
+  ]
+}
