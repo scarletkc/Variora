@@ -1,0 +1,6 @@
+{
+  "type": "music",
+  "audio": "app/seaside_stroll.mp3",
+  "midi": "app/seaside_stroll.mid",
+  "rendering": "Rendered to MP3 by the model during the run. The synthesizer, instrument samples or sound bank, and render settings are unknown, so the recording may not follow the MIDI file's General MIDI programs. The MP3 is 68.1 s, 192 kbps CBR, 44.1 kHz stereo, with encoder tags Lavf60.16.100 and Lavc60.31 (FFmpeg 6.1). No rendering, normalization, mixing, or editing was done after the run."
+}
