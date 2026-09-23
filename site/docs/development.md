@@ -39,6 +39,28 @@ provide them for the complete module graph. Verify implementations inside the
 site's preview, since opening the HTML directly does not exercise the sandbox's
 loading restrictions.
 
+## Screenshots
+
+`scripts/screenshot.mjs` captures a page in headless Chromium. With the dev or
+static server running, pass a site URL:
+
+```sh
+node scripts/screenshot.mjs http://127.0.0.1:4173/en/ shot.png --dark --viewport 390x844
+```
+
+Pass a file path — or a directory containing `index.html` — to capture without
+a server, e.g. a model preview under `projects/`:
+
+```sh
+node scripts/screenshot.mjs projects/pelican-cycle/models/gpt-6-sol-max/app shot.png
+```
+
+Options: `--viewport WxH`, `--dark`/`--light`, `--full-page`, `--wait ms`,
+`--click <selector>` (repeatable), and `--strict` to exit nonzero on console
+errors, page errors, or failed requests. Problems print to stderr without
+blocking the capture. Run `npx playwright install chromium` once if the
+browser is missing.
+
 ## Checks
 
 ```sh
