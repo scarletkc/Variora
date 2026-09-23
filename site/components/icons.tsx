@@ -17,6 +17,21 @@ export function Arrow({ diagonal = false }: { diagonal?: boolean }) {
     </svg>
   );
 }
+export function Download() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      aria-hidden="true"
+    >
+      <path d="M12 4v12m-5.5-5.5L12 16l5.5-5.5M5 20h14" />
+    </svg>
+  );
+}
 export function Mark() {
   return (
     <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">

@@ -2,7 +2,7 @@
 
 ## Isolation
 
-When generating or revising a demo, do not read, search, copy, or reference another model's implementation code in this repository, including through Git history, tools, skills, or subagents.
+When generating or revising a demo, do not read, search, copy, or reference another model's implementation code or generated output, such as MIDI files or audio, in this repository, including through Git history, tools, skills, or subagents.
 
 Do not use persistent memory, prior-session history, or notes from previous runs. Do not read from or write to memory files, services, or plugins, including through tools or subagents. Use only the current run's instructions and allowed inputs.
 

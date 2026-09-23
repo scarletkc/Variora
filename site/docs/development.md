@@ -81,6 +81,13 @@ test the static export on desktop and mobile views. Loading checks cover relativ
 `.mjs` imports, missing entry or dependency CORS headers, incorrect MIME types,
 classic scripts, and parent isolation.
 
+Listening checks use a fixture music project with generated WAV and MIDI files:
+two playable outputs, one MIDI-only output, and one with unreadable audio. They
+cover playback that waits for the visitor, switching without overlap, stopping on
+leave, seeking and keyboard controls, volume, downloads, and error messages. They
+run against both servers because the development server renders the player
+before hydration, while the static export renders it in the browser.
+
 Comment checks use lightweight preview fixtures and a local Giscus stub to verify
 discussion mapping, language changes, and theme messages, including delayed widget
 loads. They do not depend on the hosted Giscus service or GitHub availability.

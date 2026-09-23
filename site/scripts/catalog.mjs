@@ -10,10 +10,25 @@ import {
 } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { pianoRoll, readMidi } from "./midi.mjs";
 import { createProvenanceReader } from "./provenance.mjs";
 
 const siteRoot = fileURLToPath(new URL("..", import.meta.url));
+const audioTypes = {
+  ".mp3": "audio/mpeg",
+  ".m4a": "audio/mp4",
+  ".aac": "audio/aac",
+  ".ogg": "audio/ogg",
+  ".oga": "audio/ogg",
+  ".opus": "audio/ogg; codecs=opus",
+  ".wav": "audio/wav",
+  ".flac": "audio/flac",
+  ".webm": "audio/webm",
+};
+const midiExtensions = new Set([".mid", ".midi"]);
 const extensions = new Set([
+  ...Object.keys(audioTypes),
+  ...midiExtensions,
   ".html",
   ".css",
   ".js",
@@ -31,11 +46,7 @@ const extensions = new Set([
   ".woff2",
   ".ttf",
   ".otf",
-  ".mp3",
-  ".wav",
-  ".ogg",
   ".mp4",
-  ".webm",
   ".wasm",
   ".glb",
   ".gltf",
@@ -96,14 +107,14 @@ async function resolveInside(root, relative) {
     path.isAbsolute(relative) ||
     relative.includes("\\")
   ) {
-    throw new Error(`Preview path must be relative: ${relative}`);
+    throw new Error(`Path must be relative: ${relative}`);
   }
   const candidate = path.resolve(root, relative);
   if (!inside(root, candidate))
-    throw new Error(`Preview path escapes ${root}: ${relative}`);
+    throw new Error(`Path escapes ${root}: ${relative}`);
   const resolved = await realpath(candidate);
   if (!inside(await realpath(root), resolved))
-    throw new Error(`Preview symlink escapes ${root}: ${relative}`);
+    throw new Error(`A symlink escapes ${root}: ${relative}`);
   return candidate;
 }
 
@@ -181,6 +192,113 @@ async function copyScreenshot(modelRoot, destination, url) {
   return `${url}/screenshot${extension}`;
 }
 
+const outputFields = new Set(["type", "audio", "midi", "source", "rendering"]);
+const origins = new Set(["model", "contributor"]);
+async function readOutput(modelRoot, destination, url) {
+  const file = path.join(modelRoot, "output.json");
+  const text = await readOptional(file);
+  if (text === null) return null;
+  const fail = (message) => {
+    throw new Error(`${file}: ${message}`);
+  };
+  let config;
+  try {
+    config = JSON.parse(text);
+  } catch (error) {
+    fail(`invalid JSON (${error.message})`);
+  }
+  if (config?.type !== "music")
+    fail(`unsupported output type ${JSON.stringify(config?.type)}`);
+  for (const key of Object.keys(config))
+    if (!outputFields.has(key)) fail(`unknown field "${key}"`);
+  if (config.rendering != null && typeof config.rendering !== "string")
+    fail("rendering must be a string");
+  async function entry(value, label) {
+    const item = typeof value === "string" ? { path: value } : value;
+    if (typeof item?.path !== "string" || !item.path)
+      fail(`${label} must be a relative path or { "path", "origin" }`);
+    const origin = item.origin ?? "model";
+    if (!origins.has(origin))
+      fail(`${label} origin must be "model" or "contributor"`);
+    const relative = path.posix.normalize(item.path).replace(/\/+$/, "");
+    let source;
+    try {
+      source = await resolveInside(modelRoot, relative);
+    } catch (error) {
+      fail(
+        error.code === "ENOENT"
+          ? `${label} not found: ${relative}`
+          : `${label}: ${error.message}`,
+      );
+    }
+    return { path: relative, origin, source, info: await stat(source) };
+  }
+  async function publish(item) {
+    const target = path.join(destination, ...item.path.split("/"));
+    await mkdir(path.dirname(target), { recursive: true });
+    await cp(item.source, target, { dereference: true });
+    return {
+      path: item.path,
+      name: path.posix.basename(item.path),
+      url: `${url}/${item.path.split("/").map(encodeURIComponent).join("/")}`,
+      origin: item.origin,
+    };
+  }
+  let audio = null;
+  if (config.audio != null) {
+    const item = await entry(config.audio, "audio");
+    const extension = path.extname(item.path).toLowerCase();
+    if (!item.info.isFile() || !audioTypes[extension])
+      fail(
+        `audio must be a ${Object.keys(audioTypes).join(", ")} file: ${item.path}`,
+      );
+    audio = {
+      ...(await publish(item)),
+      format: extension.slice(1).toUpperCase(),
+      type: audioTypes[extension],
+    };
+  }
+  let midi = null;
+  if (config.midi != null) {
+    const item = await entry(config.midi, "midi");
+    if (
+      !item.info.isFile() ||
+      !midiExtensions.has(path.extname(item.path).toLowerCase())
+    )
+      fail(`midi must be a .mid or .midi file: ${item.path}`);
+    midi = { ...(await publish(item)), summary: null, roll: null };
+    try {
+      const parsed = readMidi(await readFile(item.source));
+      midi.summary = parsed.summary;
+      const roll = pianoRoll(parsed.notes, parsed.summary.duration);
+      if (roll) {
+        await writeFile(path.join(destination, "roll.svg"), roll);
+        midi.roll = `${url}/roll.svg`;
+      }
+    } catch (error) {
+      console.warn(`${file}: MIDI details unavailable (${error.message})`);
+    }
+  }
+  const source = [];
+  for (const value of [config.source ?? []].flat()) {
+    const item = await entry(value, "source");
+    source.push({
+      path: item.path,
+      directory: item.info.isDirectory(),
+      origin: item.origin,
+    });
+  }
+  if (!audio && !midi && !source.length)
+    fail("list at least one audio, midi, or source file");
+  return {
+    type: "music",
+    audio,
+    midi,
+    source,
+    rendering: config.rendering?.trim() ?? "",
+  };
+}
+
 export async function buildCatalog(projectsRoot, publicRoot) {
   const provenance = createProvenanceReader();
   const previewsRoot = path.join(publicRoot, "previews");
@@ -245,6 +363,11 @@ export async function buildCatalog(projectsRoot, publicRoot) {
           modelRoot,
           path.join(previewsRoot, "_comparisons", id, modelId),
           `/previews/_comparisons/${encodeURIComponent(id)}/${encodeURIComponent(modelId)}`,
+        ),
+        output: await readOutput(
+          modelRoot,
+          path.join(previewsRoot, "_outputs", id, modelId),
+          `/previews/_outputs/${encodeURIComponent(id)}/${encodeURIComponent(modelId)}`,
         ),
       });
     }

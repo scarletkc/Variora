@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { projects, summary } from "@/lib/catalog";
+import { isCategory, projects, summary } from "@/lib/catalog";
 import { messages, type Locale } from "@/lib/i18n";
 import { Artwork } from "./artwork";
 import { Arrow } from "./icons";
@@ -15,7 +15,7 @@ export function Gallery({ locale }: { locale: Locale }) {
     new Set(projects.map((project) => project.category)),
   );
   const categoryName = (category: string) =>
-    t[category as "illustration" | "game" | "experiment"] || category;
+    isCategory(category) ? t[category] : category;
   const filtered = projects.filter(
     (project) =>
       (filter === "all" || project.category === filter) &&

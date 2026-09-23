@@ -8,7 +8,7 @@ See the [development guide](docs/development.md) for setup, local servers, previ
 
 ## Catalog and previews
 
-The build discovers directories under `projects/` that contain `PROMPT.md`. Project titles and model identity fields come from their existing README files. An optional project `site.json` supplies a `category` (`illustration`, `game`, or `experiment`) and translated `summaries` keyed by `en`, `zh`, `ja`, and `ko`. Missing summaries fall back to English, then to the first paragraph of the prompt.
+The build discovers directories under `projects/` that contain `PROMPT.md`. Project titles and model identity fields come from their existing README files. An optional project `site.json` supplies a `category` (`illustration`, `game`, `music`, or `experiment`) and translated `summaries` keyed by `en`, `zh`, `ja`, and `ko`. Missing summaries fall back to English, then to the first paragraph of the prompt.
 
 Models under `projects/<project>/models/<model>/` appear automatically. An `app/index.html` entry enables a preview; models without it link to their source and run instructions. The build copies static web assets and preserves relative paths. It does not install or execute model build scripts.
 
@@ -24,6 +24,31 @@ For a different static output directory or HTML entry, add `preview.json` beside
 The directory must already exist in the checkout. Paths must stay inside the model directory, and the entry must stay inside the preview directory. Explicit invalid configuration fails the build. Dotfiles, dependencies, and unsupported file extensions are excluded; see `extensions` in [scripts/catalog.mjs](scripts/catalog.mjs) for the asset allowlist. Use relative asset URLs so each implementation can run under its own preview path.
 
 Previews run in an iframe that permits scripts, pointer lock, and fullscreen while isolating the parent page. Implementations cannot access the site's DOM, cookies, or local storage. Project artwork on catalog cards is illustrative, not a screenshot of a model result.
+
+## Music outputs
+
+Music results describe their files in `output.json` beside the model README. Paths are relative to the model directory and must stay inside it:
+
+```json
+{
+  "type": "music",
+  "audio": "app/walk.mp3",
+  "midi": "app/walk.mid",
+  "source": ["app/compose.py"],
+  "rendering": "FluidSynth 2.4.0, GeneralUser GS 2.0.1, 44.1 kHz; no mastering."
+}
+```
+
+- `audio`: one rendered recording (`.mp3`, `.m4a`, `.aac`, `.ogg`, `.oga`, `.opus`, `.wav`, `.flac`, or `.webm`). It is the playable form on the site.
+- `midi`: the original `.mid` or `.midi` file. The build reads it for the listening view's length, tempo, meter, key, track, note, and General MIDI instrument summary, and a piano-roll overview. A file the reader cannot parse remains downloadable without those details.
+- `source`: files or directories containing the code that generated the music. They are linked on GitHub rather than copied into the site.
+- `rendering`: renderer, instruments or sound bank, settings, and any post-processing, shown as written.
+
+At least one of `audio`, `midi`, or `source` is required. A file entry can also be an object, `{ "path": "renders/walk.mp3", "origin": "contributor" }`. `origin` defaults to `"model"`, for files produced during the generation run; use `"contributor"` for anything rendered, converted, normalized, mixed, or edited afterwards. The listening view labels each file with its origin.
+
+The build copies only the named audio and MIDI files to `public/previews/_outputs/`. Missing files, unsupported formats, unknown fields or types, and paths that escape the model directory fail the build with the offending `output.json` path.
+
+Models with `output.json` offer **Listen**, a view with play/pause, restart, seeking, elapsed and total time, volume, and switching between the project's other outputs. Playback starts only after a visitor presses play; switching outputs or leaving the view stops the previous recording. When there is no playable audio, or the browser cannot load it, the view explains this and keeps the files and model record available. Seeking needs a host that honors HTTP range requests; GitHub Pages and `npm --workspace site run serve` do. Browser-based music apps keep using `app/index.html` and the sandboxed preview.
 
 ## Model comparison images
 

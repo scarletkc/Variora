@@ -319,6 +319,16 @@
   width: 100%;
   height: 100%;
 }
+.seaside {
+  background: #22344f;
+  color: #f7e3cf;
+}
+.seaside-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
 .generic {
   display: grid;
   place-items: center;

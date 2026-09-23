@@ -12,6 +12,7 @@ import {
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { buildCatalog } from "../scripts/catalog.mjs";
+import { melody } from "./fixtures.mjs";
 
 async function fixture(t, files) {
   const root = await mkdtemp(path.join(tmpdir(), "variora-catalog-"));
@@ -131,6 +132,7 @@ test("copies relative assets, parses model records, and excludes local config", 
     commit: null,
     preview: "/previews/example/demo/index.html",
     screenshot: null,
+    output: null,
   });
   assert.match(
     await readFile(
@@ -193,6 +195,172 @@ test("explicit invalid entries fail the build and stale assets are removed", asy
   await assert.rejects(buildCatalog(f.projects, f.public), /ENOENT/);
   await assert.rejects(access(path.join(f.public, "previews/old/index.html")));
 });
+test("publishes music outputs with origins, MIDI details, and source links", async (t) => {
+  const f = await fixture(t, {
+    ...base,
+    "projects/example/models/demo/output.json": JSON.stringify({
+      type: "music",
+      audio: { path: "renders/walk mix.mp3", origin: "contributor" },
+      midi: "app/walk.mid",
+      source: ["app/compose.py", "app/lib/"],
+      rendering: "  FluidSynth 2.4, GeneralUser GS 2.0.  ",
+    }),
+    "projects/example/models/demo/renders/walk mix.mp3": "mp3 bytes",
+    "projects/example/models/demo/app/walk.mid": melody([60, 64, 67], 73),
+    "projects/example/models/demo/app/compose.py": "print('compose')",
+    "projects/example/models/demo/app/lib/notes.py": "C = 60",
+  });
+  const [project] = await buildCatalog(f.projects, f.public);
+  const { output } = project.models[0];
+  assert.deepEqual(output.audio, {
+    path: "renders/walk mix.mp3",
+    name: "walk mix.mp3",
+    url: "/previews/_outputs/example/demo/renders/walk%20mix.mp3",
+    origin: "contributor",
+    format: "MP3",
+    type: "audio/mpeg",
+  });
+  assert.equal(output.midi.url, "/previews/_outputs/example/demo/app/walk.mid");
+  assert.equal(output.midi.origin, "model");
+  assert.equal(output.midi.summary.notes, 3);
+  assert.equal(output.midi.summary.duration, 1.5);
+  assert.deepEqual(output.midi.summary.instruments, ["Flute"]);
+  assert.equal(output.midi.roll, "/previews/_outputs/example/demo/roll.svg");
+  assert.deepEqual(output.source, [
+    { path: "app/compose.py", directory: false, origin: "model" },
+    { path: "app/lib", directory: true, origin: "model" },
+  ]);
+  assert.equal(output.rendering, "FluidSynth 2.4, GeneralUser GS 2.0.");
+  assert.equal(
+    await readFile(
+      path.join(
+        f.public,
+        "previews/_outputs/example/demo/renders/walk mix.mp3",
+      ),
+      "utf8",
+    ),
+    "mp3 bytes",
+  );
+  assert.match(
+    await readFile(
+      path.join(f.public, "previews/_outputs/example/demo/roll.svg"),
+      "utf8",
+    ),
+    /^<svg /,
+  );
+  await assert.rejects(
+    access(
+      path.join(f.public, "previews/_outputs/example/demo/app/compose.py"),
+    ),
+  );
+});
+
+test("keeps unreadable MIDI downloadable without derived details", async (t) => {
+  const f = await fixture(t, {
+    ...base,
+    "projects/example/models/demo/output.json":
+      '{"type":"music","midi":"song.midi"}',
+    "projects/example/models/demo/song.midi": "not midi",
+  });
+  const [project] = await buildCatalog(f.projects, f.public);
+  const { midi, audio } = project.models[0].output;
+  assert.equal(audio, null);
+  assert.equal(midi.summary, null);
+  assert.equal(midi.roll, null);
+  assert.equal(
+    await readFile(
+      path.join(f.public, "previews/_outputs/example/demo/song.midi"),
+      "utf8",
+    ),
+    "not midi",
+  );
+});
+
+test("publishes MIDI files used by browser previews", async (t) => {
+  const f = await fixture(t, {
+    ...base,
+    "projects/example/models/demo/app/index.html": "<h1>Player</h1>",
+    "projects/example/models/demo/app/theme.mid": melody([60]),
+  });
+  await buildCatalog(f.projects, f.public);
+  await access(path.join(f.public, "previews/example/demo/theme.mid"));
+});
+
+for (const [name, config, files, error] of [
+  ["invalid JSON", "{", {}, /output\.json: invalid JSON/],
+  ["unknown type", { type: "text" }, {}, /unsupported output type "text"/],
+  [
+    "unknown field",
+    { type: "music", audios: "a.mp3" },
+    {},
+    /unknown field "audios"/,
+  ],
+  ["no files", { type: "music" }, {}, /at least one/],
+  [
+    "missing audio",
+    { type: "music", audio: "missing.mp3" },
+    {},
+    /audio not found: missing\.mp3/,
+  ],
+  [
+    "unsupported audio",
+    { type: "music", audio: "song.aiff" },
+    { "song.aiff": "x" },
+    /audio must be a/,
+  ],
+  [
+    "audio directory",
+    { type: "music", audio: "app" },
+    { "app/a.txt": "x" },
+    /audio must be a/,
+  ],
+  [
+    "wrong MIDI extension",
+    { type: "music", midi: "song.txt" },
+    { "song.txt": "x" },
+    /midi must be a \.mid or \.midi file/,
+  ],
+  [
+    "escaping source",
+    { type: "music", source: "../../PROMPT.md" },
+    {},
+    /source: Path escapes/,
+  ],
+  [
+    "absolute source",
+    { type: "music", source: "/etc/passwd" },
+    {},
+    /source: Path must be relative/,
+  ],
+  [
+    "unknown origin",
+    { type: "music", midi: { path: "a.mid", origin: "human" } },
+    { "a.mid": "x" },
+    /midi origin must be/,
+  ],
+  [
+    "non-string rendering",
+    { type: "music", midi: "a.mid", rendering: 3 },
+    { "a.mid": "x" },
+    /rendering must be a string/,
+  ],
+]) {
+  test(`rejects invalid music output: ${name}`, async (t) => {
+    const f = await fixture(t, {
+      ...base,
+      "projects/example/models/demo/output.json":
+        typeof config === "string" ? config : JSON.stringify(config),
+      ...Object.fromEntries(
+        Object.entries(files).map(([file, content]) => [
+          `projects/example/models/demo/${file}`,
+          content,
+        ]),
+      ),
+    });
+    await assert.rejects(buildCatalog(f.projects, f.public), error);
+  });
+}
+
 test("rejects entries that the publishing allowlist would exclude", async (t) => {
   const f = await fixture(t, {
     ...base,

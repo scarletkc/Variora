@@ -52,6 +52,11 @@ Projects/models come from `scripts/catalog.mjs` scanning the project
 directories; `npm run check`/build regenerates `.generated/catalog.json`, consumed
 by `lib/catalog.ts`.
 
+Music outputs (`output.json`, see [Music outputs](../README.md#music-outputs))
+are validated in `scripts/catalog.mjs`; `scripts/midi.mjs` summarizes MIDI files
+and draws the piano roll, which the listening view (`components/listen.tsx`)
+tints through a CSS mask so it follows the theme.
+
 Model dates and authors come from Git history via
 [`createProvenanceReader`](../scripts/provenance.mjs). Use a full clone for
 provenance; `GITHUB_TOKEN` enables authenticated GitHub author lookups.

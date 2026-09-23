@@ -1,7 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { type Project, modelSource, repository } from "@/lib/catalog";
+import {
+  type Project,
+  modelSource,
+  outputTypes,
+  repository,
+} from "@/lib/catalog";
 import { messages, type Locale } from "@/lib/i18n";
 import { MAX_COMPARISON_MODELS, exportComparison } from "@/lib/comparison";
 import { Arrow } from "./icons";
@@ -111,6 +116,7 @@ export function Implementations({
       <div className="model-grid">
         {filtered.map((model) => {
           const checked = selected.includes(model.id);
+          const params = `?project=${encodeURIComponent(project.id)}&model=${encodeURIComponent(model.id)}`;
           return (
             <article
               key={model.id}
@@ -154,6 +160,12 @@ export function Implementations({
                 )}
               </div>
               <dl>
+                {model.output && (
+                  <div>
+                    <dt>{t.outputs}</dt>
+                    <dd>{outputTypes(model, t).join(" · ")}</dd>
+                  </div>
+                )}
                 <div>
                   <dt>{t.provider}</dt>
                   <dd>{model.provider || t.unspecified}</dd>
@@ -202,10 +214,19 @@ export function Implementations({
                 </div>
               </dl>
               <div className="model-actions">
-                {model.preview && (
+                {model.output && (
                   <Link
                     className="button primary"
-                    href={`/${locale}/preview/?project=${encodeURIComponent(project.id)}&model=${encodeURIComponent(model.id)}`}
+                    href={`/${locale}/listen/${params}`}
+                  >
+                    {t.listen}
+                    <Arrow />
+                  </Link>
+                )}
+                {model.preview && (
+                  <Link
+                    className={`button${model.output ? "" : " primary"}`}
+                    href={`/${locale}/preview/${params}`}
                   >
                     {t.preview}
                     <Arrow />

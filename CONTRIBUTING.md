@@ -46,6 +46,15 @@ For a repair, link the original commit or preserved artifact in the model record
 - Report checks you actually performed, their results, and known failures or limitations. Label expectations and untested claims clearly.
 - Include screenshots of the running result whenever you can; they feed the site's comparison view and let readers assess the output without running it. `scripts/screenshot.mjs` captures pages headlessly if you want a helper, but any capture method is fine. Screenshots and measurements must come from the submitted implementation. For measurements, include the method and conditions; retain failures that affect the interpretation rather than presenting only favorable evidence.
 
+### Submit music results
+
+For music projects, keep the generating code and its outputs in `app/` and list them in `output.json` beside the model record, using the [music output format](site/README.md#music-outputs). The site plays the rendered audio and offers the MIDI file and source for inspection and download.
+
+- Keep the original MIDI and any rendering produced during the run. Mark each file's `origin`: `model` for files produced during the run, `contributor` for anything rendered, converted, normalized, mixed, or edited afterwards.
+- Describe the renderer, instrument set or sound bank, settings, and post-processing in `rendering` and in the model record. When a project compares composition, render every MIDI file with the renderer and instrument set named in its README. When the task includes synthesis or sound design, keep each model's own rendering and disclose how instruments and rendering differ.
+- Record runtimes, dependencies, random seeds, external samples or sound banks, retries, continuation prompts, and manual assistance. For bundled samples and instrument assets, state their source and license, and include only assets that may be redistributed.
+- If there is no playable audio, provide the source and run instructions; the listening view explains what is available. Mark incomplete or failed outputs in the model record.
+
 ### Keep the site preview runnable
 
 The site copies `app/` — or the directory named in `preview.json` — verbatim into the published previews; it does not run a build. The entry page is served inside a sandboxed iframe with an opaque origin. For the preview link to work:

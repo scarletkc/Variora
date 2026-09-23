@@ -16,6 +16,17 @@ const types = {
   ".txt": "text/plain",
   ".woff2": "font/woff2",
   ".wasm": "application/wasm",
+  ".mp3": "audio/mpeg",
+  ".m4a": "audio/mp4",
+  ".aac": "audio/aac",
+  ".ogg": "audio/ogg",
+  ".oga": "audio/ogg",
+  ".opus": "audio/ogg",
+  ".wav": "audio/wav",
+  ".flac": "audio/flac",
+  ".webm": "audio/webm",
+  ".mid": "audio/midi",
+  ".midi": "audio/midi",
 };
 const port = Number(process.env.PORT || 4173);
 createServer(async (request, response) => {
@@ -33,7 +44,27 @@ createServer(async (request, response) => {
       types[path.extname(file)] || "application/octet-stream",
     );
     response.setHeader("Access-Control-Allow-Origin", "*");
-    response.end(await readFile(file));
+    response.setHeader("Accept-Ranges", "bytes");
+    const body = await readFile(file);
+    const range = request.headers.range?.match(/^bytes=(\d*)-(\d*)$/);
+    if (range && (range[1] || range[2])) {
+      const start = range[1]
+        ? Number(range[1])
+        : Math.max(0, body.length - Number(range[2]));
+      const end = range[1] && range[2] ? Number(range[2]) : body.length - 1;
+      if (start < 0 || start > end || start >= body.length) {
+        response.writeHead(416, { "Content-Range": `bytes */${body.length}` });
+        response.end();
+        return;
+      }
+      const last = Math.min(end, body.length - 1);
+      response.writeHead(206, {
+        "Content-Range": `bytes ${start}-${last}/${body.length}`,
+      });
+      response.end(body.subarray(start, last + 1));
+      return;
+    }
+    response.end(body);
   } catch {
     response.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
     response.end(

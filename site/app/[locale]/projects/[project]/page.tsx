@@ -2,7 +2,7 @@ import { Implementations } from "@/components/implementations";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { projects, projectSource, summary } from "@/lib/catalog";
+import { isCategory, projects, projectSource, summary } from "@/lib/catalog";
 import { locales, messages, type Locale } from "@/lib/i18n";
 import { Artwork } from "@/components/artwork";
 import { Arrow } from "@/components/icons";
@@ -52,8 +52,7 @@ export default async function ProjectPage({
       <section className="project-intro">
         <div>
           <p className="eyebrow">
-            {t[project.category as "illustration" | "game" | "experiment"] ||
-              t.experiment}
+            {isCategory(project.category) ? t[project.category] : t.experiment}
           </p>
           <h1>{project.title}</h1>
           <p>{summary(project, locale)}</p>

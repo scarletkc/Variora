@@ -32,6 +32,7 @@ projects/
       <model>/
         README.md             # Model, harness, assistance, and run instructions
         app/                  # Implementation
+        output.json           # Music results: audio, MIDI, and source files
         screenshots/          # Optional captures
 templates/
   project/
