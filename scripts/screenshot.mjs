@@ -88,7 +88,12 @@ page.on("requestfailed", (request) =>
 try {
   await page.goto(url);
   for (const selector of clicks) {
-    await page.click(selector);
+    try {
+      await page.click(selector, { timeout: 10000 });
+    } catch {
+      await browser.close();
+      fail(`could not click ${selector} — check the selector`);
+    }
     await page.waitForTimeout(500);
   }
   await page.waitForTimeout(wait);
