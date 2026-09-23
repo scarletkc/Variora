@@ -44,7 +44,7 @@ For a repair, link the original commit or preserved artifact in the model record
 - Check available logs, settings, and version information first. Before submitting, agents must ask their user about any unresolved Model, Provider, Harness, or Reasoning effort fields; explain any information that remains unknown.
 - Include the prompt revision and relevant settings needed to repeat the procedure. Model generation may vary between runs; reproducibility means a traceable procedure and runnable result, not a promise of identical generated output.
 - Report checks you actually performed, their results, and known failures or limitations. Label expectations and untested claims clearly.
-- Screenshots and measurements must come from the submitted implementation. For measurements, include the method and conditions; retain failures that affect the interpretation rather than presenting only favorable evidence.
+- Include screenshots of the running result whenever you can; they feed the site's comparison view and let readers assess the output without running it. Screenshots and measurements must come from the submitted implementation. For measurements, include the method and conditions; retain failures that affect the interpretation rather than presenting only favorable evidence.
 
 ## Report a problem
 
