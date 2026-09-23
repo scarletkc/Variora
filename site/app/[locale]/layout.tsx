@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Header, Footer, themeScript } from "@/components/shell";
 import { isLocale, locales, messages, type Locale } from "@/lib/i18n";
@@ -46,13 +46,16 @@ export async function generateMetadata({
       images: [{ url: "/og.png", width: 1200, height: 630, alt: "Variora" }],
     },
     twitter: { card: "summary_large_image", title, description },
-    themeColor: [
-      { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-      { media: "(prefers-color-scheme: dark)", color: "#000000" },
-    ],
     icons: { icon: "/icon.svg" },
   };
 }
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#000000" },
+  ],
+};
 
 export default async function Layout({
   children,
