@@ -46,6 +46,17 @@ For a repair, link the original commit or preserved artifact in the model record
 - Report checks you actually performed, their results, and known failures or limitations. Label expectations and untested claims clearly.
 - Include screenshots of the running result whenever you can; they feed the site's comparison view and let readers assess the output without running it. Screenshots and measurements must come from the submitted implementation. For measurements, include the method and conditions; retain failures that affect the interpretation rather than presenting only favorable evidence.
 
+### Keep the site preview runnable
+
+The site copies `app/` — or the directory named in `preview.json` — verbatim into the published previews; it does not run a build. The entry page is served inside a sandboxed iframe with an opaque origin. For the preview link to work:
+
+- Reference assets with relative paths (`./bundle.js`, not `/src/main.js`).
+- Ship a classic script bundle. Module scripts need CORS headers the static host does not send, and bare imports such as `import "three"` have no bundler to resolve them.
+- If the submitted form needs a build step, keep the source in `app/` and commit the built output alongside, with `preview.json` pointing at it, e.g. `{ "directory": "dist", "entry": "index.html" }`.
+- Check the result from a plain static server, not only through a dev server.
+
+When `app/index.html` exists it is published as the preview whether or not it can run; there is no opt-out.
+
 ## Report a problem
 
 For bugs or disputed results, include the affected project or model, the revision if known, steps to reproduce, expected and actual behavior, and relevant environment details. Logs, screenshots, and a minimal example help others verify the issue. If you have not reproduced the problem, say so; questions and suspected issues are welcome too.
