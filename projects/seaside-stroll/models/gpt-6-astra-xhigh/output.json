@@ -2,5 +2,6 @@
   "type": "music",
   "audio": "app/seaside_stroll.mp3",
   "midi": "app/seaside_stroll.mid",
-  "rendering": "Rendered to MP3 by the model during the run. The synthesizer, instrument samples or sound bank, and render settings are unknown, so the recording may not follow the MIDI file's General MIDI programs. The MP3 is 68.1 s, 192 kbps CBR, 44.1 kHz stereo, with encoder tags Lavf60.16.100 and Lavc60.31 (FFmpeg 6.1). No rendering, normalization, mixing, or editing was done after the run."
+  "source": ["app/compose_seaside.py"],
+  "rendering": "Rendered during the run by app/compose_seaside.py, which synthesizes every part in NumPy (additive and phase-modulated tones and synthetic drums, with no samples or sound banks), adds stereo early reflections and a 1.2 s fade, and writes a 44.1 kHz 16-bit stereo WAV. A separate step not included in the script converted the WAV to a 192 kbps CBR MP3 with FFmpeg 6.1. Its audio matches the WAV after FFmpeg's loudnorm filter at I=-18 LUFS and LRA=11. Nothing was rendered, normalized, mixed, or edited after the run."
 }
