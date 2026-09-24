@@ -1,0 +1,7 @@
+{
+  "type": "music",
+  "audio": "app/snowlit-eve.mp3",
+  "midi": "app/snowlit-eve.mid",
+  "source": ["app/compose.py", "app/render.py", "app/instruments.py", "app/smf.py"],
+  "rendering": "Rendered from the MIDI file by the model's own Python synthesizers (render.py and instruments.py; numpy 2.4.0, scipy 1.16.3), with no samples or sound banks: FM electric piano, breathy flute, band-limited saw ensembles for strings and a formant-filtered choir, additive music box, glockenspiel, harp, bass and tubular bells, and synthesized drums and sleigh bells. 44.1 kHz; generated-impulse convolution hall and room reverbs, chorus, ping-pong delay on the lead, 1.5:1 bus compression and a look-ahead limiter to about -14 LUFS with a -1.5 dBTP true-peak ceiling; MP3 encoded with ffmpeg 8.1.2 libmp3lame at 192 kbps CBR."
+}
