@@ -1,0 +1,7 @@
+{
+  "type": "music",
+  "audio": { "path": "app/seaside_stroll.mp3", "origin": "model" },
+  "midi": { "path": "app/seaside_stroll.mid", "origin": "model" },
+  "source": [{ "path": "app/compose.py", "origin": "model" }],
+  "rendering": "NumPy 2.4.0 synthesis at 44.1 kHz stereo: flute, nylon guitar, electric piano, celesta, strings, fingered bass, music box, vibraphone, and drum hits, with an algorithmic reverb. Tanh soft clip, peak about -1 dBFS, 16-bit dither. ffmpeg 8.1.2 libmp3lame at 192 kbps. No samples or sound bank. Seeds 47021 (timing and velocity), 47022 (noise and reverb), 47023 (dither)."
+}
