@@ -388,6 +388,291 @@ export function Artwork({ id }: { id: string }) {
         </div>
       </div>
     );
+  if (id === "christmas-eve")
+    return (
+      <div className="artwork christmas" aria-hidden="true">
+        <svg
+          className="christmas-scene"
+          viewBox="0 0 600 360"
+          fill="none"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <defs>
+            <linearGradient id="christmas-sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#141b36" />
+              <stop offset="0.55" stopColor="#2b3563" />
+              <stop offset="1" stopColor="#5d5582" />
+            </linearGradient>
+            <radialGradient id="christmas-glow">
+              <stop offset="0" stopColor="#f2b37c" stopOpacity="0.5" />
+              <stop offset="1" stopColor="#f2b37c" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient id="christmas-ground" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stopColor="#343f6d" />
+              <stop offset="1" stopColor="#121831" />
+            </linearGradient>
+            <linearGradient
+              id="christmas-rim"
+              x1="0"
+              y1="0"
+              x2="600"
+              y2="0"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0.5" stopColor="#cfd7f1" stopOpacity="0" />
+              <stop offset="0.68" stopColor="#cfd7f1" stopOpacity="0.45" />
+            </linearGradient>
+            <radialGradient id="christmas-spill">
+              <stop offset="0" stopColor="#f6c77e" stopOpacity="0.4" />
+              <stop offset="1" stopColor="#f6c77e" stopOpacity="0" />
+            </radialGradient>
+            <linearGradient
+              id="christmas-staff"
+              x1="0"
+              y1="0"
+              x2="600"
+              y2="0"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop offset="0" stopColor="#eef0fb" stopOpacity="0" />
+              <stop offset="0.1" stopColor="#eef0fb" stopOpacity="0.5" />
+              <stop offset="0.82" stopColor="#eef0fb" stopOpacity="0.5" />
+              <stop offset="0.96" stopColor="#eef0fb" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <rect width="600" height="262" fill="url(#christmas-sky)" />
+          <ellipse
+            cx="440"
+            cy="238"
+            rx="230"
+            ry="120"
+            fill="url(#christmas-glow)"
+          />
+          <circle cx="318" cy="40" r="11" fill="#fbe7b8" opacity="0.15" />
+          <path
+            d="M318 27L320.5 37.5L331 40L320.5 42.5L318 53L315.5 42.5L305 40L315.5 37.5Z"
+            fill="#fbe7b8"
+          />
+          <g fill="#f7f1de" opacity="0.8">
+            {[
+              [176, 62],
+              [256, 28],
+              [372, 70],
+              [430, 22],
+              [470, 40],
+            ].map(([x, y]) => (
+              <circle key={x} cx={x} cy={y} r="1.1" />
+            ))}
+          </g>
+          <g fill="#28305c">
+            {[
+              [0, 228, 30],
+              [28, 216, 24],
+              [52, 232, 32],
+              [84, 208, 20],
+              [104, 222, 30],
+              [134, 234, 36],
+              [170, 214, 26],
+              [196, 226, 32],
+              [228, 202, 22],
+              [250, 220, 30],
+              [280, 210, 24],
+              [420, 230, 34],
+              [520, 226, 30],
+            ].map(([x, top, width]) => (
+              <rect key={x} x={x} y={top} width={width} height={256 - top} />
+            ))}
+          </g>
+          <path
+            d="M34 222h3v4h-3ZM90 214h3v4h-3ZM90 224h3v4h-3ZM176 220h3v4h-3ZM234 208h3v4h-3ZM234 218h3v4h-3ZM258 226h3v4h-3ZM286 216h3v4h-3Z"
+            fill="#f3c98a"
+            opacity="0.6"
+          />
+          <g stroke="url(#christmas-staff)" strokeWidth="1.3">
+            {[0, 8, 16, 24, 32].map((y) => (
+              <path key={y} d={`M-10 ${64 + y}Q300 ${184 + y} 610 ${64 + y}`} />
+            ))}
+          </g>
+          {[
+            [80, 118],
+            [140, 128],
+            [180, 127],
+            [250, 142],
+            [350, 130],
+            [410, 128],
+            [445, 123],
+            [520, 106],
+          ].map(([x, y]) => (
+            <g key={x}>
+              <circle cx={x} cy={y} r="11" fill="#f7c979" opacity="0.22" />
+              <ellipse
+                cx={x}
+                cy={y}
+                rx="6.5"
+                ry="4.6"
+                fill="#f8d892"
+                transform={`rotate(-22 ${x} ${y})`}
+              />
+            </g>
+          ))}
+          <g stroke="#f8d892" strokeWidth="2">
+            <path d="M86 116V84M146 126V94M186 125V93M256 140V108M356 128V96M416 126V92M451 121V88M526 104V72M356 96Q368 102 367 116" />
+            <path
+              d="M146 94L186 93V99L146 100ZM416 92L451 88V94L416 98Z"
+              fill="#f8d892"
+              stroke="none"
+            />
+          </g>
+          <rect x="296" y="214" width="56" height="42" fill="#1b2243" />
+          <path d="M288 216L324 186L360 216Z" fill="#232b52" />
+          <rect x="398" y="176" width="9" height="20" fill="#171e3c" />
+          <rect x="356" y="200" width="60" height="56" fill="#171e3c" />
+          <path d="M348 202L386 170L424 202Z" fill="#20284c" />
+          <rect x="548" y="218" width="60" height="38" fill="#1b2243" />
+          <path d="M540 220L580 190L620 220Z" fill="#232b52" />
+          <path
+            d="M290 215L324 187L358 215M350 201L386 171L422 201M542 219L580 191L618 219"
+            stroke="#e6eaf7"
+            strokeWidth="5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <rect x="396" y="173" width="13" height="5" rx="2.5" fill="#e6eaf7" />
+          <path
+            d="M305 225h13v13h-13ZM330 225h13v13h-13ZM362 216h10v12h-10ZM400 216h10v12h-10ZM378 234V219a8 8 0 0 1 16 0V234ZM560 229h12v12h-12ZM584 229h12v12h-12Z"
+            fill="#f6c77e"
+          />
+          <path
+            d="M311.5 225V238M305 231.5H318M336.5 225V238M330 231.5H343M386 211V234M378 224H394M566 229V241M560 235H572M590 229V241M584 235H596"
+            stroke="#182040"
+            strokeWidth="1.4"
+          />
+          <rect x="487" y="234" width="10" height="24" fill="#2a2233" />
+          <g fill="#1c393d">
+            <path d="M492 190L453 238H531Z" />
+            <path d="M492 172L463 210H521Z" />
+            <path d="M492 158L471 186H513Z" />
+          </g>
+          <path
+            d="M475 181Q492 189 509 179M467 204Q492 214 517 202M458 231Q492 243 526 229"
+            stroke="#f8d892"
+            strokeWidth="1.2"
+            opacity="0.7"
+          />
+          <g fill="#ffe2a3">
+            {[
+              [484, 184],
+              [492, 208.5],
+              [468, 234],
+              [502, 235.6],
+            ].map(([x, y]) => (
+              <circle key={x} cx={x} cy={y} r="2.2" />
+            ))}
+          </g>
+          <g fill="#f2907f">
+            {[
+              [500, 183],
+              [477, 207],
+              [507, 206],
+              [485, 236.4],
+              [518, 232],
+            ].map(([x, y]) => (
+              <circle key={x} cx={x} cy={y} r="2.2" />
+            ))}
+          </g>
+          <circle cx="492" cy="152" r="13" fill="#ffd98a" opacity="0.22" />
+          <path
+            d="M492 144L494 149.2L499.6 149.5L495.2 153.1L496.7 158.5L492 155.4L487.3 158.5L488.8 153.1L484.4 149.5L490 149.2Z"
+            fill="#ffdf8f"
+          />
+          <path
+            d="M0 248C90 236 200 244 300 250S500 254 600 246V360H0Z"
+            fill="url(#christmas-ground)"
+          />
+          <path
+            d="M0 248C90 236 200 244 300 250S500 254 600 246"
+            stroke="url(#christmas-rim)"
+            strokeWidth="2"
+          />
+          <g fill="url(#christmas-spill)">
+            <ellipse cx="324" cy="263" rx="50" ry="10" />
+            <ellipse cx="386" cy="265" rx="46" ry="10" />
+            <ellipse cx="578" cy="263" rx="40" ry="9" />
+          </g>
+          <path
+            d="M34 286h62M142 304h86M300 280h46M396 298h74M520 318h46"
+            stroke="#8a95c2"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            opacity="0.25"
+          />
+          <path
+            d="M60 165V179M53.9 168.5L66.1 175.5M53.9 175.5L66.1 168.5M408 56V68M402.8 59L413.2 65M402.8 65L413.2 59"
+            stroke="#eef1ff"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            opacity="0.75"
+          />
+          <g fill="#f4f6ff" opacity="0.85">
+            {[
+              [18, 108, 1.8],
+              [36, 72, 1.4],
+              [52, 188, 2.2],
+              [64, 140, 1.6],
+              [88, 44, 1.2],
+              [104, 212, 1.5],
+              [122, 160, 2.4],
+              [140, 70, 1.8],
+              [162, 118, 1.3],
+              [178, 196, 1.9],
+              [196, 44, 2.1],
+              [214, 150, 1.5],
+              [232, 96, 1.2],
+              [248, 186, 2.3],
+              [266, 58, 1.6],
+              [282, 132, 2],
+              [300, 206, 1.4],
+              [318, 80, 1.3],
+              [336, 166, 1.8],
+              [352, 104, 2.4],
+              [370, 44, 1.5],
+              [388, 148, 1.3],
+              [404, 90, 2],
+              [420, 182, 1.6],
+              [436, 118, 1.2],
+              [452, 58, 2.2],
+              [468, 210, 1.5],
+              [486, 92, 1.4],
+              [506, 132, 1.9],
+              [524, 40, 1.3],
+              [540, 172, 2.1],
+              [556, 110, 1.5],
+              [574, 196, 1.8],
+              [590, 140, 1.3],
+              [28, 300, 1.6],
+              [120, 330, 1.3],
+              [210, 288, 1.9],
+              [268, 340, 1.4],
+              [350, 312, 2],
+              [430, 286, 1.5],
+              [470, 338, 1.2],
+              [520, 300, 1.7],
+            ].map(([x, y, r]) => (
+              <circle key={`${x} ${y}`} cx={x} cy={y} r={r} />
+            ))}
+          </g>
+        </svg>
+        <span className="art-label">聖なる夜</span>
+        <div className="art-caption">
+          <span>
+            CHRISTMAS
+            <br />
+            <strong>EVE</strong>
+          </span>
+          <span className="art-number">05 / MIDI</span>
+        </div>
+      </div>
+    );
   return (
     <div className="artwork generic" aria-hidden="true">
       <div className="orbit-art">

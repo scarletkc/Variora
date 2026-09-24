@@ -21,6 +21,7 @@ Different models, the same brief - a collection of demos built from shared promp
 - [Neon Serpent](projects/neon-serpent/): a first-person snake game in a futuristic Japanese city.
 - [Pelican Cycle](projects/pelican-cycle/): a pelican riding a bicycle along the coast in a standalone SVG animation.
 - [Seaside Stroll](projects/seaside-stroll/): an anime-style piece for a walk by the sea, composed in code as MIDI and rendered to MP3.
+- [Christmas Eve](projects/christmas-eve/): a Christmas Eve piece in the style of Japanese Christmas songs, composed in code as MIDI and rendered to MP3.
 
 ## Layout
 
