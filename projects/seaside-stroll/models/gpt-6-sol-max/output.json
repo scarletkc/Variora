@@ -1,0 +1,7 @@
+{
+  "type": "music",
+  "audio": { "path": "app/seaside_stroll.mp3", "origin": "model" },
+  "midi": { "path": "app/seaside_stroll.mid", "origin": "model" },
+  "source": ["app/compose.py", "app/requirements.txt"],
+  "rendering": "Python 3.13.14 and NumPy 2.4.0, deterministic sample-free additive/noise synthesis of flute, electric piano, celesta, nylon guitar, strings, bass, and percussion at 44.1 kHz stereo; tanh saturation and peak normalization to -1 dBFS; ffmpeg 8.1.2/libmp3lame -qscale:a 2. No external samples or sound bank."
+}
