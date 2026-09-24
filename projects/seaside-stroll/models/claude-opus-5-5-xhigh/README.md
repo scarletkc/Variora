@@ -22,7 +22,7 @@ python compose.py   # writes seaside_stroll.mid (standard library only)
 python render.py    # reads seaside_stroll.mid, writes seaside_stroll.mp3
 ```
 
-`render.py` needs `ffmpeg` with libmp3lame on `PATH`. It took about 17 seconds on the Windows 11 machine used for the run. Both scripts use fixed random seeds; two complete runs with the versions above produced byte-identical files (MD5 `fcb0e5f869ad03d183bbc1d6f9ac882e` for the MIDI, `1ab11c9ba24b2f6877e7e89ba674ce16` for the MP3). Other library versions may change the audio slightly.
+`render.py` needs `ffmpeg` with libmp3lame on `PATH`. It took about 17 seconds on the Windows 11 machine used for the run. Both scripts use the fixed random seed `20260924` (`SEED` in each file); two complete runs with the versions above produced byte-identical files (MD5 `fcb0e5f869ad03d183bbc1d6f9ac882e` for the MIDI, `1ab11c9ba24b2f6877e7e89ba674ce16` for the MP3). Other library versions may change the audio slightly.
 
 ## Notes
 
@@ -34,7 +34,7 @@ python render.py    # reads seaside_stroll.mid, writes seaside_stroll.mp3
 
 ### Run history
 
-The run began in Devin CLI 3000.11.3 with the same model and effort, where `smf.py` and `compose.py` were written. After that session stopped, the user asked Claude Code to continue it; the agent resumed from the earlier session's messages, regenerated the MIDI, wrote `render.py`, adjusted the mix, and wrote this record. No other model's code, MIDI, audio, or record was opened.
+The run began in Devin CLI 3000.11.3 with the same model and effort, where `smf.py` and `compose.py` were written; that session was interrupted once and resumed. After it stopped, the user asked Claude Code to continue it; the agent resumed from the earlier session's messages, regenerated the MIDI, wrote `render.py`, adjusted the mix, and wrote this record. No other model's code, MIDI, audio, or record was opened.
 
 There was one attempt; no result was selected from several, and no manual edits were made.
 
