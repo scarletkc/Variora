@@ -1,0 +1,7 @@
+{
+  "type": "music",
+  "audio": "app/seaside_stroll.mp3",
+  "midi": "app/seaside_stroll.mid",
+  "source": ["app/compose.py", "app/render.py", "app/smf.py"],
+  "rendering": "app/render.py, written during the run: sample-free NumPy 2.4.0 / SciPy 1.16.3 synthesis of every part from the MIDI file (Karplus-Strong nylon guitar, FM electric piano, additive glockenspiel and bass, wavetable strings, phrase-based ocarina, noise-based waves and percussion, swept-harmonic gulls), synthetic stereo convolution reverb, normalized to -16 LUFS with a lookahead limiter at -1.5 dBFS; 44.1 kHz stereo encoded by ffmpeg 8.1.2 libmp3lame VBR -q:a 2."
+}
