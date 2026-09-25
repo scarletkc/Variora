@@ -7,6 +7,14 @@
 | Provider | [Service provider or local backend] |
 | Harness | [Agent or application name and version] |
 
+## Prompt
+
+- Shared brief: [PROMPT.md](../../PROMPT.md) at `[commit]`.
+- Initial message: [`standard launch message`, `only pointed to PROMPT.md`, or quoted below with its additions to PROMPT.md listed.]
+- Later instructions: [Follow-ups, continuations, and answers to the model's questions, in order; or `none`.]
+
+Mark removed text as `[redacted: <kind>]` and lost wording as `[wording not recoverable]`. See [Record what the model was given](../../../../CONTRIBUTING.md#record-what-the-model-was-given).
+
 ## Assistance used
 
 - Skills: [Names, purpose, source, and version or commit when known.]

@@ -46,6 +46,22 @@ For a repair, link the original commit or preserved artifact in the model record
 - Report checks you actually performed, their results, and known failures or limitations. Label expectations and untested claims clearly.
 - Include screenshots of the running result whenever you can; they feed the site's comparison view and let readers assess the output without running it. `scripts/screenshot.mjs` captures pages headlessly if you want a helper, but any capture method is fine. Screenshots and measurements must come from the submitted implementation. For measurements, include the method and conditions; retain failures that affect the interpretation rather than presenting only favorable evidence.
 
+### Record what the model was given
+
+Distinguish three layers in the model record:
+
+1. **Shared brief:** `PROMPT.md` and the revision used.
+2. **Initial task message:** what was actually sent to start the run. If it adds anything beyond pointing to `PROMPT.md`, such as workflow, tools, testing, output paths, or constraints, quote it and list the additions.
+3. **Later instructions:** follow-ups, continuations, and answers to the model's questions.
+
+Also disclose instructions you control, such as user-level agent files, custom instructions, rules, and launch flags. Platform or harness system prompts you cannot access are not required.
+
+To keep prompting constant, start runs with the standard launch message:
+
+> Read `projects/<project>/PROMPT.md` and implement it in `projects/<project>/models/<model>/app/`, following the repository rules.
+
+Replace private details with `[redacted: <kind>]`, such as `[redacted: local path]`, and mark wording that can no longer be recovered as `[wording not recoverable]`. Label any paraphrase as a reconstruction; do not present it as a quote.
+
 ### Submit music results
 
 For music projects, keep the generating code and its outputs in `app/` and list them in `output.json` beside the model record, using the [music output format](site/README.md#music-outputs). The site plays the rendered audio and offers the MIDI file and source for inspection and download.
