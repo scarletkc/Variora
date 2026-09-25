@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rainy Ramen</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #1a1030;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+      }
+
+      svg {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+      }
+
+      #rain-toggle {
+        position: fixed;
+        left: 16px;
+        bottom: 16px;
+        z-index: 2;
+        font: 15px/1 "Yu Gothic", "Segoe UI", sans-serif;
+        color: #2a140c;
+        background: #ffb15a;
+        border: 0;
+        padding: 10px 14px;
+        cursor: pointer;
+      }
+
+      #rain-toggle:hover {
+        background: #ffc27a;
+      }
+
+      #rain-toggle:focus-visible {
+        outline: 2px solid #fff6ea;
+        outline-offset: 3px;
+      }
+
+      .flicker {
+        animation: flicker 3.4s infinite;
+      }
+
+      .flicker-late {
+        animation: flicker 4.8s 1.2s infinite;
+      }
+
+      @keyframes flicker {
+        0%,
+        19%,
+        23%,
+        100% {
+          opacity: 1;
+        }
+        21% {
+          opacity: 0.45;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .flicker,
+        .flicker-late {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button type="button" id="rain-toggle" aria-pressed="false">Play rain</button>
+    <svg viewBox="0 0 1200 675" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="scene-title scene-desc">
+      <title id="scene-title">Rainy ramen</title>
+      <desc id="scene-desc">
+        A cat serves a bowl of ramen to a small robot holding a clear umbrella outside a neon ramen shop on a rainy night.
+      </desc>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1a1030" />
+          <stop offset="0.55" stop-color="#2a1844" />
+          <stop offset="1" stop-color="#120e18" />
+        </linearGradient>
+        <linearGradient id="interior" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffe0b0" />
+          <stop offset="1" stop-color="#e07a32" />
+        </linearGradient>
+        <linearGradient id="street" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#22182c" />
+          <stop offset="1" stop-color="#100c16" />
+        </linearGradient>
+        <radialGradient id="moon-glow" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#f4e2c4" stop-opacity="0.55" />
+          <stop offset="1" stop-color="#f4e2c4" stop-opacity="0" />
+        </radialGradient>
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <filter id="soft" x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="14" />
+        </filter>
+        <mask id="dry-shop">
+          <rect width="1200" height="675" fill="white" />
+          <rect x="168" y="300" width="500" height="248" fill="black" />
+        </mask>
+        <linearGradient id="reflect-fade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="white" stop-opacity="0.55" />
+          <stop offset="0.45" stop-color="white" stop-opacity="0" />
+        </linearGradient>
+        <mask id="reflect-mask">
+          <rect x="0" y="548" width="1200" height="127" fill="url(#reflect-fade)" />
+        </mask>
+      </defs>
+
+      <rect width="1200" height="675" fill="url(#sky)" />
+      <circle cx="210" cy="92" r="78" fill="url(#moon-glow)" />
+      <circle cx="210" cy="92" r="28" fill="#f3e4c8" />
+
+      <g fill="#241430" opacity="0.95">
+        <polygon points="860,500 880,250 940,230 980,280 1040,200 1120,260 1180,220 1200,240 1200,500" />
+        <polygon points="0,500 0,320 40,280 90,340 150,250 210,310 250,270 280,500" />
+      </g>
+      <g class="flicker-late" filter="url(#glow)">
+        <rect x="930" y="300" width="18" height="10" fill="#7ef0ff" />
+        <rect x="970" y="330" width="28" height="10" fill="#ff5d92" />
+        <rect x="1060" y="280" width="16" height="10" fill="#ffb15a" />
+        <rect x="1100" y="340" width="22" height="8" fill="#7ef0ff" />
+        <rect x="70" y="360" width="22" height="8" fill="#ff5d92" />
+        <rect x="140" y="300" width="14" height="8" fill="#ffb15a" />
+      </g>
+
+      <g id="shop">
+        <path d="M64 214 L390 118 L748 196 L710 228 L96 232 Z" fill="#161018" />
+        <path d="M96 168 L390 132 L700 176" fill="none" stroke="#3a2a38" stroke-width="8" />
+        <rect x="96" y="214" width="620" height="334" fill="#2a1c22" />
+        <rect x="168" y="248" width="500" height="300" fill="url(#interior)" />
+        <rect x="210" y="286" width="390" height="14" fill="#6a3828" />
+        <g fill="#f4e2c8">
+          <ellipse cx="250" cy="282" rx="16" ry="6" />
+          <ellipse cx="300" cy="282" rx="16" ry="6" />
+          <ellipse cx="350" cy="282" rx="16" ry="6" />
+          <ellipse cx="410" cy="282" rx="18" ry="7" />
+        </g>
+        <ellipse cx="520" cy="430" rx="46" ry="16" fill="#c4522a" />
+        <ellipse cx="520" cy="424" rx="34" ry="10" fill="#e8a15a" />
+        <rect x="150" y="228" width="22" height="320" fill="#3d261c" />
+        <rect x="664" y="228" width="22" height="320" fill="#3d261c" />
+
+        <g id="sign">
+          <rect x="214" y="232" width="300" height="58" fill="#140810" />
+          <text
+            x="246"
+            y="276"
+            fill="#ff5d92"
+            font-family="Yu Gothic, Meiryo, sans-serif"
+            font-size="46"
+            filter="url(#glow)"
+            class="flicker"
+          >
+            らーめん
+          </text>
+        </g>
+
+        <g fill="#c4374a">
+          <rect x="180" y="296" width="112" height="72" />
+          <rect x="304" y="296" width="112" height="72" />
+          <rect x="428" y="296" width="112" height="72" />
+          <rect x="552" y="296" width="100" height="72" />
+        </g>
+        <g fill="#f7efe6">
+          <circle cx="360" cy="340" r="16" />
+          <circle cx="360" cy="340" r="8" fill="#c4374a" />
+          <circle cx="478" cy="348" r="10" />
+        </g>
+      </g>
+
+      <g id="cat">
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="-8 248 470; 10 248 470; -8 248 470"
+            dur="3s"
+            repeatCount="indefinite"
+          />
+          <path
+            d="M300 455 C 250 448, 210 410, 236 378"
+            fill="none"
+            stroke="#e39a55"
+            stroke-width="16"
+            stroke-linecap="round"
+          />
+          <path
+            d="M236 378 q 8 -18 24 -8"
+            fill="none"
+            stroke="#e39a55"
+            stroke-width="14"
+            stroke-linecap="round"
+          />
+        </g>
+        <ellipse cx="360" cy="470" rx="92" ry="54" fill="#e39a55" />
+        <ellipse cx="330" cy="488" rx="42" ry="30" fill="#f3d3b4" />
+        <g fill="none" stroke="#c56b34" stroke-width="6" stroke-linecap="round">
+          <path d="M300 446 q 22 12 4 24" />
+          <path d="M340 438 q 24 12 4 26" />
+          <path d="M390 446 q 18 8 2 18" />
+        </g>
+        <circle cx="455" cy="400" r="50" fill="#e39a55" />
+        <polygon points="418,372 402,318 446,358" fill="#e39a55" />
+        <polygon points="470,356 492,312 508,366" fill="#e39a55" />
+        <polygon points="422,364 410,334 440,358" fill="#f0b4c0" />
+        <polygon points="478,354 488,328 502,362" fill="#f0b4c0" />
+        <path d="M430 372 q 10 8 4 18" fill="none" stroke="#c56b34" stroke-width="5" stroke-linecap="round" />
+        <path d="M470 366 q 12 10 6 18" fill="none" stroke="#c56b34" stroke-width="5" stroke-linecap="round" />
+        <ellipse cx="436" cy="404" rx="16" ry="18" fill="#f6e3d0" />
+        <ellipse cx="478" cy="404" rx="16" ry="18" fill="#f6e3d0" />
+        <ellipse cx="440" cy="406" rx="5.5" ry="7.5" fill="#2c211c" />
+        <ellipse cx="474" cy="406" rx="5.5" ry="7.5" fill="#2c211c" />
+        <circle cx="442" cy="404" r="1.8" fill="#fffaf4" />
+        <circle cx="476" cy="404" r="1.8" fill="#fffaf4" />
+        <path d="M454 412 l 6 8 l -12 1 z" fill="#d46878" />
+        <path d="M440 418 Q 456 434 472 418 Q 456 426 440 418 Z" fill="#5c342c" />
+        <g stroke="#f7efe6" stroke-width="1.5" stroke-linecap="round">
+          <line x1="392" y1="414" x2="430" y2="418" />
+          <line x1="390" y1="426" x2="430" y2="426" />
+          <line x1="518" y1="414" x2="482" y2="418" />
+          <line x1="520" y1="426" x2="482" y2="426" />
+        </g>
+        <path d="M400 448 q 48 12 78 0 l 10 52 q -48 16 -98 0 z" fill="#f6f1e8" />
+      </g>
+
+      <g id="counter">
+        <rect x="168" y="500" width="530" height="48" fill="#4a2c22" />
+        <rect x="160" y="484" width="546" height="22" fill="#7a4a34" />
+        <rect x="160" y="484" width="546" height="5" fill="#c48962" />
+      </g>
+
+      <g id="lantern">
+        <line x1="196" y1="228" x2="196" y2="268" stroke="#6a5030" stroke-width="3" />
+        <circle cx="196" cy="310" r="46" fill="#ffb15a" opacity="0.35" filter="url(#soft)" />
+        <rect x="176" y="274" width="40" height="62" rx="16" fill="#ffb15a" class="flicker" />
+        <rect x="184" y="286" width="24" height="38" rx="8" fill="#ffe0b8" />
+        <path d="M176 286 h40 M176 300 h40 M176 314 h40" stroke="#e09040" stroke-width="1" />
+      </g>
+
+      <g id="robot">
+        <line x1="812" y1="470" x2="796" y2="536" stroke="#9aa7b6" stroke-width="12" stroke-linecap="round" />
+        <line x1="868" y1="470" x2="884" y2="536" stroke="#9aa7b6" stroke-width="12" stroke-linecap="round" />
+        <ellipse cx="792" cy="546" rx="18" ry="9" fill="#7d8b9b" />
+        <ellipse cx="888" cy="546" rx="18" ry="9" fill="#7d8b9b" />
+        <rect x="788" y="404" width="104" height="82" rx="18" fill="#d7e0ea" />
+        <rect x="808" y="422" width="64" height="40" rx="8" fill="#1c2c34" />
+        <circle cx="828" cy="442" r="5" fill="#7ef0ff" class="flicker" />
+        <circle cx="860" cy="442" r="5" fill="#ffb15a" />
+        <rect x="798" y="330" width="84" height="66" rx="20" fill="#eef3f8" />
+        <rect x="812" y="356" width="56" height="18" rx="6" fill="#10282e" />
+        <rect x="818" y="360" width="30" height="8" rx="3" fill="#7ef0ff" filter="url(#glow)" class="flicker" />
+        <line x1="840" y1="330" x2="840" y2="308" stroke="#9aa7b6" stroke-width="3" />
+        <circle cx="840" cy="302" r="7" fill="#ff5d92" filter="url(#glow)" class="flicker" />
+        <path
+          d="M788 430 C 770 390, 800 330, 840 286"
+          fill="none"
+          stroke="#c5d0dc"
+          stroke-width="14"
+          stroke-linecap="round"
+        />
+        <path
+          d="M880 448 C 820 470, 760 468, 708 458"
+          fill="none"
+          stroke="#c5d0dc"
+          stroke-width="14"
+          stroke-linecap="round"
+        />
+        <ellipse cx="700" cy="456" rx="13" ry="11" fill="#eef3f8" />
+      </g>
+
+      <g id="bowl">
+        <ellipse cx="688" cy="470" rx="40" ry="12" fill="#f4e6d4" />
+        <path d="M648 470 q 2 40 40 40 q 38 0 40 -40" fill="#f7f2ea" />
+        <path d="M656 470 q 2 30 32 30 q 30 0 32 -30" fill="#f0b429" />
+        <path d="M666 484 q 12 8 22 0" fill="none" stroke="#ffe7a8" stroke-width="3" stroke-linecap="round" />
+        <ellipse cx="706" cy="482" rx="9" ry="6" fill="#fff8ee" />
+        <circle cx="674" cy="486" r="5" fill="#d45348" />
+        <ellipse cx="688" cy="466" rx="40" ry="11" fill="none" stroke="#e6d3bc" stroke-width="4" />
+        <g fill="none" stroke="#fffaf4" stroke-width="3" stroke-linecap="round">
+          <g>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="0 6; 0 -16"
+              dur="2.4s"
+              repeatCount="indefinite"
+            />
+            <path d="M670 448 q 8 -16 0 -32" opacity="0.8">
+              <animate attributeName="opacity" values="0.15;0.8;0.15" dur="2.4s" repeatCount="indefinite" />
+            </path>
+          </g>
+          <g>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="0 4; 0 -20"
+              dur="2.8s"
+              begin="0.4s"
+              repeatCount="indefinite"
+            />
+            <path d="M692 444 q 10 -18 2 -34" opacity="0.7">
+              <animate
+                attributeName="opacity"
+                values="0.1;0.75;0.1"
+                dur="2.8s"
+                begin="0.4s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </g>
+          <g>
+            <animateTransform
+              attributeName="transform"
+              type="translate"
+              values="0 8; 0 -14"
+              dur="2.1s"
+              begin="0.8s"
+              repeatCount="indefinite"
+            />
+            <path d="M708 450 q 6 -14 -2 -28" opacity="0.65">
+              <animate
+                attributeName="opacity"
+                values="0.1;0.7;0.1"
+                dur="2.1s"
+                begin="0.8s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </g>
+        </g>
+      </g>
+      <g id="serve">
+        <path
+          d="M505 472 C 560 492, 610 488, 648 472"
+          fill="none"
+          stroke="#a85a30"
+          stroke-width="22"
+          stroke-linecap="round"
+        />
+        <path
+          d="M505 472 C 560 492, 610 488, 648 472"
+          fill="none"
+          stroke="#e39a55"
+          stroke-width="16"
+          stroke-linecap="round"
+        />
+        <ellipse cx="654" cy="470" rx="15" ry="11" fill="#f3d3b4" />
+      </g>
+
+      <g id="umbrella">
+        <line x1="868" y1="214" x2="868" y2="300" stroke="#d7ebf8" stroke-width="4" />
+        <ellipse cx="868" cy="228" rx="132" ry="36" fill="rgba(255,255,255,0.14)" stroke="#e8f6ff" stroke-width="3" />
+        <path d="M736 228 Q 868 196 1000 228" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" />
+        <g stroke="rgba(214,236,250,0.55)" stroke-width="1.3">
+          <line x1="868" y1="228" x2="736" y2="228" />
+          <line x1="868" y1="228" x2="770" y2="210" />
+          <line x1="868" y1="228" x2="814" y2="196" />
+          <line x1="868" y1="228" x2="868" y2="190" />
+          <line x1="868" y1="228" x2="922" y2="196" />
+          <line x1="868" y1="228" x2="966" y2="210" />
+          <line x1="868" y1="228" x2="1000" y2="228" />
+        </g>
+        <ellipse cx="868" cy="188" rx="6" ry="4" fill="#f4fbff" />
+        <g fill="rgba(255,255,255,0.8)">
+          <circle cx="790" cy="220" r="2.4" />
+          <circle cx="834" cy="206" r="2" />
+          <circle cx="902" cy="204" r="2.2" />
+          <circle cx="948" cy="218" r="1.8" />
+        </g>
+        <ellipse cx="848" cy="292" rx="11" ry="8" fill="#eef3f8" />
+      </g>
+
+      <g mask="url(#reflect-mask)" opacity="0.85">
+        <g transform="translate(0 1096) scale(1 -1)" filter="url(#soft)">
+          <rect x="214" y="232" width="300" height="40" fill="#ff5d92" opacity="0.8" />
+          <rect x="176" y="274" width="40" height="50" fill="#ffb15a" />
+          <rect x="812" y="356" width="56" height="12" fill="#7ef0ff" />
+        </g>
+      </g>
+
+      <rect x="0" y="548" width="1200" height="127" fill="url(#street)" />
+      <ellipse cx="760" cy="600" rx="200" ry="28" fill="#ffb15a" opacity="0.13" />
+      <ellipse cx="360" cy="590" rx="120" ry="16" fill="#ff5d92" opacity="0.1" />
+      <g fill="none" stroke="rgba(186,214,232,0.35)" stroke-width="1.5">
+        <ellipse cx="250" cy="620" rx="10" ry="4">
+          <animate attributeName="rx" values="6;28" dur="3s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.45;0" dur="3s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="860" cy="640" rx="8" ry="3">
+          <animate attributeName="rx" values="4;26" dur="2.6s" begin="0.8s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.4;0" dur="2.6s" begin="0.8s" repeatCount="indefinite" />
+        </ellipse>
+        <ellipse cx="1040" cy="610" rx="8" ry="3">
+          <animate attributeName="rx" values="5;22" dur="3.2s" begin="0.3s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="0.35;0" dur="3.2s" begin="0.3s" repeatCount="indefinite" />
+        </ellipse>
+      </g>
+
+      <g id="rain-back" mask="url(#dry-shop)"></g>
+      <g id="rain-front" mask="url(#dry-shop)"></g>
+    </svg>
+    <script>
+      (function () {
+        var svg = document.querySelector("svg");
+        var ns = "http://www.w3.org/2000/svg";
+        var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var drops = [];
+
+        function makeDrop(parent, speed, alpha, width) {
+          var line = document.createElementNS(ns, "line");
+          var drop = {
+            line: line,
+            x: Math.random() * 1240 - 20,
+            y: Math.random() * 720 - 40,
+            len: 14 + Math.random() * 20,
+            v: speed + Math.random() * 3.5,
+          };
+          line.setAttribute("stroke", "rgba(198, 222, 242, " + alpha + ")");
+          line.setAttribute("stroke-width", String(width));
+          line.setAttribute("stroke-linecap", "round");
+          parent.appendChild(line);
+          drops.push(drop);
+        }
+
+        var back = document.getElementById("rain-back");
+        var front = document.getElementById("rain-front");
+        var i;
+        for (i = 0; i < 70; i += 1) makeDrop(back, 5.5, 0.28, 1.2);
+        for (i = 0; i < 42; i += 1) makeDrop(front, 8, 0.55, 1.6);
+
+        function place(drop) {
+          drop.line.setAttribute("x1", drop.x);
+          drop.line.setAttribute("y1", drop.y);
+          drop.line.setAttribute("x2", drop.x - 7);
+          drop.line.setAttribute("y2", drop.y + drop.len);
+        }
+
+        drops.forEach(place);
+
+        function tick() {
+          if (!motion.matches) {
+            for (var n = 0; n < drops.length; n += 1) {
+              var drop = drops[n];
+              drop.y += drop.v;
+              drop.x -= drop.v * 0.12;
+              if (drop.y > 700) {
+                drop.y = -30;
+                drop.x = Math.random() * 1280 - 20;
+              }
+              place(drop);
+            }
+          }
+          window.requestAnimationFrame(tick);
+        }
+
+        function syncMotion() {
+          if (motion.matches) svg.pauseAnimations();
+          else svg.unpauseAnimations();
+        }
+
+        syncMotion();
+        if (motion.addEventListener) motion.addEventListener("change", syncMotion);
+        window.requestAnimationFrame(tick);
+
+        var button = document.getElementById("rain-toggle");
+        var ctx = null;
+        var master = null;
+        var playing = false;
+
+        function bootAudio() {
+          if (ctx) return;
+          var AudioCtx = window.AudioContext || window.webkitAudioContext;
+          ctx = new AudioCtx();
+          master = ctx.createGain();
+          master.gain.value = 0;
+          master.connect(ctx.destination);
+
+          var seconds = 2;
+          var count = Math.floor(ctx.sampleRate * seconds);
+          var buffer = ctx.createBuffer(1, count, ctx.sampleRate);
+          var data = buffer.getChannelData(0);
+          for (var n = 0; n < count; n += 1) data[n] = Math.random() * 2 - 1;
+          var noise = ctx.createBufferSource();
+          noise.buffer = buffer;
+          noise.loop = true;
+          var band = ctx.createBiquadFilter();
+          band.type = "bandpass";
+          band.frequency.value = 1700;
+          band.Q.value = 0.45;
+          var noiseGain = ctx.createGain();
+          noiseGain.gain.value = 0.22;
+          noise.connect(band).connect(noiseGain).connect(master);
+          noise.start();
+
+          var hum = ctx.createOscillator();
+          hum.type = "sine";
+          hum.frequency.value = 62;
+          var humGain = ctx.createGain();
+          humGain.gain.value = 0.045;
+          hum.connect(humGain).connect(master);
+          hum.start();
+
+          var over = ctx.createOscillator();
+          over.type = "sine";
+          over.frequency.value = 124;
+          var overGain = ctx.createGain();
+          overGain.gain.value = 0.015;
+          over.connect(overGain).connect(master);
+          over.start();
+        }
+
+        function setPlaying(next) {
+          bootAudio();
+          playing = next;
+          if (ctx.state === "suspended") ctx.resume();
+          master.gain.setTargetAtTime(playing ? 1 : 0, ctx.currentTime, 0.05);
+          button.setAttribute("aria-pressed", playing ? "true" : "false");
+          button.textContent = playing ? "Stop rain" : "Play rain";
+        }
+
+        button.addEventListener("click", function () {
+          setPlaying(!playing);
+        });
+      })();
+    </script>
+  </body>
+</html>

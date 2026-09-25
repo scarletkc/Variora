@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pelican Cycle</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #b7cfe0;
+      }
+
+      body {
+        overflow: hidden;
+      }
+
+      svg {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <svg id="scene" viewBox="0 0 960 540" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="scene-title scene-desc">
+      <title id="scene-title">Pelican cycle</title>
+      <desc id="scene-desc">A pelican rides a bicycle along a coast while the shore scrolls past.</desc>
+      <defs>
+        <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b7cfe0" />
+          <stop offset="0.72" stop-color="#f4e7d4" />
+          <stop offset="1" stop-color="#f7efe4" />
+        </linearGradient>
+        <g id="cloud-tile" fill="#f7f4ef">
+          <ellipse cx="120" cy="78" rx="46" ry="16" />
+          <ellipse cx="156" cy="74" rx="28" ry="14" />
+          <ellipse cx="430" cy="120" rx="54" ry="16" />
+          <ellipse cx="470" cy="112" rx="24" ry="12" />
+          <ellipse cx="760" cy="64" rx="40" ry="14" />
+        </g>
+        <g id="hill-tile">
+          <path
+            d="M0 300 L0 214 C 90 176, 150 236, 250 206 C 350 176, 410 230, 520 198 C 640 164, 730 226, 840 196 C 900 180, 930 210, 960 214 L960 300 Z"
+            fill="#a9c3ce"
+          />
+          <path
+            d="M0 318 L0 262 C 110 230, 190 292, 310 258 C 430 224, 510 286, 650 252 C 770 224, 870 280, 960 262 L960 318 Z"
+            fill="#6d94a6"
+          />
+          <path d="M180 250 l18 28 h-36 z" fill="#8e7a68" />
+          <path d="M640 236 l14 22 h-28 z" fill="#8e7a68" />
+        </g>
+        <g id="sea-tile">
+          <rect x="0" y="286" width="960" height="130" fill="#2c6c84" />
+          <path
+            d="M0 318 C 40 308, 80 328, 120 318 S 200 308, 240 318 S 320 328, 360 318 S 440 308, 480 318 S 560 328, 600 318 S 680 308, 720 318 S 800 328, 840 318 S 920 308, 960 318"
+            fill="none"
+            stroke="#d5ebe4"
+            stroke-width="2"
+          />
+          <path
+            d="M0 352 C 50 342, 90 362, 140 352 S 230 342, 280 352 S 370 362, 420 352 S 510 342, 560 352 S 650 362, 700 352 S 790 342, 840 352 S 910 362, 960 352"
+            fill="none"
+            stroke="#8ec4c4"
+            stroke-width="2"
+          />
+          <ellipse cx="250" cy="338" rx="18" ry="6" fill="#8e7a68" />
+          <ellipse cx="720" cy="360" rx="28" ry="7" fill="#6e5c50" />
+        </g>
+        <g id="road-tile">
+          <rect x="0" y="408" width="960" height="92" fill="#5e686e" />
+          <rect x="0" y="408" width="960" height="7" fill="#e6dfd4" />
+          <g fill="#d9d2c6">
+            <rect x="8" y="452" width="40" height="6" />
+            <rect x="104" y="452" width="40" height="6" />
+            <rect x="200" y="452" width="40" height="6" />
+            <rect x="296" y="452" width="40" height="6" />
+            <rect x="392" y="452" width="40" height="6" />
+            <rect x="488" y="452" width="40" height="6" />
+            <rect x="584" y="452" width="40" height="6" />
+            <rect x="680" y="452" width="40" height="6" />
+            <rect x="776" y="452" width="40" height="6" />
+            <rect x="872" y="452" width="40" height="6" />
+          </g>
+          <g fill="#3e6a4e">
+            <path d="M30 408 q 8 -22 14 0 q 6 -16 12 0" />
+            <path d="M180 408 q 8 -20 14 0 q 7 -18 12 0" />
+            <path d="M360 408 q 8 -24 16 0 q 6 -14 11 0" />
+            <path d="M540 408 q 8 -18 13 0 q 7 -20 12 0" />
+            <path d="M730 408 q 9 -22 15 0 q 6 -16 12 0" />
+            <path d="M890 408 q 8 -20 14 0 q 6 -18 11 0" />
+          </g>
+        </g>
+      </defs>
+
+      <rect width="960" height="540" fill="url(#sky)" />
+      <circle cx="820" cy="118" r="46" fill="#f0b56a" opacity="0.35" />
+      <circle cx="820" cy="118" r="26" fill="#f2c27a" />
+
+      <g fill="none" stroke="#5d7380" stroke-width="2" stroke-linecap="round">
+        <path d="M180 96 l12 10 l12 -10" />
+        <path d="M620 70 l10 8 l10 -8" />
+      </g>
+
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          from="0 0"
+          to="-960 0"
+          dur="34s"
+          repeatCount="indefinite"
+        />
+        <use href="#cloud-tile" />
+        <use href="#cloud-tile" x="960" />
+      </g>
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          from="0 0"
+          to="-960 0"
+          dur="24s"
+          repeatCount="indefinite"
+        />
+        <use href="#hill-tile" />
+        <use href="#hill-tile" x="960" />
+      </g>
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          from="0 0"
+          to="-960 0"
+          dur="15s"
+          repeatCount="indefinite"
+        />
+        <use href="#sea-tile" />
+        <use href="#sea-tile" x="960" />
+      </g>
+      <g>
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          from="0 0"
+          to="-960 0"
+          dur="6s"
+          repeatCount="indefinite"
+        />
+        <use href="#road-tile" />
+        <use href="#road-tile" x="960" />
+      </g>
+
+      <rect x="0" y="500" width="960" height="40" fill="#e7d7c4" />
+
+      <ellipse cx="450" cy="414" rx="150" ry="10" fill="#1c2428" opacity="0.16" />
+
+      <g id="bike" fill="none" stroke="#24312c" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="348" cy="364" r="44" stroke-width="7" />
+        <circle cx="528" cy="364" r="44" stroke-width="7" />
+        <g id="rear-spokes" stroke-width="2">
+          <line x1="348" y1="324" x2="348" y2="404" />
+          <line x1="308" y1="364" x2="388" y2="364" />
+          <line x1="320" y1="336" x2="376" y2="392" />
+          <line x1="320" y1="392" x2="376" y2="336" />
+        </g>
+        <g id="front-spokes" stroke-width="2">
+          <line x1="528" y1="324" x2="528" y2="404" />
+          <line x1="488" y1="364" x2="568" y2="364" />
+          <line x1="500" y1="336" x2="556" y2="392" />
+          <line x1="500" y1="392" x2="556" y2="336" />
+        </g>
+        <circle cx="348" cy="364" r="7" fill="#24312c" stroke="none" />
+        <circle cx="528" cy="364" r="7" fill="#24312c" stroke="none" />
+        <path d="M348 364 L430 364 L500 292 L396 300 L348 364" />
+        <path d="M430 364 L500 292" />
+        <path d="M500 292 L528 364" />
+        <path d="M396 300 L396 286" />
+        <path d="M378 286 h36" />
+        <path d="M500 292 L534 276 L548 292" />
+        <circle id="ring" cx="430" cy="364" r="16" />
+      </g>
+
+      <g id="crank" stroke="#24312c" stroke-width="4" stroke-linecap="round">
+        <line x1="430" y1="338" x2="430" y2="390" />
+        <rect x="418" y="334" width="22" height="7" fill="#e07a3d" stroke="none" />
+        <rect x="418" y="386" width="22" height="7" fill="#e07a3d" stroke="none" />
+      </g>
+
+      <g id="bird">
+        <path d="M400 318 q -30 10 -18 28 q 20 8 36 -6" fill="#d5e2ea" />
+        <ellipse cx="456" cy="304" rx="62" ry="40" fill="#f7f4ef" />
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="-5 470 300; 7 470 300; -5 470 300"
+            dur="1.6s"
+            repeatCount="indefinite"
+          />
+          <path d="M470 292 Q 530 270 575 308 Q 520 318 468 308 Z" fill="#e7eef2" />
+        </g>
+        <path d="M500 286 Q 530 246 548 262" fill="none" stroke="#f7f4ef" stroke-width="16" stroke-linecap="round" />
+        <ellipse cx="560" cy="258" rx="24" ry="20" fill="#f7f4ef" />
+        <path d="M572 252 L742 236 L734 258 L578 270 Z" fill="#e07a3d" />
+        <path d="M700 242 L742 236 L734 258 L708 252 Z" fill="#c45a28" />
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="0 0; 0 5; 0 0"
+            dur="1.4s"
+            repeatCount="indefinite"
+          />
+          <path d="M578 270 Q 650 328 710 274 Q 640 300 578 278 Z" fill="#f0b48a" />
+        </g>
+        <circle cx="548" cy="252" r="4.5" fill="#1c2428" />
+        <circle cx="549.5" cy="250.5" r="1.4" fill="#fffaf4" />
+        <path d="M430 292 q 20 -28 8 -8" fill="none" stroke="#d5e2ea" stroke-width="8" stroke-linecap="round" />
+      </g>
+
+      <g id="legs" fill="none" stroke="#e07a3d" stroke-width="7" stroke-linecap="round">
+        <polyline id="leg-a" points="446,330 470,348 430,338" />
+        <polyline id="leg-b" points="446,330 470,360 430,390" />
+      </g>
+      <ellipse id="foot-a" cx="430" cy="338" rx="14" ry="6" fill="#e07a3d" />
+      <ellipse id="foot-b" cx="430" cy="390" rx="14" ry="6" fill="#e07a3d" />
+    </svg>
+    <script>
+      (function () {
+        var scene = document.getElementById("scene");
+        var motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var rear = document.getElementById("rear-spokes");
+        var front = document.getElementById("front-spokes");
+        var ring = document.getElementById("ring");
+        var crank = document.getElementById("crank");
+        var legA = document.getElementById("leg-a");
+        var legB = document.getElementById("leg-b");
+        var footA = document.getElementById("foot-a");
+        var footB = document.getElementById("foot-b");
+        var hx = 446;
+        var hy = 330;
+        var cx = 430;
+        var cy = 364;
+        var radius = 26;
+
+        function syncMotion() {
+          if (motion.matches) scene.pauseAnimations();
+          else scene.unpauseAnimations();
+        }
+
+        function pose(angle) {
+          var deg = (angle * 180) / Math.PI;
+          var wheel = deg * 2.4;
+          rear.setAttribute("transform", "rotate(" + wheel + " 348 364)");
+          front.setAttribute("transform", "rotate(" + wheel + " 528 364)");
+          ring.setAttribute("transform", "rotate(" + deg + " 430 364)");
+          crank.setAttribute("transform", "rotate(" + deg + " 430 364)");
+          var ax = cx + Math.sin(angle) * radius;
+          var ay = cy - Math.cos(angle) * radius;
+          var bx = cx + Math.sin(angle + Math.PI) * radius;
+          var by = cy - Math.cos(angle + Math.PI) * radius;
+          legA.setAttribute(
+            "points",
+            hx + "," + hy + " " + (hx + ax) / 2 + 14 + "," + ((hy + ay) / 2 - 6) + " " + ax + "," + ay,
+          );
+          legB.setAttribute(
+            "points",
+            hx + "," + hy + " " + (hx + bx) / 2 + 14 + "," + ((hy + by) / 2 - 6) + " " + bx + "," + by,
+          );
+          footA.setAttribute("cx", ax);
+          footA.setAttribute("cy", ay);
+          footB.setAttribute("cx", bx);
+          footB.setAttribute("cy", by);
+        }
+
+        syncMotion();
+        if (motion.addEventListener) motion.addEventListener("change", syncMotion);
+        if (motion.matches) {
+          pose(0.4);
+          return;
+        }
+
+        function loop(now) {
+          pose((now / 1400) * Math.PI * 2);
+          window.requestAnimationFrame(loop);
+        }
+
+        window.requestAnimationFrame(loop);
+      })();
+    </script>
+  </body>
+</html>

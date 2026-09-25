@@ -15,3 +15,4 @@
 | [Gemini 3.8 Flash · High](models/gemini-3-8-flash/) | Dashboard-style coastal cycling animation with controls and changing scene conditions. | [index.html](models/gemini-3-8-flash/app/index.html) |
 | [GPT-6 Astra · Max](models/gpt-6-astra-max/) | Animated SVG coastal ride with synchronized pedaling, scrolling scenery, pause, and speed controls. | [index.html](models/gpt-6-astra-max/app/index.html) |
 | [GPT-5.3 Codex Spark · Light](models/gpt-5.3-codex-spark-low/) | Single-file SVG scene with CSS animations for the wheels, rider, wing, and tail. | [index.html](models/gpt-5.3-codex-spark-low/app/index.html) |
+| [cursor-grok-4-7-xhigh](models/cursor-grok-4-7-xhigh/) | Coastal SVG ride. The shore scrolls, the wheels turn, and the pelican pedals. | [Page](models/cursor-grok-4-7-xhigh/app/index.html) · [Still](models/cursor-grok-4-7-xhigh/screenshots/coast.png) |
