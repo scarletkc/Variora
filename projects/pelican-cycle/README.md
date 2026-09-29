@@ -6,6 +6,7 @@
 
 | Implementation | Notes | Preview |
 | --- | --- | --- |
+| [GPT-6.1 Sol · XHigh](models/gpt-6-1-sol-xhigh/) | Original SVG postcard with articulated pedaling, synchronized wheel and road motion, playback controls, and reduced-motion support. | [index.html](models/gpt-6-1-sol-xhigh/app/index.html) |
 | [GPT-6 Sol / Max](models/gpt-6-sol-max/) | Self-contained coastal SVG scene; animated pedals, legs and wheel spokes, pause control with reduced-motion support. | [index.html](models/gpt-6-sol-max/app/index.html) |
 | [SWE-2 · Max](models/swe-2/) | Clean coastal SVG scene with a cycling pelican and animated landscape details. | [index.html](models/swe-2/app/index.html) |
 | [Step 5 · High](models/step-5/) | Detailed seaside boardwalk animation with layered parallax and playback controls. | [index.html](models/step-5/app/index.html) |
