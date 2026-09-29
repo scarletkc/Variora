@@ -1,4 +1,4 @@
-# Step 5 · High
+# Step 5 · high
 
 | Field | Value |
 | --- | --- |

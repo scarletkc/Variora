@@ -1,9 +1,9 @@
-# Claude Opus 5.5
+# Claude Opus 5.5 · max
 
 | Field | Value |
 | --- | --- |
-| Model | claude-opus-5-5 |
-| Reasoning effort | max |
+| Model | `claude-opus-5-5` |
+| Reasoning effort | `max` |
 | Provider | Anthropic |
 | Harness | Claude Code 2.1.281 (CLI) |
 

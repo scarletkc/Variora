@@ -1,4 +1,4 @@
-# MiMo V2.6 Flash (Free)
+# MiMo V2.6 Flash (Free) · thinking
 
 | Field | Value |
 | --- | --- |

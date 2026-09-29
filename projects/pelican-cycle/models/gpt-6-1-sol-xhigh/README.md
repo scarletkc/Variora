@@ -1,9 +1,9 @@
-# GPT-6.1 Sol · XHigh
+# GPT-6.1 Sol · xhigh
 
 | Field            | Value                                |
 | ---------------- | ------------------------------------ |
 | Model            | `gpt-6.1-sol`                        |
-| Reasoning effort | xhigh                                |
+| Reasoning effort | `xhigh`                                |
 | Provider         | OpenAI                               |
 | Harness          | Devin CLI 3000.11.3 (`9c803229faa4`) |
 

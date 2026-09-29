@@ -2,8 +2,8 @@
 
 | Field | Value |
 | --- | --- |
-| Model | claude-opus-5-5 |
-| Reasoning effort | xhigh |
+| Model | `claude-opus-5-5` |
+| Reasoning effort | `xhigh` |
 | Provider | Anthropic |
 | Harness | Claude Code 2.1.281 |
 
