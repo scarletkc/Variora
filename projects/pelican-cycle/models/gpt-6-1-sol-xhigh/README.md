@@ -2,12 +2,12 @@
 
 | Field            | Value                                |
 | ---------------- | ------------------------------------ |
-| Model            | GPT-6.1 Sol                          |
+| Model            | `gpt-6.1-sol`                        |
 | Reasoning effort | xhigh                                |
 | Provider         | OpenAI                               |
 | Harness          | Devin CLI 3000.11.3 (`9c803229faa4`) |
 
-The model name and reasoning setting were supplied by the user and current harness; the user confirmed OpenAI as the provider during this run. A separate backend/API model identifier was not exposed and is unknown; the supplied model name is recorded verbatim rather than inventing an identifier.
+The model name and reasoning setting were supplied by the user and current harness; the user confirmed OpenAI as the provider during this run. The supplied name, GPT-6.1 Sol, is formatted as `gpt-6.1-sol` to match the other GPT entries. A separate backend/API model identifier was not exposed and is unknown.
 
 ## Prompt
 
