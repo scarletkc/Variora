@@ -1,4 +1,4 @@
-# MiMo V2.6 Pro
+# MiMo V2.6 Pro · thinking
 
 | Field | Value |
 | --- | --- |

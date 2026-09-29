@@ -1,4 +1,4 @@
-# gpt-6-sol (max)
+# GPT-6 Sol · max
 
 | Field | Value |
 | --- | --- |

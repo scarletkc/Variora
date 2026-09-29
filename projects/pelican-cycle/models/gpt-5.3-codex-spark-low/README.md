@@ -1,14 +1,14 @@
-# GPT-5.3 Codex Spark · Light
+# GPT-5.3 Codex Spark · low
 
 | Field | Value |
 | --- | --- |
 | Model | `gpt-5.3-codex-spark` |
-| Reasoning effort | `low` (Light) |
+| Reasoning effort | `low` |
 | Provider | OpenAI |
 | Harness | Codex desktop; application version unknown |
 | Environment | Windows with PowerShell; the same environment as the GPT-6 Astra run, as reported by the contributor |
 
-Model identity, reasoning effort, and environment information were supplied by the contributor.
+Model identity, reasoning effort, and environment information were supplied by the contributor. The supplied reasoning label was Light (`low`).
 
 ## Assistance used
 

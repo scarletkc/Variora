@@ -1,9 +1,9 @@
-# SWE-2
+# SWE-2 · max
 
 | Field | Value |
 | --- | --- |
-| Model | SWE-2 |
-| Reasoning effort | Max |
+| Model | `SWE-2` |
+| Reasoning effort | `max` |
 | Provider | Cognition |
 | Harness | Devin CLI |
 

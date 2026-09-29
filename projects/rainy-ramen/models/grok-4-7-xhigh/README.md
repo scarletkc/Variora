@@ -1,8 +1,8 @@
-# Grok 4.7 xhigh
+# Grok 4.7 · xhigh
 
 | Field | Value |
 | --- | --- |
-| Model | Grok 4.7 |
+| Model | `Grok 4.7` |
 | Reasoning effort | `xhigh` |
 | Provider | xAI |
 | Harness | Grok Build, grok CLI 1.0.40 (eb1a2256660d) |
