@@ -7,8 +7,6 @@ import { localeNames, locales, messages, type Locale } from "@/lib/i18n";
 import { repository } from "@/lib/catalog";
 import { Arrow, Mark } from "./icons";
 
-export const themeScript = `(()=>{let t='system';try{t=localStorage.getItem('variora-theme')||t}catch{}document.documentElement.dataset.theme=t==='dark'||(t!=='light'&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'})()`;
-
 type MenuOption = { value: string; label: string };
 
 function Menu({

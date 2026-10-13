@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Header, Footer, themeScript } from "@/components/shell";
+import { Header, Footer } from "@/components/shell";
 import { isLocale, locales, messages, type Locale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/catalog";
+import { themeScript } from "@/lib/theme";
 import "../globals.css";
 
 export function generateStaticParams() {
