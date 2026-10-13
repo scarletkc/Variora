@@ -1,0 +1,7 @@
+{
+  "type": "music",
+  "audio": "app/seaside_stroll.mp3",
+  "midi": "app/seaside_stroll.mid",
+  "source": ["app/compose.py", "app/requirements.txt"],
+  "rendering": "Custom Python 3.13 / NumPy 2.4 / SciPy 1.16 sample-free synthesis (44.1 kHz stereo) with stereo Schroeder/FDN hall reverb and synthesized surf ambience; encoded to 192 kbps MP3 via FFmpeg 8.1.2."
+}
