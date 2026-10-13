@@ -1,0 +1,10 @@
+{
+  "type": "music",
+  "audio": { "path": "app/sea_breeze.mp3", "origin": "model" },
+  "midi": { "path": "app/sea_breeze.mid", "origin": "model" },
+  "source": [
+    { "path": "app/compose.py", "origin": "model" },
+    { "path": "app/render.py", "origin": "model" }
+  ],
+  "rendering": "Original sample-free NumPy/SciPy additive, modal and noise synthesis; no sound bank or external audio. Renderer reads the saved MIDI with its tempo map. 44.1 kHz stereo; shared synthesized room; two-pass FFmpeg 7.1 loudnorm targeting -16 LUFS / -1.5 dBTP, then LAME 256 kb/s MP3. Details and final encoded measurements are in app/render-report.json and app/verification.json."
+}

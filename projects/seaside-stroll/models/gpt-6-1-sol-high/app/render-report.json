@@ -1,0 +1,38 @@
+{
+  "sample_rate": 44100,
+  "channels": 2,
+  "bitrate": 256000,
+  "seed": 14062026,
+  "rendered_from": "sea_breeze.mid",
+  "midi_sha256": "7c2cfd8f73796b6ed9d0ce8aba494720a47db1684db7fe70b0a9904523095f1d",
+  "note_count": 3205,
+  "midi_duration_seconds": 168.307564,
+  "pcm_duration_seconds": 172.10757369614512,
+  "loudnorm_input": {
+    "input_i": "-15.61",
+    "input_tp": "-1.44",
+    "input_lra": "4.00",
+    "input_thresh": "-25.64",
+    "output_i": "-15.21",
+    "output_tp": "-1.63",
+    "output_lra": "3.50",
+    "output_thresh": "-25.25",
+    "normalization_type": "dynamic",
+    "target_offset": "-0.79"
+  },
+  "loudnorm_output_before_mp3": {
+    "input_i": "-15.57",
+    "input_tp": "-1.72",
+    "input_lra": "3.90",
+    "input_thresh": "-25.60",
+    "output_i": "-15.96",
+    "output_tp": "-2.11",
+    "output_lra": "4.00",
+    "output_thresh": "-25.99",
+    "normalization_type": "linear",
+    "target_offset": "-0.04"
+  },
+  "render_wall_seconds": 15.185,
+  "ffmpeg_version": "ffmpeg version 7.1-essentials_build-www.gyan.dev Copyright (c) 2000-2024 the FFmpeg developers",
+  "mp3_sha256": "7aefc7d24b97ef3cf7b403094fb8ed13e10ed0525e797e56bad0228b78a225cb"
+}

@@ -1,0 +1,58 @@
+{
+  "checks": "passed",
+  "midi_tracks": 10,
+  "midi_notes": 3205,
+  "unclosed_notes": 0,
+  "same_key_overlaps": [],
+  "markers": [
+    {
+      "name": "01 - Sunlight on the water",
+      "seconds": 0.0
+    },
+    {
+      "name": "02 - A path beside the sea",
+      "seconds": 9.412
+    },
+    {
+      "name": "03 - The horizon opens",
+      "seconds": 44.967
+    },
+    {
+      "name": "04 - Postcards on the sea breeze",
+      "seconds": 62.422
+    },
+    {
+      "name": "05 - A cloud's passing shadow",
+      "seconds": 96.106
+    },
+    {
+      "name": "06 - Around the headland",
+      "seconds": 115.306
+    },
+    {
+      "name": "07 - The same sea, a brighter sky",
+      "seconds": 124.195
+    },
+    {
+      "name": "08 - One last look",
+      "seconds": 157.298
+    }
+  ],
+  "full_mp3_decode": "passed; FFmpeg -xerror",
+  "duration_seconds": 172.10757369614512,
+  "decoded_sample_peak_dbfs": -1.987,
+  "minimum_interior_one_second_rms": 0.053467169404029846,
+  "last_200ms_rms": 0.0,
+  "stereo_correlation": 0.972755748416933,
+  "integrated_lufs": -16.01,
+  "true_peak_dbtp": -1.96,
+  "loudness_range_lu": 4.0,
+  "sha256": {
+    "sea_breeze.mp3": "7aefc7d24b97ef3cf7b403094fb8ed13e10ed0525e797e56bad0228b78a225cb",
+    "sea_breeze.mid": "7c2cfd8f73796b6ed9d0ce8aba494720a47db1684db7fe70b0a9904523095f1d"
+  },
+  "limitations": [
+    "No human listening assessment; metrics do not establish subjective musical quality.",
+    "Custom synth timbres differ from a General MIDI player's instrument sounds."
+  ]
+}

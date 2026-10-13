@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>海风里的明信片 · Seaside Stroll</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233e807c'/%3E%3Cpath d='M6 19q5-5 10 0t10 0' stroke='%23f9efcc' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; background: #e9eee5; color: #244740; font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; }
+    main { max-width: 1000px; margin: auto; padding: 64px 28px 30px; }
+    .eyebrow { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; }
+    .card { margin-top: 22px; overflow: hidden; display: grid; grid-template-columns: 1.08fr 1fr; background: #f9f8f0; border: 1px solid #d7ddcf; border-radius: 4px; box-shadow: 0 18px 70px #395c4312; }
+    .art { background: #c3d9cb; min-height: 510px; position: relative; }
+    .art svg { height: 100%; width: 100%; position: absolute; }
+    .art-label { position: absolute; top: 28px; left: 28px; font-size: 11px; letter-spacing: .18em; color: #fafbed; }
+    .info { padding: 44px 34px; display: flex; flex-direction: column; justify-content: center; }
+    h1 { font-size: clamp(25px, 3.5vw, 36px); line-height: 1.45; letter-spacing: .08em; font-weight: 500; margin: 18px 0 7px; }
+    .english { font-family: Georgia, serif; font-size: 20px; font-style: italic; line-height: 1.5; color: #5c786b; }
+    .description { font-size: 13px; line-height: 2; color: #62786c; margin: 28px 0 24px; }
+    audio { width: 100%; height: 46px; }
+    .facts { display: flex; gap: 18px; flex-wrap: wrap; margin: 24px 0; font-size: 11px; color: #6a7c6e; }
+    .links { display: flex; gap: 12px; flex-wrap: wrap; }
+    a { font-size: 12px; color: #315c50; text-underline-offset: 4px; padding: 8px 0; }
+    footer { margin-top: 22px; display: flex; justify-content: space-between; gap: 16px; font-size: 10px; color: #69806f; line-height: 1.8; }
+    #error { font-size: 12px; color: #975335; line-height: 1.8; }
+    @media (max-width: 670px) { main { padding: 30px 20px; } .card { grid-template-columns: 1fr; } .art { min-height: 310px; } .info { padding: 30px 24px; } h1 { font-size: 29px; } footer { flex-direction: column; gap: 4px; } }
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Variora &nbsp; / &nbsp; Seaside Stroll &nbsp; / &nbsp; 01</div>
+  <article class="card">
+    <div class="art">
+      <svg viewBox="0 0 480 560" preserveAspectRatio="xMidYMid slice" role="img" aria-label="清晨的海岸、弯曲的小径与海风中飘起的明信片">
+        <defs>
+          <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#90b9b5"/><stop offset="1" stop-color="#e0e7cf"/></linearGradient>
+          <linearGradient id="sea" x2="0" y2="1"><stop stop-color="#78ada6"/><stop offset="1" stop-color="#3e807c"/></linearGradient>
+          <linearGradient id="land" x2="0" y2="1"><stop stop-color="#849c70"/><stop offset="1" stop-color="#3b6654"/></linearGradient>
+          <pattern id="grain" width="13" height="17" patternUnits="userSpaceOnUse"><circle cx="3" cy="5" r=".65" fill="#fff" opacity=".12"/><circle cx="10" cy="12" r=".4" fill="#294c45" opacity=".08"/></pattern>
+        </defs>
+        <path fill="url(#sky)" d="M0 0h480v560H0z"/>
+        <circle cx="338" cy="155" r="48" fill="#f9efcc" opacity=".9"/>
+        <path d="M-10 185q55-35 99-8t104-15q28-27 64-3" fill="none" stroke="#f2f3df" stroke-width="14" stroke-linecap="round" opacity=".45"/>
+        <path d="M0 270q115-15 220-3t260-8v301H0z" fill="url(#sea)"/>
+        <path d="M0 283q117-6 222 0t260-10M120 314l69-2m125-13 119-3M35 351l82-4m127-11 109-4M190 389l81-4m101 18 70-4" fill="none" stroke="#c6dfce" stroke-width="2" opacity=".5"/>
+        <path d="M0 268q77 14 93 67t103 105q81 57 113 120H0z" fill="#e2d7ad"/>
+        <path d="M0 255q73 19 77 62t95 111q70 49 99 132H0z" fill="url(#land)"/>
+        <path d="M-25 323q113 3 112 69t93 168" fill="none" stroke="#cabf97" stroke-width="35"/>
+        <path d="M-25 323q113 3 112 69t93 168" fill="none" stroke="#eadfbe" stroke-width="24"/>
+        <path d="M70 339q16 21 16 37m19 80q25 34 47 56" fill="none" stroke="#f4edd6" stroke-width="2" opacity=".65"/>
+        <g fill="none" stroke="#315646" stroke-width="2" opacity=".8"><path d="M12 444l9-41m-8 18-12-10m16 9 14-19M47 482l-7-36m4 13 11-18M142 541l-12-43m5 19 10-23"/></g>
+        <g transform="translate(277 368) rotate(-18)"><rect width="97" height="64" rx="2" fill="#fbf3d9"/><path d="M52 10v44M11 18h29m-29 8h23m-23 8h28" stroke="#b5bbaa" stroke-width="1.3"/><rect x="70" y="9" width="15" height="18" fill="#91b3a0"/><path d="M77 13v10m-4-4h8" stroke="#e2eadb"/></g>
+        <path d="M339 329q27-23 15-53m-95 108q-25 8-22 28" fill="none" stroke="#e7e8cc" stroke-width="1.5" stroke-dasharray="4 7" opacity=".7"/>
+        <path d="M256 220q7-6 14 1 6-8 14-4m89 11q5-6 11-1 5-7 11-3" fill="none" stroke="#456b64" stroke-width="2" stroke-linecap="round"/>
+        <path fill="url(#grain)" d="M0 0h480v560H0z"/>
+      </svg>
+      <div class="art-label">POSTCARDS ON THE SEA BREEZE</div>
+    </div>
+    <div class="info">
+      <div class="eyebrow">An original instrumental</div>
+      <h1>海风里的明信片</h1>
+      <div class="english">Postcards on the Sea Breeze</div>
+      <p class="description">把脚步放慢一点。<br>沿着海岸，听长笛与琴弦交换一句旋律，<br>再把今天的晴天，寄给远方。</p>
+      <audio controls preload="metadata" aria-label="播放海风里的明信片"><source src="./sea_breeze.mp3" type="audio/mpeg"></audio>
+      <p id="error" hidden>音频暂时无法加载。请下载 MP3，或通过本地静态服务器打开此页面。</p>
+      <div class="facts"><span>02:52</span><span>76 小节 · F → G</span><span>MP3 · 256 kbps</span></div>
+      <div class="links"><a href="./sea_breeze.mp3" download>下载 MP3</a><a href="./sea_breeze.mid" download>下载 MIDI</a><a href="./compose.py">创作源码</a></div>
+    </div>
+  </article>
+  <footer><span>GPT-6.1 Sol · high &nbsp; / &nbsp; 2026.10.14</span><span>原创 MIDI · 自编音色合成 · 无外部采样</span></footer>
+</main>
+<script>
+  document.querySelector('audio').addEventListener('error', function () { document.getElementById('error').hidden = false; });
+</script>
+</body>
+</html>
