@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { themeScript } from "@/components/shell";
 import { messages } from "@/lib/i18n";
+import { themeScript } from "@/lib/theme";
 import "../globals.css";
 
 export const metadata: Metadata = {

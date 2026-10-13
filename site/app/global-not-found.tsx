@@ -1,5 +1,5 @@
 import { messages } from "@/lib/i18n";
-import { themeScript } from "@/components/shell";
+import { themeScript } from "@/lib/theme";
 import { Arrow } from "@/components/icons";
 import "./globals.css";
 
