@@ -1,0 +1,70 @@
+{
+  "title": "海风里的明信片 · Postcards on the Sea Breeze",
+  "bars": 76,
+  "meter": "4/4",
+  "seed": 20261014,
+  "ticks_per_beat": 960,
+  "midi_duration_seconds": 168.307564,
+  "sections": [
+    {
+      "name": "01 - Sunlight on the water",
+      "bar": 1,
+      "tempo": 102,
+      "key": "F major"
+    },
+    {
+      "name": "02 - A path beside the sea",
+      "bar": 5,
+      "tempo": 108,
+      "key": "F major"
+    },
+    {
+      "name": "03 - The horizon opens",
+      "bar": 21,
+      "tempo": 110,
+      "key": "F major"
+    },
+    {
+      "name": "04 - Postcards on the sea breeze",
+      "bar": 29,
+      "tempo": 114,
+      "key": "F major"
+    },
+    {
+      "name": "05 - A cloud's passing shadow",
+      "bar": 45,
+      "tempo": 100,
+      "key": "F major"
+    },
+    {
+      "name": "06 - Around the headland",
+      "bar": 53,
+      "tempo": 108,
+      "key": "F major"
+    },
+    {
+      "name": "07 - The same sea, a brighter sky",
+      "bar": 57,
+      "tempo": 116,
+      "key": "G major"
+    },
+    {
+      "name": "08 - One last look",
+      "bar": 73,
+      "tempo": 104,
+      "key": "G major"
+    }
+  ],
+  "notes_by_track": {
+    "Breeze flute": 393,
+    "Felt piano": 811,
+    "Nylon guitar": 576,
+    "Vibraphone": 48,
+    "Warm strings": 192,
+    "Celesta postcards": 44,
+    "Acoustic bass": 167,
+    "Answering clarinet": 51,
+    "Soft coastal kit": 923
+  },
+  "total_notes": 3205
+}

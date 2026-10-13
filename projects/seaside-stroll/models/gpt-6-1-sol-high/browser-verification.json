@@ -1,0 +1,34 @@
+{
+  "checks": "passed",
+  "browser": "Chromium 155.0.8059.40",
+  "before": {
+    "paused": true,
+    "time": 0,
+    "duration": 172.107574,
+    "src": "http://127.0.0.1:8768/sea_breeze.mp3"
+  },
+  "playing": {
+    "paused": false,
+    "time": 1.004418
+  },
+  "seek": "85s -> playback advanced beyond 86s",
+  "screenshots": [
+    "screenshots/desktop.png",
+    "screenshots/mobile.png"
+  ],
+  "layouts": [
+    "1440x1000",
+    "390x844"
+  ],
+  "horizontalOverflow": false,
+  "sandboxedPreview": "audio metadata loaded and playback advanced with allow-scripts; no allow-same-origin",
+  "errors": [],
+  "expectedAbortedMediaRequests": [
+    "http://127.0.0.1:8768/sea_breeze.mp3: net::ERR_ABORTED",
+    "http://127.0.0.1:8768/sea_breeze.mp3: net::ERR_ABORTED",
+    "http://127.0.0.1:8768/sea_breeze.mp3: net::ERR_ABORTED",
+    "http://127.0.0.1:8768/sea_breeze.mp3: net::ERR_ABORTED"
+  ],
+  "mediaAbortExplanation": "Chromium cancels metadata/preload requests when starting playback, seeking, or navigating. The completed playback assertions and audio.error === null distinguish these from failed audio loads.",
+  "audibleListening": "not assessed; automated playback was muted"
+}

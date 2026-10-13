@@ -1,0 +1,10 @@
+{
+  "checks": "passed",
+  "procedure": "Fresh temporary directory; compose.py then render.py; compare SHA256 against delivered files",
+  "byte_identical": {
+    "sea_breeze.mid": true,
+    "sea_breeze.mp3": true
+  },
+  "same_machine_only": true,
+  "wall_seconds": 18.474
+}
