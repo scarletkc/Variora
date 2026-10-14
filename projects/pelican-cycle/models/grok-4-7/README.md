@@ -1,4 +1,4 @@
-# Grok 4.7 · XHigh
+# Grok 4.7 · xhigh
 
 | Field | Value |
 | --- | --- |

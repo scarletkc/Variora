@@ -1,4 +1,4 @@
-# Gemini 3.8 Flash · High
+# Gemini 3.8 Flash · high
 
 | Field | Value |
 | --- | --- |

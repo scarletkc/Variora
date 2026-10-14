@@ -1,4 +1,4 @@
-# gpt-6-sol (xhigh)
+# GPT-6 Sol · xhigh
 
 | Field | Value |
 | --- | --- |

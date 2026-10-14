@@ -1,9 +1,9 @@
-# gpt-6-sol (max) — Rainy Ramen
+# GPT-6 Sol · max
 
 | Field | Value |
 | --- | --- |
-| Model | gpt-6-sol |
-| Reasoning effort | max |
+| Model | `gpt-6-sol` |
+| Reasoning effort | `max` |
 | Provider | OpenAI |
 | Harness | Codex CLI 0.156.1 |
 | Starting commit | 1abb153ea39c3676ec3624b8a534f73ec83db4e1 |

@@ -1,9 +1,9 @@
-# GPT-6 Astra — xhigh
+# GPT-6 Astra · xhigh
 
 | Field            | Value                              |
 | ---------------- | ---------------------------------- |
-| Model            | gpt-6-astra                        |
-| Reasoning effort | xhigh                              |
+| Model            | `gpt-6-astra`                        |
+| Reasoning effort | `xhigh`                              |
 | Provider         | OpenAI                             |
 | Harness          | Codex desktop app; version unknown |
 

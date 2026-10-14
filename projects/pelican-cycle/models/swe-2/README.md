@@ -1,4 +1,4 @@
-# SWE-2 · Max
+# SWE-2 · max
 
 | Field | Value |
 | --- | --- |

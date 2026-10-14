@@ -1,4 +1,4 @@
-# GPT-6 Astra · Max
+# GPT-6 Astra · max
 
 | Field | Value |
 | --- | --- |

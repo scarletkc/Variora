@@ -1,9 +1,9 @@
-# SWE-2
+# SWE-2 · max
 
 | Field | Value |
 | --- | --- |
-| Model | SWE-2 |
-| Reasoning effort | max |
+| Model | `SWE-2` |
+| Reasoning effort | `max` |
 | Provider | Cognition |
 | Harness | Devin CLI 3000.11.1 |
 | Prompt | [PROMPT.md](../../PROMPT.md) @ `184d49a` (2026-09-22) |
